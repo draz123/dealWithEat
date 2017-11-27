@@ -31,4 +31,7 @@ dependencies {
 	compile('postgresql:postgresql:9.1-901.jdbc4')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 	testCompile('postgresql:postgresql:9.1-901.jdbc4')
+	testCompile('io.rest-assured:rest-assured:3.0.3')
+	compile('org.springframework.boot:spring-boot-starter-actuator')
+
 }

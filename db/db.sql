@@ -1,8 +1,11 @@
 CREATE TABLE batch.user (
-  id       INTEGER,
-  NAME     CHARACTER VARYING(255) NOT NULL,
-  surname  CHARACTER VARYING(255) NOT NULL,
-  nickname CHARACTER VARYING(255) NOT NULL,
+  id        INTEGER,
+  name      CHARACTER VARYING(255) NOT NULL,
+  surname   CHARACTER VARYING(255) NOT NULL,
+  nickname  CHARACTER VARYING(255) NOT NULL,
+  password  CHARACTER VARYING(255) NOT NULL,
+  groupName CHARACTER VARYING(255) NOT NULL,
+  email     CHARACTER VARYING(255) NOT NULL,
   CONSTRAINT user_pkey PRIMARY KEY (id)
 );
 
@@ -16,6 +19,13 @@ CREATE TABLE batch.restaurant (
   latitude    DOUBLE PRECISION NOT NULL,
   longtitude  DOUBLE PRECISION NOT NULL,
   CONSTRAINT restaurant_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE batch.restaurant_employees (
+  id            INTEGER,
+  user_id       INTEGER NOT NULL REFERENCES batch.user (id),
+  restaurant_id INTEGER NOT NULL REFERENCES batch.restaurant (id),
+  CONSTRAINT restaurant_employees_pkey PRIMARY KEY (id)
 );
 
 
@@ -73,14 +83,19 @@ CACHE 1;
 
 INSERT INTO batch.restaurant (
   id, name, address, website, description, latitude, longtitude)
-VALUES (1000, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111);
+VALUES
+  (1000, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111);
 INSERT INTO batch.restaurant (
   id, name, address, website, description, latitude, longtitude)
-VALUES (1001, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011);
+VALUES
+  (1001, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011);
 INSERT INTO batch.restaurant (
   id, name, address, website, description, latitude, longtitude)
-VALUES (1002, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
+VALUES
+  (1002, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
 
-INSERT INTO batch.restaurant
-VALUES (100, 'Albert', 'Podraza', 'albpod')
+INSERT INTO batch.user
+VALUES (100, 'Albert', 'Podraza', 'albpod', 'qwerty1234', 'restaurant', 'albpod.ppp@gg.com');
 
+INSERT INTO batch.user
+VALUES (101, 'Dominik', 'Waclawski', 'domo123', '1234rom', 'user', 'domo@wp.pl');
