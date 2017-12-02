@@ -14,6 +14,8 @@ apply plugin: 'application'
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+apply plugin: 'maven-publish'
+
 
 group = 'com.dwe'
 version = '0.0.1-SNAPSHOT'
@@ -45,6 +47,12 @@ publishing {
 			artifactId 'com.deal-with-eat'
 			version "${buildVersion}"
 		}
+	}
+}
+
+publishing {
+	repositories {
+		mavenCentral()
 	}
 }
 
