@@ -62,5 +62,4 @@ jar {
 				'Main-Class': 'com.dwe.dealwitheat.DealWithEatApplication.java'
 		)
 	}
-	baseName "$artifactName"
 }
