@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.context.embedded.LocalServerPort;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.ResourceUtils;
 
@@ -25,6 +26,7 @@ import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(locations = "classpath:/application-test.properties")
 public class UserIntegrationTest {
 
     private static final String CONTEXT_PATH = "/dwe/api/";

@@ -18,6 +18,7 @@ import static org.hamcrest.Matchers.greaterThan;
 @RunWith(SpringRunner.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@TestPropertySource(locations = "classpath:/application-test.properties")
 public class RestaurantRepositoryTest {
 
     @Autowired
