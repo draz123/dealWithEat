@@ -16,11 +16,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
-/**
- * Created by a212635147 on 03/10/2017.
- */
 
-//swagger
 @CrossOrigin
 @Configuration
 @EnableSwagger2

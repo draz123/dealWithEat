@@ -11,8 +11,10 @@ public interface UserRepository extends PagingAndSortingRepository<UserEntity, L
 
     UserEntity findUserEntityByNicknameAndPassword(String nickname, String password);
 
+    UserEntity findByNickname(String nickname);
+
     @Transactional
-    void deleteByIdAndPassword(long id, String password);
+    void deleteByNicknameAndPassword(String nickname, String password);
 
     boolean exists(Example<UserEntity> matcher);
 

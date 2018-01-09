@@ -21,13 +21,13 @@ public class UserController {
 
 
     @PostMapping(value = "createUser")
-    public ResponseEntity<StatusResponse> createNewUser(@RequestHeader long id, @RequestBody RequestUserParameters requestUserParameters) {
+    public ResponseEntity<StatusResponse> createNewUser(@RequestBody RequestUserParameters requestUserParameters) {
         return ResponseEntity.ok(userService.createNewUser(requestUserParameters));
     }
 
     @PostMapping(value = "deleteUser")
-    public ResponseEntity<StatusResponse> deleteUser(@RequestHeader long id, @RequestBody RequestUserParameters requestUserParameters) {
-        return ResponseEntity.ok(userService.deleteUser(id, requestUserParameters.getPassword()));
+    public ResponseEntity<StatusResponse> deleteUser(@RequestBody RequestUserParameters requestUserParameters) {
+        return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getNickname(), requestUserParameters.getPassword()));
     }
 
 
