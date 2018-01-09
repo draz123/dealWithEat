@@ -50,6 +50,7 @@ public class UserIntegrationTest {
         given().contentType(ContentType.JSON)
                 .header(userId)
                 .header(password)
+                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRDaXMiLCJleHAiOjE1MTYzMjUyNjl9.GkQKCGiueCuyYE8s9WHiudEIpBsXPxn19qXWpGmyxlrI2WEvH1t4X0aWCb6Ro50ODLBYyeg6xM8ovi4bivXdVQ"))
                 .accept(ContentType.JSON)
                 .when().get(CONTEXT_PATH + "userInfo")
                 .then()
@@ -67,6 +68,7 @@ public class UserIntegrationTest {
 
         given().contentType(ContentType.JSON)
                 .header( new Header("id", "2"))
+                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRDaXMiLCJleHAiOjE1MTYzMjUyNjl9.GkQKCGiueCuyYE8s9WHiudEIpBsXPxn19qXWpGmyxlrI2WEvH1t4X0aWCb6Ro50ODLBYyeg6xM8ovi4bivXdVQ"))
                 .body(getRequestBodyFromFile("create-user.json"))
                 .when()
                 .post(CONTEXT_PATH + "createUser")
@@ -85,6 +87,7 @@ public class UserIntegrationTest {
 
         given().contentType(ContentType.JSON)
                 .header( new Header("id", "6"))
+                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRDaXMiLCJleHAiOjE1MTYzMjUyNjl9.GkQKCGiueCuyYE8s9WHiudEIpBsXPxn19qXWpGmyxlrI2WEvH1t4X0aWCb6Ro50ODLBYyeg6xM8ovi4bivXdVQ"))
                 .body(getRequestBodyFromFile("delete-user.json"))
                 .when()
                 .post(CONTEXT_PATH + "deleteUser")
