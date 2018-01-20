@@ -17,22 +17,32 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    public static final String USER = "USER";
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserResponse getUserInfo(String nickName, String password) {
+    public UserResponse getUserInfo(String email, String password) {
         UserResponse response = new UserResponse();
-        UserEntity userEntity = userRepository.findUserEntityByNicknameAndPassword(nickName, password);
-        response.setCode(200);
-        response.setMessage("Success");
-        response.setResponse(userEntity);
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
+            response.setCode(200);
+            response.setMessage("Success");
+            response.setResponse(userEntity);
+
+        } else {
+            response.setCode(200);
+            response.setMessage("Wrong password");
+        }
+
         return response;
     }
 
     public StatusResponse createNewUser(RequestUserParameters requestUserParameters) {
-        bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        UserEntity userEntity = new UserEntity(requestUserParameters.getName(), requestUserParameters.getSurname(),
-                requestUserParameters.getNickname(), bCryptPasswordEncoder.encode(requestUserParameters.getPassword()), requestUserParameters.getGroupName(), requestUserParameters.getEmail());
-        if (!checkIfRecordExists(requestUserParameters.getNickname(), bCryptPasswordEncoder.encode(requestUserParameters.getPassword()))) {
+        UserEntity userEntity = new UserEntity(bCryptPasswordEncoder.encode(requestUserParameters.getPassword()), USER, requestUserParameters.getEmail());
+        if (!checkIfRecordExists(requestUserParameters.getEmail())) {
             userRepository.save(userEntity);
         }
         StatusResponse response = new StatusResponse();
@@ -41,22 +51,26 @@ public class UserService {
         return response;
     }
 
-    public StatusResponse deleteUser(String nickname, String password) {
-        bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        userRepository.deleteByNicknameAndPassword(nickname,bCryptPasswordEncoder.encode(password));
+    public StatusResponse deleteUser(String email, String password) {
         StatusResponse response = new StatusResponse();
-        response.setStatus(true);
-        response.setMessage("Success");
+        UserEntity userEntity = userRepository.findByEmail(email);
+        if (bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
+            userRepository.deleteByEmail(email);
+            response.setStatus(true);
+            response.setMessage("Success");
+        }
+        else{
+            response.setStatus(false);
+            response.setMessage("Wrong email or password");
+        }
         return response;
     }
 
-    private boolean checkIfRecordExists(String nickname, String password) {
-        ExampleMatcher exampleMatcher = ExampleMatcher.matching()
-                .withIgnorePaths("id", "name", "surnmame", "group_name", "email");
-        UserEntity requesteduser = new UserEntity();
-        requesteduser.setNickname(nickname);
-        requesteduser.setPassword(password);
-        Example<UserEntity> checker = Example.of(requesteduser, exampleMatcher);
+    private boolean checkIfRecordExists(String email) {
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("password", "group_name");
+        UserEntity requestedUser = new UserEntity();
+        requestedUser.setEmail(email);
+        Example<UserEntity> checker = Example.of(requestedUser, exampleMatcher);
         return userRepository.exists(checker);
     }
 

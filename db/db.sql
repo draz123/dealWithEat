@@ -1,12 +1,8 @@
 CREATE TABLE batch.user (
-  id         INTEGER,
-  name       CHARACTER VARYING(255) NOT NULL,
-  surname    CHARACTER VARYING(255) NOT NULL,
-  nickname   CHARACTER VARYING(255) NOT NULL,
+  email      CHARACTER VARYING(255) NOT NULL,
   password   CHARACTER VARYING(255) NOT NULL,
   group_name CHARACTER VARYING(255) NOT NULL,
-  email      CHARACTER VARYING(255) NOT NULL,
-  CONSTRAINT user_pkey PRIMARY KEY (id)
+  CONSTRAINT user_pkey PRIMARY KEY (email)
 );
 
 
@@ -23,7 +19,7 @@ CREATE TABLE batch.restaurant (
 
 CREATE TABLE batch.restaurant_employees (
   id            INTEGER,
-  user_id       INTEGER NOT NULL REFERENCES batch.user (id),
+  user_id       CHARACTER VARYING(255) NOT NULL REFERENCES batch.user (email),
   restaurant_id INTEGER NOT NULL REFERENCES batch.restaurant (id),
   CONSTRAINT restaurant_employees_pkey PRIMARY KEY (id)
 );
@@ -95,7 +91,7 @@ VALUES
   (1002, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
 
 INSERT INTO batch.user
-VALUES (100, 'Albert', 'Podraza', 'albpod', 'qwerty1234', 'restaurant', 'albpod.ppp@gg.com');
+VALUES ('albpod.ppp@gg.com', 'qwerty1234', 'restaurant');
 
 INSERT INTO batch.user
-VALUES (101, 'Dominik', 'Waclawski', 'domo123', '1234rom', 'user', 'domo@wp.pl');
+VALUES ('domo@wp.pl', '1234rom', 'user');

@@ -19,9 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItem;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.*;
 
 
 @RunWith(SpringRunner.class)
@@ -30,8 +28,8 @@ import static org.hamcrest.Matchers.lessThan;
 public class UserIntegrationTest {
 
     private static final String CONTEXT_PATH = "/dwe/api/";
-    private Header userId = new Header("nickname", "albpod");
-    private Header password = new Header("password", "qwerty1234");
+    private Header userId = new Header("email", "testUser@gmail.com");
+    private Header password = new Header("password", "password1");
 
     @LocalServerPort
     private int port;
@@ -50,16 +48,14 @@ public class UserIntegrationTest {
         given().contentType(ContentType.JSON)
                 .header(userId)
                 .header(password)
-                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRDaXMiLCJleHAiOjE1MTYzMjUyNjl9.GkQKCGiueCuyYE8s9WHiudEIpBsXPxn19qXWpGmyxlrI2WEvH1t4X0aWCb6Ro50ODLBYyeg6xM8ovi4bivXdVQ"))
+                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMkBnbWFpbC5jb20iLCJleHAiOjE1MTczNDQ3OTB9.dBVxbc5PDlQjLGp4lrCqrHDberwaEnsdNybBO7X_Cep-31MLaWPFNqjiGbj31B9HKOV3KbJj9rxwMxMofYX2JQ"))
                 .accept(ContentType.JSON)
                 .when().get(CONTEXT_PATH + "userInfo")
                 .then()
-                .statusCode(org.apache.http.HttpStatus.SC_OK)
-                .and().body("response.nickname", is("albpod"))
-                .and().body("response.password", is("qwerty1234"))
-                .and().body("response.name", is("Albert"))
-                .and().body("response.surname", is("Podraza"))
-                .and().body("response.groupName", is("restaurant"));
+                .statusCode(HttpStatus.SC_OK)
+                .and().body("response.email", is("testUser@gmail.com"))
+                .and().body("response.password", is(notNullValue()))
+                .and().body("response.groupName", is("USER"));
 
     }
 
@@ -67,9 +63,8 @@ public class UserIntegrationTest {
     public void testCreateUser() throws Exception{
 
         given().contentType(ContentType.JSON)
-                .header( new Header("id", "2"))
-                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRDaXMiLCJleHAiOjE1MTYzMjUyNjl9.GkQKCGiueCuyYE8s9WHiudEIpBsXPxn19qXWpGmyxlrI2WEvH1t4X0aWCb6Ro50ODLBYyeg6xM8ovi4bivXdVQ"))
                 .body(getRequestBodyFromFile("create-user.json"))
+                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMkBnbWFpbC5jb20iLCJleHAiOjE1MTczNDQ3OTB9.dBVxbc5PDlQjLGp4lrCqrHDberwaEnsdNybBO7X_Cep-31MLaWPFNqjiGbj31B9HKOV3KbJj9rxwMxMofYX2JQ"))
                 .when()
                 .post(CONTEXT_PATH + "createUser")
                 .then()
@@ -86,8 +81,7 @@ public class UserIntegrationTest {
     public void testDeleteUser() throws Exception{
 
         given().contentType(ContentType.JSON)
-                .header( new Header("id", "6"))
-                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhbnRDaXMiLCJleHAiOjE1MTYzMjUyNjl9.GkQKCGiueCuyYE8s9WHiudEIpBsXPxn19qXWpGmyxlrI2WEvH1t4X0aWCb6Ro50ODLBYyeg6xM8ovi4bivXdVQ"))
+                .header(new Header("Authorization","Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyMkBnbWFpbC5jb20iLCJleHAiOjE1MTczNDQ3OTB9.dBVxbc5PDlQjLGp4lrCqrHDberwaEnsdNybBO7X_Cep-31MLaWPFNqjiGbj31B9HKOV3KbJj9rxwMxMofYX2JQ"))
                 .body(getRequestBodyFromFile("delete-user.json"))
                 .when()
                 .post(CONTEXT_PATH + "deleteUser")

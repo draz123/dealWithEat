@@ -1,8 +1,6 @@
 package com.dwe.dealwitheat.security;
 
 
-import com.dwe.dealwitheat.security.JWTAuthenticationFilter;
-import com.dwe.dealwitheat.security.JWTAuthorizationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -20,6 +18,7 @@ import static com.dwe.dealwitheat.security.SecurityConstants.SIGN_UP_URL;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
+
     private UserDetailsService userDetailsService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 

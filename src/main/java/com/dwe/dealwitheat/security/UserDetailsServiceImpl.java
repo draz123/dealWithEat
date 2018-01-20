@@ -19,11 +19,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
-        UserEntity applicationUser = userRepository.findByNickname(username);
+    public UserDetails loadUserByUsername(String email) {
+        UserEntity applicationUser = userRepository.findByEmail(email);
         if (applicationUser == null) {
-            throw new UsernameNotFoundException(username);
+            throw new UsernameNotFoundException(email);
         }
-        return new User(applicationUser.getNickname(), applicationUser.getPassword(), emptyList());
+        return new User(applicationUser.getEmail(), applicationUser.getPassword(), emptyList());
     }
 }

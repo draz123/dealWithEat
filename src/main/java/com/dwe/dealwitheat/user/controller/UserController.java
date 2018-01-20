@@ -15,8 +15,8 @@ public class UserController {
     UserService userService;
 
     @GetMapping(value = "userInfo")
-    public ResponseEntity<UserResponse> getUserInfo(@RequestHeader String nickname, @RequestHeader String password) {
-        return ResponseEntity.ok(userService.getUserInfo(nickname, password));
+    public ResponseEntity<UserResponse> getUserInfo(@RequestHeader String email, @RequestHeader String password) {
+        return ResponseEntity.ok(userService.getUserInfo(email, password));
     }
 
 
@@ -27,7 +27,7 @@ public class UserController {
 
     @PostMapping(value = "deleteUser")
     public ResponseEntity<StatusResponse> deleteUser(@RequestBody RequestUserParameters requestUserParameters) {
-        return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getNickname(), requestUserParameters.getPassword()));
+        return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getEmail(), requestUserParameters.getPassword()));
     }
 
 

@@ -1,16 +1,5 @@
 {
-
-  "name": "Popek",
-
-  "surname": "Monster",
-
-  "nickname": "popus",
-
-  "password": "popupopu",
-
-  "groupName":"user",
-
-  "email":"popek.monster@gmail.com"
-
+  "email":"testUser@gmail.com",
+  "password": "password1"
 }
 

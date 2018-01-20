@@ -9,12 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
 
-    UserEntity findUserEntityByNicknameAndPassword(String nickname, String password);
-
-    UserEntity findByNickname(String nickname);
+    UserEntity findByEmail(String nickname);
 
     @Transactional
-    void deleteByNicknameAndPassword(String nickname, String password);
+    void deleteByEmail(String email);
 
     boolean exists(Example<UserEntity> matcher);
 

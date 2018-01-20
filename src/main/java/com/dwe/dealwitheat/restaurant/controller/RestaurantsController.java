@@ -18,7 +18,7 @@ public class RestaurantsController {
     RestaurantService resturantService;
 
     @GetMapping(value = "restaurants")
-    public String getAccountOpportunities(@RequestHeader int OwnerId) {
+    public String getRestaurants(@RequestHeader String authorization) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         RestaurantResponse response = resturantService.getRestaurants();
