@@ -1,4 +1,25 @@
-CREATE TABLE batch.user (
+DO $$
+BEGIN
+
+  IF NOT EXISTS(
+      SELECT 1
+      FROM pg_catalog.pg_user
+      WHERE usename = 'yummy')
+  THEN
+
+    CREATE USER yummy WITH
+      LOGIN
+      PASSWORD 'yummy1234'
+      SUPERUSER
+      INHERIT
+      NOREPLICATION;
+  END IF;
+END
+$$;
+
+CREATE SCHEMA IF NOT EXISTS yummy;
+
+CREATE TABLE yummy.user (
   email      CHARACTER VARYING(255) NOT NULL,
   password   CHARACTER VARYING(255) NOT NULL,
   group_name CHARACTER VARYING(255) NOT NULL,
@@ -6,7 +27,7 @@ CREATE TABLE batch.user (
 );
 
 
-CREATE TABLE batch.restaurant (
+CREATE TABLE yummy.restaurant (
   id          INTEGER,
   name        CHARACTER VARYING(255),
   address     CHARACTER VARYING(255),
@@ -17,34 +38,43 @@ CREATE TABLE batch.restaurant (
   CONSTRAINT restaurant_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE batch.restaurant_employees (
+
+CREATE TABLE yummy.offer (
   id            INTEGER,
-  user_id       CHARACTER VARYING(255) NOT NULL REFERENCES batch.user (email),
-  restaurant_id INTEGER NOT NULL REFERENCES batch.restaurant (id),
-  CONSTRAINT restaurant_employees_pkey PRIMARY KEY (id)
-);
-
-
-CREATE TABLE batch.payment (
-  id            INTEGER,
-  user_id       INTEGER                NOT NULL REFERENCES batch.user (id),
-  restaurant_id INTEGER                NOT NULL REFERENCES batch.restaurant (id),
-  code          CHARACTER VARYING(255) NOT NULL,
-  CONSTRAINT payment_pkey PRIMARY KEY (id)
-);
-
-
-CREATE TABLE batch.meal (
-  id            INTEGER,
-  restaurant_id INTEGER                NOT NULL REFERENCES batch.restaurant (id),
+  restaurant_id INTEGER                NOT NULL REFERENCES yummy.restaurant (id),
   descriptipn   CHARACTER VARYING(255) NOT NULL,
   price         DOUBLE PRECISION       NOT NULL,
   discount      INTEGER                NOT NULL,
-  CONSTRAINT meal_pkey PRIMARY KEY (id)
+  CONSTRAINT offer_pkey PRIMARY KEY (id)
 );
 
 
-CREATE SEQUENCE batch.user_sequence
+CREATE TABLE yummy.restaurant_employee (
+  email         CHARACTER VARYING(255) REFERENCES yummy.user (email),
+  restaurant_id INTEGER NOT NULL REFERENCES yummy.restaurant (id),
+  CONSTRAINT restaurant_employee_pkey PRIMARY KEY (email,restaurant_id)
+);
+
+
+CREATE TABLE yummy.transaction (
+  id            INTEGER,
+  offer_id      INTEGER REFERENCES yummy.offer (id),
+  code          CHARACTER VARYING(255) NOT NULL,
+  date          TIMESTAMP              NOT NULL,
+  offer_count   INTEGER                NOT NULL,
+  CONSTRAINT transaction_pkey PRIMARY KEY (id)
+);
+
+
+CREATE TABLE yummy.offer_history (
+  id            INTEGER,
+  offer_id      INTEGER REFERENCES yummy.offer (id),
+  count         INTEGER       NOT NULL,
+  CONSTRAINT offer_history_pkey PRIMARY KEY (id)
+);
+
+
+CREATE SEQUENCE yummy.user_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -52,7 +82,7 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 
-CREATE SEQUENCE batch.restaurant_sequence
+CREATE SEQUENCE yummy.restaurant_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -60,7 +90,7 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 
-CREATE SEQUENCE batch.payment_sequence
+CREATE SEQUENCE yummy.transaction_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -68,7 +98,14 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 
-CREATE SEQUENCE batch.meal_sequence
+CREATE SEQUENCE yummy.offer_sequence
+INCREMENT 1
+START 1
+MINVALUE 1
+MAXVALUE 9223372036854775807
+CACHE 1;
+
+CREATE SEQUENCE yummy.offer_history_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -77,21 +114,21 @@ CACHE 1;
 
 -- Test data
 
-INSERT INTO batch.restaurant (
+INSERT INTO yummy.restaurant (
   id, name, address, website, description, latitude, longtitude)
 VALUES
-  (1000, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111);
-INSERT INTO batch.restaurant (
+  (1, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111);
+INSERT INTO yummy.restaurant (
   id, name, address, website, description, latitude, longtitude)
 VALUES
-  (1001, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011);
-INSERT INTO batch.restaurant (
+  (2, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011);
+INSERT INTO yummy.restaurant (
   id, name, address, website, description, latitude, longtitude)
 VALUES
-  (1002, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
+  (3, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
 
-INSERT INTO batch.user
-VALUES ('albpod.ppp@gg.com', 'qwerty1234', 'restaurant');
+INSERT INTO yummy.user
+VALUES ('user1@user.com', 'user1', 'user');
 
-INSERT INTO batch.user
-VALUES ('domo@wp.pl', '1234rom', 'user');
+INSERT INTO yummy.user
+VALUES ('user2@restaurant.com', 'user2', 'restaurant');
