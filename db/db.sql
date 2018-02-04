@@ -45,6 +45,7 @@ CREATE TABLE yummy.offer (
   descriptipn   CHARACTER VARYING(255) NOT NULL,
   price         DOUBLE PRECISION       NOT NULL,
   discount      INTEGER                NOT NULL,
+  count         INTEGER                NOT NULL,
   CONSTRAINT offer_pkey PRIMARY KEY (id)
 );
 
@@ -52,24 +53,24 @@ CREATE TABLE yummy.offer (
 CREATE TABLE yummy.restaurant_employee (
   email         CHARACTER VARYING(255) REFERENCES yummy.user (email),
   restaurant_id INTEGER NOT NULL REFERENCES yummy.restaurant (id),
-  CONSTRAINT restaurant_employee_pkey PRIMARY KEY (email,restaurant_id)
+  CONSTRAINT restaurant_employee_pkey PRIMARY KEY (email, restaurant_id)
 );
 
 
 CREATE TABLE yummy.transaction (
-  id            INTEGER,
-  offer_id      INTEGER REFERENCES yummy.offer (id),
-  code          CHARACTER VARYING(255) NOT NULL,
-  date          TIMESTAMP              NOT NULL,
-  offer_count   INTEGER                NOT NULL,
+  id          INTEGER,
+  offer_id    INTEGER REFERENCES yummy.offer (id),
+  code        CHARACTER VARYING(255) NOT NULL,
+  date        TIMESTAMP              NOT NULL,
+  offer_count INTEGER                NOT NULL,
   CONSTRAINT transaction_pkey PRIMARY KEY (id)
 );
 
 
 CREATE TABLE yummy.offer_history (
-  id            INTEGER,
-  offer_id      INTEGER REFERENCES yummy.offer (id),
-  count         INTEGER       NOT NULL,
+  id       INTEGER,
+  offer_id INTEGER REFERENCES yummy.offer (id),
+  count    INTEGER NOT NULL,
   CONSTRAINT offer_history_pkey PRIMARY KEY (id)
 );
 
@@ -127,8 +128,27 @@ INSERT INTO yummy.restaurant (
 VALUES
   (3, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
 
+
 INSERT INTO yummy.user
 VALUES ('user1@user.com', 'user1', 'user');
 
 INSERT INTO yummy.user
 VALUES ('user2@restaurant.com', 'user2', 'restaurant');
+
+
+INSERT INTO yummy.offer (
+  id, restaurant_id, descriptipn, price, discount, count)
+VALUES (1, 1, 'Khinhali', 10, 50, 3);
+
+INSERT INTO yummy.offer (
+  id, restaurant_id, descriptipn, price, discount, count)
+VALUES (2, 2, 'Ukrainina dumplings', 5, 30, 10);
+
+INSERT INTO yummy.offer (
+  id, restaurant_id, descriptipn, price, discount, count)
+VALUES (3, 3, 'Super Burger', 10, 40, 4);
+
+
+INSERT INTO yummy.restaurant_employee(
+email, restaurant_id)
+VALUES ('user2@restaurant.com', 1);
