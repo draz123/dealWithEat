@@ -1,8 +1,8 @@
-package com.dwe.dealwitheat.payment.model;
+package com.dwe.dealwitheat.transaction.model;
 
 import com.dwe.dealwitheat.commons.Response;
 
-public class PaymentResponse extends Response {
+public class TransactionResponse extends Response {
 
     private String paymentCode;
 

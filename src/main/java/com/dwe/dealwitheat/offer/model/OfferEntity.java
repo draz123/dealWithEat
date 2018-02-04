@@ -1,0 +1,76 @@
+package com.dwe.dealwitheat.offer.model;
+
+import javax.persistence.*;
+
+@Entity(name = "offer")
+public class OfferEntity {
+
+    @Id
+    @SequenceGenerator(name = "offer_sequence", sequenceName = "yummy.offer_sequence", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offer_sequence")
+    private Integer id;
+    private int restaurantId;
+    private String description;
+    private int price;
+    private int discount;
+    private int count;
+
+    public OfferEntity() {
+    }
+
+    public OfferEntity(int restaurantId, String description, int price, int discount, int count) {
+        this.restaurantId = restaurantId;
+        this.description = description;
+        this.price = price;
+        this.discount = discount;
+        this.count = count;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public int getRestaurantId() {
+        return restaurantId;
+    }
+
+    public void setRestaurantId(int restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+}

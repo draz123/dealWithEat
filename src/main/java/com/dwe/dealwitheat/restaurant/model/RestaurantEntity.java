@@ -3,7 +3,7 @@ package com.dwe.dealwitheat.restaurant.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "Restaurant")
+@Table(name = "restaurant")
 public class RestaurantEntity {
 
 
@@ -23,7 +23,6 @@ public class RestaurantEntity {
     @SequenceGenerator(name = "restaurant_sequence", sequenceName = "batch.restaurant_sequence", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_sequence")
     private long id;
-
     private String name;
     private String address;
     private double latitude;

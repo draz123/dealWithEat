@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantsController {
 
     @Autowired
-    RestaurantService resturantService;
+    RestaurantService restaurantService;
 
     @GetMapping(value = "restaurants")
     public String getRestaurants(@RequestHeader String authorization) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        RestaurantResponse response = resturantService.getRestaurants();
+        RestaurantResponse response = restaurantService.getRestaurants();
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {

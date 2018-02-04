@@ -42,7 +42,7 @@ CREATE TABLE yummy.restaurant (
 CREATE TABLE yummy.offer (
   id            INTEGER,
   restaurant_id INTEGER                NOT NULL REFERENCES yummy.restaurant (id),
-  descriptipn   CHARACTER VARYING(255) NOT NULL,
+  description   CHARACTER VARYING(255) NOT NULL,
   price         DOUBLE PRECISION       NOT NULL,
   discount      INTEGER                NOT NULL,
   count         INTEGER                NOT NULL,
@@ -135,17 +135,16 @@ VALUES ('user1@user.com', 'user1', 'user');
 INSERT INTO yummy.user
 VALUES ('user2@restaurant.com', 'user2', 'restaurant');
 
-
 INSERT INTO yummy.offer (
-  id, restaurant_id, descriptipn, price, discount, count)
+  id, restaurant_id, description, price, discount, count)
 VALUES (1, 1, 'Khinhali', 10, 50, 3);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, descriptipn, price, discount, count)
+  id, restaurant_id, description, price, discount, count)
 VALUES (2, 2, 'Ukrainina dumplings', 5, 30, 10);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, descriptipn, price, discount, count)
+  id, restaurant_id, description, price, discount, count)
 VALUES (3, 3, 'Super Burger', 10, 40, 4);
 
 
