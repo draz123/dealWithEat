@@ -2,7 +2,7 @@ package com.dwe.dealwitheat.user.model;
 
 import javax.persistence.*;
 
-@Entity
+@Entity(name="user")
 @Table(name = "user")
 public class UserEntity {
 
