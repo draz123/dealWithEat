@@ -2,8 +2,8 @@ package com.dwe.dealwitheat.user.model;
 
 import javax.persistence.*;
 
-@Entity(name="user")
-@Table(name = "user")
+@Entity
+@Table(name = "\"user\"")
 public class UserEntity {
 
     @Id
