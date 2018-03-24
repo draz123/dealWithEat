@@ -8,7 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TransactionRepository extends PagingAndSortingRepository<TransactionEntity, String> {
 
-    @Override
-    TransactionEntity save(TransactionEntity paymentEntity);
 
 }

@@ -13,17 +13,27 @@ public class TransactionEntity {
     private int offerId;
     private String code;
     private Date date;
-    private int offerCount;
+    private int count;
+    private String state;
 
-    public TransactionEntity(int offerId) {
-        this.offerId = offerId;
+
+    public TransactionEntity() {
     }
 
-    public TransactionEntity(int offerId, String code, Date date, int offerCount) {
+    public TransactionEntity(int offerId, String code, Date date, int count, String state) {
         this.offerId = offerId;
         this.code = code;
         this.date = date;
-        this.offerCount = offerCount;
+        this.count = count;
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public long getId() {
@@ -58,11 +68,11 @@ public class TransactionEntity {
         this.date = date;
     }
 
-    public int getOfferCount() {
-        return offerCount;
+    public int getCount() {
+        return count;
     }
 
-    public void setOfferCount(int offerCount) {
-        this.offerCount = offerCount;
+    public void setCount(int count) {
+        this.count = count;
     }
 }

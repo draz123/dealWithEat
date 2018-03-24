@@ -1,6 +1,8 @@
 package com.dwe.dealwitheat.transaction.model;
 
 public class TransactionRequest {
+
+
     private int offerId;
     private int count;
 

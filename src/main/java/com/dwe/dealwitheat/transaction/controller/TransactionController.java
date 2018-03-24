@@ -1,5 +1,6 @@
 package com.dwe.dealwitheat.transaction.controller;
 
+import com.dwe.dealwitheat.transaction.model.BalanceResponse;
 import com.dwe.dealwitheat.transaction.model.TransactionRequest;
 import com.dwe.dealwitheat.transaction.model.TransactionResponse;
 import com.dwe.dealwitheat.transaction.service.TransactionService;
@@ -15,10 +16,16 @@ public class TransactionController {
     @Autowired
     TransactionService paymentService;
 
+    private ObjectMapper mapper;
+
+    public TransactionController() {
+        mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+
+    }
+
     @PostMapping(value = "transaction")
     public String getAccountOpportunities(@RequestBody TransactionRequest request) {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         TransactionResponse response = paymentService.getCode(request);
         try {
             return mapper.writeValueAsString(response);
@@ -26,4 +33,15 @@ public class TransactionController {
             return "[]";
         }
     }
+
+    @GetMapping(value="balance")
+    public String getBalance(@RequestParam String account){
+        BalanceResponse response = paymentService.getBalance(account);
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
 }

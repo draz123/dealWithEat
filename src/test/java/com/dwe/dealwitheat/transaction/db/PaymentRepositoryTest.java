@@ -1,6 +1,5 @@
 package com.dwe.dealwitheat.transaction.db;
 
-import com.dwe.dealwitheat.transaction.model.TransactionEntity;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -27,7 +24,7 @@ public class PaymentRepositoryTest {
     private TestEntityManager entityManager;
 
     @Autowired
-    private TransactionRepository repository;
+    private TransactionDao repository;
 
     @Test
     public void testFindOneByUserIdAndRestaurantId() throws Exception {
