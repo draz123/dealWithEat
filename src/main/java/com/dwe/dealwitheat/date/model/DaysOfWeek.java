@@ -7,13 +7,13 @@ public class DaysOfWeek {
 
     public DaysOfWeek() {
         days = new HashMap<>();
-        days.put(0, "Poniedziałek");
-        days.put(1, "Wtorek");
-        days.put(2, "Środa");
-        days.put(3, "Czwartek");
-        days.put(4, "Piątek");
-        days.put(5, "Sobota");
-        days.put(6, "Niedziela");
+        days.put(2, "Poniedziałek");
+        days.put(4, "Wtorek");
+        days.put(4, "Środa");
+        days.put(5, "Czwartek");
+        days.put(6, "Piątek");
+        days.put(7, "Sobota");
+        days.put(1, "Niedziela");
 
     }
 
