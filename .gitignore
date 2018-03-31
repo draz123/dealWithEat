@@ -9,6 +9,8 @@
 .settings
 .springBeans
 out
+compare
+
 
 ### IntelliJ IDEA ###
 .idea

@@ -14,16 +14,18 @@ public class OfferEntity {
     private int price;
     private int discount;
     private int count;
+    private String image;
 
     public OfferEntity() {
     }
 
-    public OfferEntity(int restaurantId, String description, int price, int discount, int count) {
+    public OfferEntity(int restaurantId, String description, int price, int discount, int count, String image) {
         this.restaurantId = restaurantId;
         this.description = description;
         this.price = price;
         this.discount = discount;
         this.count = count;
+        this.image = image;
     }
 
     public void setId(Integer id) {
@@ -72,5 +74,13 @@ public class OfferEntity {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

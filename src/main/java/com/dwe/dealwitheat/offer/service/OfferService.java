@@ -33,7 +33,7 @@ public class OfferService {
     }
 
     public Response addNewOffer(OfferRequest request) {
-        repository.save(new OfferEntity(request.getRestaurantId(), request.getDescription(), request.getPrice(), request.getDiscount(), request.getCount()));
+        repository.save(new OfferEntity(request.getRestaurantId(), request.getDescription(), request.getPrice(), request.getDiscount(), request.getCount(), request.getImage()));
         return new Response("New offer added", 200);
     }
 
@@ -49,6 +49,7 @@ public class OfferService {
         currentEntity.setCount(request.getCount());
         currentEntity.setPrice(request.getPrice());
         currentEntity.setDiscount(request.getDiscount());
+        request.setImage(request.getImage());
         repository.save(currentEntity);
         return new Response("Offer updated", 200);
     }

@@ -7,6 +7,7 @@ public class OfferRequest {
     private int price;
     private int discount;
     private int count;
+    private String image;
 
     public int getRestaurantId() {
         return restaurantId;
@@ -46,5 +47,13 @@ public class OfferRequest {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

@@ -46,6 +46,7 @@ CREATE TABLE yummy.offer (
   price         DOUBLE PRECISION       NOT NULL,
   discount      INTEGER                NOT NULL,
   count         INTEGER                NOT NULL,
+  image         text,
   CONSTRAINT offer_pkey PRIMARY KEY (id)
 );
 
@@ -152,92 +153,92 @@ VALUES ('user2@restaurant.com', 3);
 -- Offers --
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (1, 1, 'Khinhali(200g)', 10, 50, 5);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (1, 1, 'Khinhali(200g)', 10, 50, 5, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (2, 1, 'Roladki z bakłażana z orzechami(120g)', 12, 25, 10);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (2, 1, 'Roladki z bakłażana z orzechami(120g)', 12, 25, 10, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (3, 1, 'Chaczapuri megreuli(350g)', 16, 40, 3);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (3, 1, 'Chaczapuri megreuli(350g)', 16, 40, 3, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (4, 1, 'Półmisek gruzińskich przystawek dla dwóch osób(800g)', 52, 50, 10);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (4, 1, 'Półmisek gruzińskich przystawek dla dwóch osób(800g)', 52, 50, 10, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (5, 1, 'Zupa charczo(300g)', 14.9, 20, 3);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (5, 1, 'Zupa charczo(300g)', 14.9, 20, 3, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (6, 1, 'Szaszłyk gruziński z wieprzowiny(600g)', 34, 70, 20);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (6, 1, 'Szaszłyk gruziński z wieprzowiny(600g)', 34, 70, 20, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (7, 1, 'Gulasz z baraniny z bakłażanem', 43, 80, 1);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (7, 1, 'Gulasz z baraniny z bakłażanem', 43, 80, 1, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (8, 2, 'Classic corner', 17, 20, 5);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (8, 2, 'Classic corner', 17, 20, 5, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (9, 2, 'Massive Beef Attack', 27, 45, 4);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (9, 2, 'Massive Beef Attack', 27, 45, 4, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (10, 2, 'Polish Pride', 20, 60, 8);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (10, 2, 'Polish Pride', 20, 60, 8, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (11, 2, 'The Boss', 21, 33, 3);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (11, 2, 'The Boss', 21, 33, 3, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (12, 2, 'Pesto Beef', 21, 55, 1);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (12, 2, 'Pesto Beef', 21, 55, 1, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (13, 3, 'Chipsy z krewetek', 5.5, 10, 1);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (13, 3, 'Chipsy z krewetek', 5.5, 10, 1, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (14, 3, 'Pierożki z nadzieniem serowym', 6.3, 5, 11);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (14, 3, 'Pierożki z nadzieniem serowym', 6.3, 5, 11, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (15, 3, 'Cesarski kociołek trzech mięs w sosie sojowym', 42.8, 40, 2);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (15, 3, 'Cesarski kociołek trzech mięs w sosie sojowym', 42.8, 40, 2, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (16, 3, 'Ostry gulasz dla dwóch osób', 38.8, 50, 6);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (16, 3, 'Ostry gulasz dla dwóch osób', 38.8, 50, 6, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (17, 3, 'Tie-pan Gorący półmisek mięs', 30.8, 44, 4);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (17, 3, 'Tie-pan Gorący półmisek mięs', 30.8, 44, 4, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (18, 3, 'Cielęcina w ostryn sosie', 39.8, 37, 2);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (18, 3, 'Cielęcina w ostryn sosie', 39.8, 37, 2, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (19, 4, 'Czeburek', 89.8, 77, 2);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (19, 4, 'Czeburek', 89.8, 77, 2, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (20, 4, 'Cielęcina w ostryn sosie', 39.8, 37, 2);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (20, 4, 'Cielęcina w ostryn sosie', 39.8, 37, 2, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (21, 4, 'Schab po lwowsku', 55, 61, 22);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (21, 4, 'Schab po lwowsku', 55, 61, 22, null);
 
 INSERT INTO yummy.offer (
-  id, restaurant_id, description, price, discount, count)
-VALUES (22, 4, 'Stek wieprzowy po kozacku', 39, 33, 6);
+  id, restaurant_id, description, price, discount, count, image)
+VALUES (22, 4, 'Stek wieprzowy po kozacku', 39, 33, 6, null);
 
 -- Transactions --
 
