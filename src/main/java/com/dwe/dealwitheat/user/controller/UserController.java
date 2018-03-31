@@ -20,12 +20,12 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "createUser")
+    @PostMapping(value = "user")
     public ResponseEntity<StatusResponse> createNewUser(@RequestBody RequestUserParameters requestUserParameters) {
         return ResponseEntity.ok(userService.createNewUser(requestUserParameters));
     }
 
-    @PostMapping(value = "deleteUser")
+    @DeleteMapping(value = "user")
     public ResponseEntity<StatusResponse> deleteUser(@RequestBody RequestUserParameters requestUserParameters) {
         return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getEmail(), requestUserParameters.getPassword()));
     }

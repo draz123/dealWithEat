@@ -1,5 +1,6 @@
 package com.dwe.dealwitheat.restaurant.controller;
 
+import com.dwe.dealwitheat.commons.Response;
 import com.dwe.dealwitheat.restaurant.model.RestaurantResponse;
 import com.dwe.dealwitheat.restaurant.service.RestaurantService;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -15,13 +16,25 @@ import org.springframework.web.bind.annotation.RestController;
 public class RestaurantsController {
 
     @Autowired
-    RestaurantService restaurantService;
+    private RestaurantService restaurantService;
 
     @GetMapping(value = "restaurants")
     public String getRestaurants(@RequestHeader String authorization) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         RestaurantResponse response = restaurantService.getRestaurants();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
+    @GetMapping(value = "admin/info")
+    public String getRestaurant(@RequestHeader String email) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Response response = restaurantService.getRestaurant(email);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
