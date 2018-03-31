@@ -1,10 +1,12 @@
 package com.dwe.dealwitheat.transaction.db;
 
+import com.dwe.dealwitheat.transaction.model.CurrentOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import java.util.Calendar;
+import java.util.List;
 
 
 @Repository
@@ -53,4 +55,24 @@ public class TransactionDao {
         Double result = jdbcTemplate.queryForObject(query, Double.class);
         return result == null ? 0 : result;
     }
+
+    public List<CurrentOrder> getPendingOrdersForRestaurant(String email) {
+        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time \n" +
+                "FROM offer o\n" +
+                "LEFT JOIN transaction t ON (t.offer_id=o.id)\n" +
+                "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
+                "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
+                "                   WHERE email = \'" + email + "\'\n" +
+                "                   AND state='PENDING';";
+        return jdbcTemplate.query(query, ((rs, rowNum) -> {
+            CurrentOrder result = new CurrentOrder();
+            result.setId(rs.getInt(3));
+            result.setOrderTime(rs.getTimestamp(1));
+            result.setReceiveTime(rs.getTimestamp(5));
+            result.setPrice(rs.getDouble(2));
+            result.setName(rs.getString(4));
+            return result;
+        }));
+    }
+
 }

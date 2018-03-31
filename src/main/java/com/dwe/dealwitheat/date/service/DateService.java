@@ -18,6 +18,6 @@ public class DateService {
 
     public DateResponse getCurrentDateData() {
         java.sql.Date date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
-        return new DateResponse(date.toString(), getDayFromDate(date));
+        return new DateResponse("Success", 200, date.toString(), getDayFromDate(date));
     }
 }

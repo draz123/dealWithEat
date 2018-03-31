@@ -1,11 +1,15 @@
 package com.dwe.dealwitheat.date.model;
 
-public class DateResponse {
+import com.dwe.dealwitheat.commons.Response;
+
+public class DateResponse extends Response {
 
     private String date;
     private String day;
 
-    public DateResponse(String date, String day) {
+
+    public DateResponse(String message, int code, String date, String day) {
+        super(message, code);
         this.date = date;
         this.day = day;
     }

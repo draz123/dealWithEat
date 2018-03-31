@@ -35,7 +35,7 @@ public class TransactionService {
             return response;
         } else {
             String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
-            TransactionEntity entity = new TransactionEntity(request.getOfferId(), code, new Date(System.currentTimeMillis()), request.getCount(), TransactionState.PENDING.toString());
+            TransactionEntity entity = new TransactionEntity(request.getOfferId(), code, new Date(System.currentTimeMillis()), request.getCount(), TransactionState.PENDING.toString(),request.getReceiveTimestamp());
             transactionRepository.save(entity);
             currentOffer.setCount(currentOfferCount);
             offerRepository.save(currentOffer);
@@ -79,5 +79,12 @@ public class TransactionService {
                 transactionDao.countByState(email, TransactionState.MISSED.toString())
         );
 
+    }
+
+    public CurrentOrdersResponse getCurrentOrders(CurrentOrdersRequest request) {
+        CurrentOrdersResponse response = new CurrentOrdersResponse();
+        List<CurrentOrder> currentOrderList = transactionDao.getPendingOrdersForRestaurant(request.getEmail());
+        response.setCurrentOrderList(currentOrderList);
+        return response;
     }
 }

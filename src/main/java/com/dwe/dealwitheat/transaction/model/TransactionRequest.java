@@ -1,10 +1,13 @@
 package com.dwe.dealwitheat.transaction.model;
 
+import java.util.Date;
+
 public class TransactionRequest {
 
 
     private int offerId;
     private int count;
+    private Date receiveTimestamp;
 
     public int getOfferId() {
         return offerId;
@@ -20,5 +23,13 @@ public class TransactionRequest {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public Date getReceiveTimestamp() {
+        return receiveTimestamp;
+    }
+
+    public void setReceiveTimestamp(Date receiveTimestamp) {
+        this.receiveTimestamp = receiveTimestamp;
     }
 }

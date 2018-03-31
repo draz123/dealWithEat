@@ -15,17 +15,19 @@ public class TransactionEntity {
     private Date date;
     private int count;
     private String state;
+    private Date receiveTime;
 
 
     public TransactionEntity() {
     }
 
-    public TransactionEntity(int offerId, String code, Date date, int count, String state) {
+    public TransactionEntity(int offerId, String code, Date date, int count, String state, Date receiveTime) {
         this.offerId = offerId;
         this.code = code;
         this.date = date;
         this.count = count;
         this.state = state;
+        this.receiveTime = receiveTime;
     }
 
     public String getState() {
@@ -74,5 +76,13 @@ public class TransactionEntity {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public Date getReceiveTime() {
+        return receiveTime;
+    }
+
+    public void setReceiveTime(Date receiveTime) {
+        this.receiveTime = receiveTime;
     }
 }

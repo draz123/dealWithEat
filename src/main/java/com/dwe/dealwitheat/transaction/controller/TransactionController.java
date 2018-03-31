@@ -1,8 +1,7 @@
 package com.dwe.dealwitheat.transaction.controller;
 
-import com.dwe.dealwitheat.transaction.model.BalanceResponse;
-import com.dwe.dealwitheat.transaction.model.TransactionRequest;
-import com.dwe.dealwitheat.transaction.model.TransactionResponse;
+import com.dwe.dealwitheat.transaction.model.*;
+import com.dwe.dealwitheat.transaction.model.CurrentOrdersResponse;
 import com.dwe.dealwitheat.transaction.service.TransactionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 public class TransactionController {
 
     @Autowired
-    TransactionService paymentService;
+    private TransactionService transactionService;
 
     private ObjectMapper mapper;
 
@@ -26,7 +25,7 @@ public class TransactionController {
 
     @PostMapping(value = "transaction")
     public String getAccountOpportunities(@RequestBody TransactionRequest request) {
-        TransactionResponse response = paymentService.getCode(request);
+        TransactionResponse response = transactionService.getCode(request);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
@@ -36,7 +35,17 @@ public class TransactionController {
 
     @GetMapping(value="balance")
     public String getBalance(@RequestParam String account){
-        BalanceResponse response = paymentService.getBalance(account);
+        BalanceResponse response = transactionService.getBalance(account);
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
+    @PostMapping(value="orders/current")
+    public String getCurrentOrders(@RequestBody CurrentOrdersRequest request){
+        CurrentOrdersResponse response = transactionService.getCurrentOrders(request);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
