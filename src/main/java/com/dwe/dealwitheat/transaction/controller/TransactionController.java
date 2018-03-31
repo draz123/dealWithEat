@@ -34,8 +34,8 @@ public class TransactionController {
     }
 
     @GetMapping(value="balance")
-    public String getBalance(@RequestParam String account){
-        BalanceResponse response = transactionService.getBalance(account);
+    public String getBalance(@RequestHeader String email){
+        BalanceResponse response = transactionService.getBalance(email);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
@@ -44,8 +44,8 @@ public class TransactionController {
     }
 
     @PostMapping(value="orders/current")
-    public String getCurrentOrders(@RequestBody CurrentOrdersRequest request){
-        CurrentOrdersResponse response = transactionService.getCurrentOrders(request);
+    public String getCurrentOrders(@RequestHeader String email, @RequestBody CurrentOrdersRequest request){
+        CurrentOrdersResponse response = transactionService.getCurrentOrders(email , request);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {

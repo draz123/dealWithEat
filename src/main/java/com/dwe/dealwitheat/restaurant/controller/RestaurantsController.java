@@ -19,7 +19,7 @@ public class RestaurantsController {
     private RestaurantService restaurantService;
 
     @GetMapping(value = "restaurants")
-    public String getRestaurants(@RequestHeader String authorization) {
+    public String getRestaurants() {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         RestaurantResponse response = restaurantService.getRestaurants();

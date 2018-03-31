@@ -2,17 +2,9 @@ package com.dwe.dealwitheat.transaction.model;
 
 public class CurrentOrdersRequest {
 
-    private String email;
+
     private int page;
     private int size;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public int getPage() {
         return page;

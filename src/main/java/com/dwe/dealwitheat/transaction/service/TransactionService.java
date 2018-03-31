@@ -81,9 +81,9 @@ public class TransactionService {
 
     }
 
-    public CurrentOrdersResponse getCurrentOrders(CurrentOrdersRequest request) {
+    public CurrentOrdersResponse getCurrentOrders(String email, CurrentOrdersRequest request) {
         CurrentOrdersResponse response = new CurrentOrdersResponse();
-        List<CurrentOrder> currentOrderList = transactionDao.getPendingOrdersForRestaurant(request.getEmail());
+        List<CurrentOrder> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email);
         response.setCurrentOrderList(currentOrderList);
         return response;
     }

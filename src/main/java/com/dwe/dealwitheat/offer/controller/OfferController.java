@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class OfferController {
 
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     public OfferController() {
         mapper = new ObjectMapper();
@@ -24,7 +24,7 @@ public class OfferController {
     OfferService offerService;
 
     @GetMapping(value = "offers")
-    public String getOffers(@RequestHeader String authorization, @RequestParam(required = false) Integer id) {
+    public String getOffers(@RequestParam(required = false) Integer id) {
         OfferResponse response;
         if (id == null) {
             response = offerService.getOffers();
@@ -39,7 +39,7 @@ public class OfferController {
     }
 
     @PostMapping(value = "offer")
-    public String addOffer(@RequestHeader String authorization, @RequestBody OfferRequest request) {
+    public String addOffer(@RequestBody OfferRequest request) {
         Response response = offerService.addNewOffer(request);
         try {
             return mapper.writeValueAsString(response);
