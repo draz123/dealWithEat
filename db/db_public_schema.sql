@@ -14,6 +14,7 @@ CREATE TABLE restaurant (
   description CHARACTER VARYING(255),
   latitude    DOUBLE PRECISION NOT NULL,
   longtitude  DOUBLE PRECISION NOT NULL,
+  image       TEXT,
   CONSTRAINT restaurant_pkey PRIMARY KEY (id)
 );
 
@@ -86,24 +87,24 @@ CACHE 1;
 -- Restaurants --
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude)
+  id, name, address, website, description, latitude, longtitude, image)
 VALUES
-  (1, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111);
+  (1, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111, null);
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude)
+  id, name, address, website, description, latitude, longtitude, image)
 VALUES
-  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908);
+  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908, null);
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude)
+  id, name, address, website, description, latitude, longtitude, image)
 VALUES
-  (3, 'Ching Ye', 'Krakow, Sw. Getrudy 3', 'www.ching-ye.pl', 'Excellent chinesse kitchen', 13.623, 22.908);
+  (3, 'Ching Ye', 'Krakow, Sw. Getrudy 3', 'www.ching-ye.pl', 'Excellent chinesse kitchen', 13.623, 22.908, null);
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude)
+  id, name, address, website, description, latitude, longtitude, image)
 VALUES
-  (4, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011);
+  (4, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011, null);
 
 -- Users --
 INSERT INTO "user"

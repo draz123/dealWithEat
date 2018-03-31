@@ -43,13 +43,13 @@ public class UserService {
     public StatusResponse createNewUser(RequestUserParameters requestUserParameters) {
         UserEntity userEntity = new UserEntity(bCryptPasswordEncoder.encode(requestUserParameters.getPassword()), USER, requestUserParameters.getEmail());
         StatusResponse response = new StatusResponse();
+        response.setCode(200);
         if (!checkIfRecordExists(requestUserParameters.getEmail())) {
             userRepository.save(userEntity);
             response.setStatus(false);
             response.setMessage("Account was created");
             return response;
         } else {
-
             response.setStatus(false);
             response.setMessage("Account already exists");
             return response;

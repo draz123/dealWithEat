@@ -1,0 +1,182 @@
+{
+  "message": "Offer list returned properly",
+  "code": 200,
+  "offers": [
+    {
+      "id": 1,
+      "restaurantId": 1,
+      "description": "Khinhali(200g)",
+      "price": 10,
+      "discount": 50,
+      "count": 5
+    },
+    {
+      "id": 2,
+      "restaurantId": 1,
+      "description": "Roladki z bakłażana z orzechami(120g)",
+      "price": 12,
+      "discount": 25,
+      "count": 10
+    },
+    {
+      "id": 3,
+      "restaurantId": 1,
+      "description": "Chaczapuri megreuli(350g)",
+      "price": 16,
+      "discount": 40,
+      "count": 3
+    },
+    {
+      "id": 4,
+      "restaurantId": 1,
+      "description": "Półmisek gruzińskich przystawek dla dwóch osób(800g)",
+      "price": 52,
+      "discount": 50,
+      "count": 10
+    },
+    {
+      "id": 5,
+      "restaurantId": 1,
+      "description": "Zupa charczo(300g)",
+      "price": 14,
+      "discount": 20,
+      "count": 3
+    },
+    {
+      "id": 7,
+      "restaurantId": 1,
+      "description": "Gulasz z baraniny z bakłażanem",
+      "price": 43,
+      "discount": 80,
+      "count": 1
+    },
+    {
+      "id": 8,
+      "restaurantId": 2,
+      "description": "Classic corner",
+      "price": 17,
+      "discount": 20,
+      "count": 5
+    },
+    {
+      "id": 9,
+      "restaurantId": 2,
+      "description": "Massive Beef Attack",
+      "price": 27,
+      "discount": 45,
+      "count": 4
+    },
+    {
+      "id": 10,
+      "restaurantId": 2,
+      "description": "Polish Pride",
+      "price": 20,
+      "discount": 60,
+      "count": 8
+    },
+    {
+      "id": 11,
+      "restaurantId": 2,
+      "description": "The Boss",
+      "price": 21,
+      "discount": 33,
+      "count": 3
+    },
+    {
+      "id": 12,
+      "restaurantId": 2,
+      "description": "Pesto Beef",
+      "price": 21,
+      "discount": 55,
+      "count": 1
+    },
+    {
+      "id": 13,
+      "restaurantId": 3,
+      "description": "Chipsy z krewetek",
+      "price": 5,
+      "discount": 10,
+      "count": 1
+    },
+    {
+      "id": 14,
+      "restaurantId": 3,
+      "description": "Pierożki z nadzieniem serowym",
+      "price": 6,
+      "discount": 5,
+      "count": 11
+    },
+    {
+      "id": 15,
+      "restaurantId": 3,
+      "description": "Cesarski kociołek trzech mięs w sosie sojowym",
+      "price": 42,
+      "discount": 40,
+      "count": 2
+    },
+    {
+      "id": 16,
+      "restaurantId": 3,
+      "description": "Ostry gulasz dla dwóch osób",
+      "price": 38,
+      "discount": 50,
+      "count": 6
+    },
+    {
+      "id": 17,
+      "restaurantId": 3,
+      "description": "Tie-pan Gorący półmisek mięs",
+      "price": 30,
+      "discount": 44,
+      "count": 4
+    },
+    {
+      "id": 18,
+      "restaurantId": 3,
+      "description": "Cielęcina w ostryn sosie",
+      "price": 39,
+      "discount": 37,
+      "count": 2
+    },
+    {
+      "id": 19,
+      "restaurantId": 4,
+      "description": "Czeburek",
+      "price": 89,
+      "discount": 77,
+      "count": 2
+    },
+    {
+      "id": 20,
+      "restaurantId": 4,
+      "description": "Cielęcina w ostryn sosie",
+      "price": 39,
+      "discount": 37,
+      "count": 2
+    },
+    {
+      "id": 21,
+      "restaurantId": 4,
+      "description": "Schab po lwowsku",
+      "price": 55,
+      "discount": 61,
+      "count": 22
+    },
+    {
+      "id": 22,
+      "restaurantId": 4,
+      "description": "Stek wieprzowy po kozacku",
+      "price": 39,
+      "discount": 33,
+      "count": 6
+    },
+    {
+      "id": 6,
+      "restaurantId": 1,
+      "description": "Szaszłyk gruziński z wieprzowiny(600g)",
+      "price": 34,
+      "discount": 70,
+      "count": 18
+    }
+  ]
+}

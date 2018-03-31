@@ -7,18 +7,6 @@ import javax.persistence.*;
 public class RestaurantEntity {
 
 
-    public RestaurantEntity() {
-    }
-
-    public RestaurantEntity(String name, String address, double latitude, double longtitude, String description, String website) {
-        this.name = name;
-        this.address = address;
-        this.latitude = latitude;
-        this.longtitude = longtitude;
-        this.description = description;
-        this.website = website;
-    }
-
     @Id
     @SequenceGenerator(name = "restaurant_sequence", sequenceName = "batch.restaurant_sequence", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_sequence")
@@ -29,6 +17,20 @@ public class RestaurantEntity {
     private double longtitude;
     private String description;
     private String website;
+    private String image;
+
+    public RestaurantEntity() {
+    }
+
+    public RestaurantEntity(String name, String address, double latitude, double longtitude, String description, String website, String image) {
+        this.name = name;
+        this.address = address;
+        this.latitude = latitude;
+        this.longtitude = longtitude;
+        this.description = description;
+        this.website = website;
+        this.image = image;
+    }
 
     public long getId() {
         return id;
@@ -84,5 +86,13 @@ public class RestaurantEntity {
 
     public void setWebsite(String website) {
         this.website = website;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

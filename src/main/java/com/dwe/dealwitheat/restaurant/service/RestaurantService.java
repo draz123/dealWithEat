@@ -1,11 +1,9 @@
 package com.dwe.dealwitheat.restaurant.service;
 
+import com.dwe.dealwitheat.commons.Response;
 import com.dwe.dealwitheat.restaurant.db.RestaurantEmployeeRepository;
 import com.dwe.dealwitheat.restaurant.db.RestaurantRepository;
-import com.dwe.dealwitheat.restaurant.model.AdminInfoResponse;
-import com.dwe.dealwitheat.restaurant.model.RestaurantEmployeeEntity;
-import com.dwe.dealwitheat.restaurant.model.RestaurantEntity;
-import com.dwe.dealwitheat.restaurant.model.RestaurantResponse;
+import com.dwe.dealwitheat.restaurant.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,4 +44,13 @@ public class RestaurantService {
         return response;
     }
 
+    public Response editRestaurant(String email, RestaurantEditRequest request) {
+        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findOne(email);
+        RestaurantEntity restaurant = restaurantRepository.findFirstById(employee.getRestaurantId());
+        restaurant.setDescription(request.getDescription());
+        restaurant.setImage(request.getImage());
+        restaurant.setWebsite(request.getWebsite());
+        restaurantRepository.save(restaurant);
+        return new Response("Success", 200);
+    }
 }
