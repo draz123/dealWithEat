@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class OfferController {
 
@@ -24,12 +26,13 @@ public class OfferController {
     private OfferService offerService;
 
     @GetMapping(value = "offers")
-    public String getOffers(@RequestParam(required = false) Integer id) {
+    public String getOffers(@RequestParam(required = false) Integer restaurantId, @RequestParam(required = false) Integer page,
+                            @RequestParam(required = false) Integer size) {
         OfferResponse response;
-        if (id == null) {
-            response = offerService.getOffers();
+        if (restaurantId == null) {
+            response = offerService.getOffers(Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         } else {
-            response = offerService.getOffersByRestaurantId(id);
+            response = offerService.getOffersByRestaurantId(restaurantId, page, size);
         }
         try {
             return mapper.writeValueAsString(response);
@@ -61,7 +64,7 @@ public class OfferController {
 
     @PutMapping(value = "offer")
     public String editOffer(@RequestParam int id, @RequestBody OfferRequest request) {
-        Response response = offerService.editOffer(id,request);
+        Response response = offerService.editOffer(id, request);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
