@@ -67,8 +67,8 @@ public class TransactionDao {
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
             CurrentOrder result = new CurrentOrder();
             result.setId(rs.getInt(3));
-            result.setOrderTime(rs.getTimestamp(1));
-            result.setReceiveTime(rs.getTimestamp(5));
+            result.setOrderTime(rs.getTimestamp(1).toLocalDateTime().toString());
+            result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
             result.setPrice(rs.getDouble(2));
             result.setName(rs.getString(4));
             return result;

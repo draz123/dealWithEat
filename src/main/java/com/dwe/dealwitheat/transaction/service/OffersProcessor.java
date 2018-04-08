@@ -13,9 +13,9 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class OfferProcessor {
+public class OffersProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OfferProcessor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OffersProcessor.class);
 
     @Autowired
     private TransactionRepository transactionRepository;

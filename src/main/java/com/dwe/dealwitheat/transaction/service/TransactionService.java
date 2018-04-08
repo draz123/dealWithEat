@@ -107,7 +107,7 @@ public class TransactionService {
     }
 
     private boolean isValidState(String state) {
-        return state.toLowerCase().equals(CANCELED.toString().toLowerCase()) ||
-                state.toLowerCase().equals(COMPLETED.toString().toLowerCase());
+        return state.equalsIgnoreCase(CANCELED.toString()) ||
+                state.equalsIgnoreCase(COMPLETED.toString());
     }
 }
