@@ -21,7 +21,7 @@ public class OfferController {
     }
 
     @Autowired
-    OfferService offerService;
+    private OfferService offerService;
 
     @GetMapping(value = "offers")
     public String getOffers(@RequestParam(required = false) Integer id) {

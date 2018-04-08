@@ -1,5 +1,6 @@
 package com.dwe.dealwitheat.transaction.service;
 
+import com.dwe.dealwitheat.commons.Response;
 import com.dwe.dealwitheat.offer.db.OfferRepository;
 import com.dwe.dealwitheat.offer.model.OfferEntity;
 import com.dwe.dealwitheat.transaction.db.TransactionDao;
@@ -12,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+
+import static com.dwe.dealwitheat.transaction.model.TransactionState.CANCELED;
+import static com.dwe.dealwitheat.transaction.model.TransactionState.COMPLETED;
 
 @Service
 public class TransactionService {
@@ -35,7 +39,7 @@ public class TransactionService {
             return response;
         } else {
             String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
-            TransactionEntity entity = new TransactionEntity(request.getOfferId(), code, new Date(System.currentTimeMillis()), request.getCount(), TransactionState.PENDING.toString(),request.getReceiveTimestamp());
+            TransactionEntity entity = new TransactionEntity(request.getOfferId(), code, new Date(System.currentTimeMillis()), request.getCount(), TransactionState.PENDING.toString(), request.getReceiveTimestamp());
             transactionRepository.save(entity);
             currentOffer.setCount(currentOfferCount);
             offerRepository.save(currentOffer);
@@ -74,17 +78,36 @@ public class TransactionService {
     private OrderSummary getOrderSummary(String email) {
         return new OrderSummary(
                 transactionDao.countAll(email),
-                transactionDao.countByState(email, TransactionState.CANCELED.toString()),
-                transactionDao.countByState(email, TransactionState.COMPLETED.toString()),
+                transactionDao.countByState(email, CANCELED.toString()),
+                transactionDao.countByState(email, COMPLETED.toString()),
                 transactionDao.countByState(email, TransactionState.MISSED.toString())
         );
 
     }
 
-    public CurrentOrdersResponse getCurrentOrders(String email, CurrentOrdersRequest request) {
+    public CurrentOrdersResponse getCurrentOrders(String email) {
         CurrentOrdersResponse response = new CurrentOrdersResponse();
         List<CurrentOrder> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email);
         response.setCurrentOrderList(currentOrderList);
         return response;
+    }
+
+    public Response changeOrdersState(ChangeOrderStateRequest request) {
+        if (isValidState(request.getState())) {
+            List<TransactionEntity> transactionsToUpdate = transactionRepository.findAllByIdIn(request.getIdList());
+            transactionsToUpdate.forEach(transactionEntity -> {
+                        transactionEntity.setState(request.getState().toUpperCase());
+                        transactionRepository.save(transactionEntity);
+                    }
+            );
+            return new Response("Success", 200);
+        } else {
+            return new Response("Wrong state requested", 200);
+        }
+    }
+
+    private boolean isValidState(String state) {
+        return state.toLowerCase().equals(CANCELED.toString().toLowerCase()) ||
+                state.toLowerCase().equals(COMPLETED.toString().toLowerCase());
     }
 }

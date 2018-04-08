@@ -51,13 +51,6 @@ CREATE TABLE yummy.offer (
   CONSTRAINT offer_pkey PRIMARY KEY (id)
 );
 
-CREATE TABLE yummy.receipt (
-  id         INTEGER NOT NULL,
-  start_time TIME,
-  stop_time  TIME,
-  CONSTRAINT receipt_pkey PRIMARY KEY (id),
-  FOREIGN KEY (id) REFERENCES yummy.offer (id)
-);
 
 CREATE TABLE yummy.restaurant_employee (
   email         CHARACTER VARYING(255) REFERENCES yummy.user (email),

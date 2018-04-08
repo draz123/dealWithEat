@@ -1,7 +1,7 @@
 package com.dwe.dealwitheat.transaction.controller;
 
+import com.dwe.dealwitheat.commons.Response;
 import com.dwe.dealwitheat.transaction.model.*;
-import com.dwe.dealwitheat.transaction.model.CurrentOrdersResponse;
 import com.dwe.dealwitheat.transaction.service.TransactionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -24,7 +24,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = "transaction")
-    public String getAccountOpportunities(@RequestBody TransactionRequest request) {
+    public String doTransaction(@RequestBody TransactionRequest request) {
         TransactionResponse response = transactionService.getCode(request);
         try {
             return mapper.writeValueAsString(response);
@@ -33,8 +33,8 @@ public class TransactionController {
         }
     }
 
-    @GetMapping(value="balance")
-    public String getBalance(@RequestHeader String email){
+    @GetMapping(value = "balance")
+    public String getBalance(@RequestHeader String email) {
         BalanceResponse response = transactionService.getBalance(email);
         try {
             return mapper.writeValueAsString(response);
@@ -43,9 +43,19 @@ public class TransactionController {
         }
     }
 
-    @PostMapping(value="orders/current")
-    public String getCurrentOrders(@RequestHeader String email, @RequestBody CurrentOrdersRequest request){
-        CurrentOrdersResponse response = transactionService.getCurrentOrders(email , request);
+    @PostMapping(value = "orders/current")
+    public String getCurrentOrders(@RequestHeader String email, @RequestBody CurrentOrdersRequest request) {
+        CurrentOrdersResponse response = transactionService.getCurrentOrders(email);
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
+    @PutMapping(value = "orders")
+    public String changeOrdersState(@RequestHeader String email, @RequestBody ChangeOrderStateRequest request) {
+        Response response = transactionService.changeOrdersState(request);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {

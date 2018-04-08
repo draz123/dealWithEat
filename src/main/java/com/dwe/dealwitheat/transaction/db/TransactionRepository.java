@@ -12,6 +12,7 @@ public interface TransactionRepository extends CrudRepository<TransactionEntity,
 
     List<TransactionEntity> findAllByState(String state);
 
+    List<TransactionEntity> findAllByIdIn(List<Long> idList);
 
 
 }
