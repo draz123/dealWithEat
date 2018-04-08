@@ -32,7 +32,7 @@ public class OfferController {
         if (email == null) {
             response = offerService.getOffers(Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         } else {
-            response = offerService.getOffersByEmail(email, page, size);
+            response = offerService.getOffersByEmail(email, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         }
         try {
             return mapper.writeValueAsString(response);
