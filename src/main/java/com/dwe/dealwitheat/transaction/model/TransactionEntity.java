@@ -7,7 +7,7 @@ import java.util.Date;
 public class TransactionEntity {
 
     @Id
-    @SequenceGenerator(name = "transaction_sequence", sequenceName = "yummy.transaction_sequence", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(name = "transaction_sequence", sequenceName = "public.transaction_sequence", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_sequence")
     private long id;
     private int offerId;

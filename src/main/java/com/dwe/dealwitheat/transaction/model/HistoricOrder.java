@@ -1,22 +1,24 @@
 package com.dwe.dealwitheat.transaction.model;
 
-public class CurrentOrder implements Order {
+public class HistoricOrder implements Order {
 
     private int id;
     private String name;
     private double price;
     private String orderTime;
     private String receiveTime;
+    private String state;
 
-    public CurrentOrder(int id, String name, double price, String orderTime, String receiveTime) {
+    public HistoricOrder(int id, String name, double price, String orderTime, String receiveTime, String state) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.orderTime = orderTime;
         this.receiveTime = receiveTime;
+        this.state = state;
     }
 
-    public CurrentOrder() {
+    public HistoricOrder() {
     }
 
     public String getName() {
@@ -57,5 +59,13 @@ public class CurrentOrder implements Order {
 
     public void setReceiveTime(String receiveTime) {
         this.receiveTime = receiveTime;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 }

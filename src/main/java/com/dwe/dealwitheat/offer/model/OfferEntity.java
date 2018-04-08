@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class OfferEntity {
 
     @Id
-    @SequenceGenerator(name = "offer_sequence", sequenceName = "yummy.offer_sequence", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(name = "offer_sequence", sequenceName = "public.offer_sequence", allocationSize = 1, initialValue = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offer_sequence")
     private Integer id;
     private int restaurantId;

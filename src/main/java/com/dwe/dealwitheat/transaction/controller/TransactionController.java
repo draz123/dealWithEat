@@ -9,6 +9,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class TransactionController {
 
@@ -44,8 +46,8 @@ public class TransactionController {
     }
 
     @PostMapping(value = "orders/current")
-    public String getCurrentOrders(@RequestHeader String email, @RequestBody CurrentOrdersRequest request) {
-        CurrentOrdersResponse response = transactionService.getCurrentOrders(email);
+    public String getCurrentOrders(@RequestHeader String email, @RequestBody PaginationRequest request) {
+        OrdersResponse response = transactionService.getCurrentOrders(email, request);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
@@ -56,6 +58,16 @@ public class TransactionController {
     @PutMapping(value = "orders")
     public String changeOrdersState(@RequestHeader String email, @RequestBody ChangeOrderStateRequest request) {
         Response response = transactionService.changeOrdersState(request);
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
+    @GetMapping(value = "orders")
+    public String getOrders(@RequestHeader String email, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        Response response = transactionService.getAllOrdersByEmail(email, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(0));
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {

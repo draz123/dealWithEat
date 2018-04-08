@@ -85,9 +85,11 @@ public class TransactionService {
 
     }
 
-    public CurrentOrdersResponse getCurrentOrders(String email) {
-        CurrentOrdersResponse response = new CurrentOrdersResponse();
-        List<CurrentOrder> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email);
+    public OrdersResponse getCurrentOrders(String email, PaginationRequest request) {
+        OrdersResponse response = new OrdersResponse();
+        int limit = request.getPage() == 0 ? request.getSize() : request.getPage() * request.getSize();
+        int offset = request.getPage() == 0 ? 0 : request.getSize();
+        List<Order> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email, limit, offset);
         response.setCurrentOrderList(currentOrderList);
         return response;
     }
@@ -109,5 +111,18 @@ public class TransactionService {
     private boolean isValidState(String state) {
         return state.equalsIgnoreCase(CANCELED.toString()) ||
                 state.equalsIgnoreCase(COMPLETED.toString());
+    }
+
+    public Response getAllOrdersByEmail(String email, Integer page, Integer size) {
+        int limit = page == 0 ? size : page * size;
+        int offset = page == 0 ? 0 : size;
+        List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset);
+        OrdersResponse ordersResponse = new OrdersResponse();
+        ordersResponse.setCurrentOrderList(historicOrders);
+        ordersResponse.setPage(page);
+        ordersResponse.setPageSize(size);
+        ordersResponse.setCode(200);
+        ordersResponse.setMessage("Success");
+        return ordersResponse;
     }
 }

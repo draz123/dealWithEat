@@ -1,6 +1,6 @@
 package com.dwe.dealwitheat.transaction.model;
 
-public class CurrentOrdersRequest {
+public class PaginationRequest {
 
 
     private int page;

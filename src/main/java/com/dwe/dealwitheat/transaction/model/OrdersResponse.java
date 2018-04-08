@@ -1,18 +1,17 @@
 package com.dwe.dealwitheat.transaction.model;
 
 import com.dwe.dealwitheat.commons.Response;
-import com.dwe.dealwitheat.transaction.model.CurrentOrder;
 
 import java.util.List;
 
-public class CurrentOrdersResponse extends Response {
+public class OrdersResponse extends Response {
 
-    private List<CurrentOrder> currentOrderList;
+    private List<Order> currentOrderList;
     private int pageSize;
     private boolean isLastPage;
     private int page;
 
-    public CurrentOrdersResponse(String message, int code, List<CurrentOrder> currentOrderList, int pageSize, boolean isLastPage, int page) {
+    public OrdersResponse(String message, int code, List<Order> currentOrderList, int pageSize, boolean isLastPage, int page) {
         super(message, code);
         this.currentOrderList = currentOrderList;
         this.pageSize = pageSize;
@@ -20,14 +19,14 @@ public class CurrentOrdersResponse extends Response {
         this.page = page;
     }
 
-    public CurrentOrdersResponse() {
+    public OrdersResponse() {
     }
 
-    public List<CurrentOrder> getCurrentOrderList() {
+    public List<Order> getCurrentOrderList() {
         return currentOrderList;
     }
 
-    public void setCurrentOrderList(List<CurrentOrder> currentOrderList) {
+    public void setCurrentOrderList(List<Order> currentOrderList) {
         this.currentOrderList = currentOrderList;
     }
 
