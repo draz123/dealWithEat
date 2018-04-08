@@ -26,13 +26,13 @@ public class OfferController {
     private OfferService offerService;
 
     @GetMapping(value = "offers")
-    public String getOffers(@RequestParam(required = false) Integer restaurantId, @RequestParam(required = false) Integer page,
+    public String getOffers(@RequestHeader(required = false) String email, @RequestParam(required = false) Integer page,
                             @RequestParam(required = false) Integer size) {
         OfferResponse response;
-        if (restaurantId == null) {
+        if (email == null) {
             response = offerService.getOffers(Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         } else {
-            response = offerService.getOffersByRestaurantId(restaurantId, page, size);
+            response = offerService.getOffersByEmail(email, page, size);
         }
         try {
             return mapper.writeValueAsString(response);
