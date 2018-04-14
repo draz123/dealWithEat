@@ -55,7 +55,7 @@ public class TransactionController {
         }
     }
 
-    @PutMapping(value = "orders")
+    @PostMapping(value = "orders/state")
     public String changeOrdersState(@RequestHeader String email, @RequestBody ChangeOrderStateRequest request) {
         Response response = transactionService.changeOrdersState(request);
         try {
