@@ -4,6 +4,7 @@ import com.dwe.dealwitheat.commons.Response;
 import com.dwe.dealwitheat.offer.db.OfferRepository;
 import com.dwe.dealwitheat.offer.model.OfferEntity;
 import com.dwe.dealwitheat.transaction.db.TransactionDao;
+import com.dwe.dealwitheat.transaction.db.TransactionOfferLinkRepository;
 import com.dwe.dealwitheat.transaction.db.TransactionRepository;
 import com.dwe.dealwitheat.transaction.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static com.dwe.dealwitheat.transaction.model.TransactionState.CANCELED;
 import static com.dwe.dealwitheat.transaction.model.TransactionState.COMPLETED;
@@ -29,25 +31,39 @@ public class TransactionService {
     @Autowired
     private OfferRepository offerRepository;
 
+    @Autowired
+    private TransactionOfferLinkRepository transactionOfferLinkRepository;
+
     public TransactionResponse getCode(TransactionRequest request) {
-        OfferEntity currentOffer = offerRepository.findOne(request.getOfferId());
-        int currentOfferCount = currentOffer.getCount() - request.getCount();
         TransactionResponse response = new TransactionResponse();
-        if (currentOfferCount < 0) {
-            response.setCode(200);
-            response.setMessage("Could not execute request. Request count greater than current offer count");
-            return response;
-        } else {
-            String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
-            TransactionEntity entity = new TransactionEntity(request.getOfferId(), code, new Date(System.currentTimeMillis()), request.getCount(), TransactionState.PENDING.toString(), request.getReceiveTimestamp());
-            transactionRepository.save(entity);
-            currentOffer.setCount(currentOfferCount);
-            offerRepository.save(currentOffer);
-            response.setPaymentCode(code);
-            response.setCode(200);
-            response.setMessage("Code returned properly");
-            return response;
+        List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = new ArrayList<>();
+        for (TransactionItem transaction : request.getTransactions()) {
+            OfferEntity currentOffer = offerRepository.findOne(transaction.getOfferId());
+            int currentOfferCount = currentOffer.getCount() - transaction.getCount();
+            if (currentOfferCount < 0) {
+                response.setCode(200);
+                response.setMessage("Could not execute request. Request count greater than current offer count for offer" +
+                        " with id: " + currentOffer.getId());
+                return response;
+            }
+            TransactionOfferLinkEntity transactionOfferLinkEntity = new TransactionOfferLinkEntity();
+            transactionOfferLinkEntity.setOfferId(transaction.getOfferId());
+            transactionOfferLinkEntity.setCount(transaction.getCount());
+            transactionOfferLinkEntityList.add(transactionOfferLinkEntity);
         }
+        String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
+        TransactionEntity transactionEntity = new TransactionEntity(code, new Date(System.currentTimeMillis()), TransactionState.PENDING.toString(), request.getReceiveTimestamp());
+        TransactionEntity savedEntity = transactionRepository.save(transactionEntity);
+        transactionOfferLinkEntityList.forEach(
+                t -> {
+                    t.setTransactionId(savedEntity.getId());
+                    transactionOfferLinkRepository.save(t);
+                }
+        );
+        response.setPaymentCode(code);
+        response.setCode(200);
+        response.setMessage("Code returned properly");
+        return response;
     }
 
 
@@ -90,7 +106,21 @@ public class TransactionService {
         int limit = request.getPage() == 0 ? request.getSize() : request.getPage() * request.getSize();
         int offset = request.getPage() == 0 ? 0 : request.getSize();
         List<Order> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email, limit, offset);
+        currentOrderList.forEach(o ->
+        {
+            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((CurrentOrder) o).getId()));
+            List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                    .map(t -> {
+                        OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                offerEntity.getPrice(), t.getCount());
+                    })
+                    .collect(Collectors.toList());
+            ((CurrentOrder) o).setOrderItemList(orderItemList);
+        });
         response.setCurrentOrderList(currentOrderList);
+        response.setMessage("Success");
+        response.setCode(200);
         return response;
     }
 
@@ -117,6 +147,18 @@ public class TransactionService {
         int limit = page == 0 ? size : page * size;
         int offset = page == 0 ? 0 : size;
         List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset);
+        historicOrders.forEach(o ->
+        {
+            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((HistoricOrder) o).getId()));
+            List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                    .map(t -> {
+                        OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                offerEntity.getPrice(), t.getCount());
+                    })
+                    .collect(Collectors.toList());
+            ((HistoricOrder) o).setOrderItemList(orderItemList);
+        });
         OrdersResponse ordersResponse = new OrdersResponse();
         ordersResponse.setCurrentOrderList(historicOrders);
         ordersResponse.setPage(page);

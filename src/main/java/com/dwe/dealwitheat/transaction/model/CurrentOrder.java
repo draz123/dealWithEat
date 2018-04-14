@@ -1,18 +1,19 @@
 package com.dwe.dealwitheat.transaction.model;
 
+import java.util.List;
+
 public class CurrentOrder implements Order {
 
+
     private int id;
-    private String name;
-    private double price;
     private String orderTime;
     private String receiveTime;
     private String paymentCode;
+    private List<OrderItem> orderItemList;
 
-    public CurrentOrder(int id, String name, double price, String orderTime, String receiveTime, String paymentCode) {
+
+    public CurrentOrder(int id, String orderTime, String receiveTime, String paymentCode) {
         this.id = id;
-        this.name = name;
-        this.price = price;
         this.orderTime = orderTime;
         this.receiveTime = receiveTime;
         this.paymentCode = paymentCode;
@@ -21,12 +22,13 @@ public class CurrentOrder implements Order {
     public CurrentOrder() {
     }
 
-    public String getName() {
-        return name;
+
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 
     public int getId() {
@@ -37,13 +39,6 @@ public class CurrentOrder implements Order {
         this.id = id;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 
     public String getOrderTime() {
         return orderTime;

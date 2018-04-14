@@ -59,9 +59,10 @@ public class TransactionDao {
     }
 
     public List<Order> getPendingOrdersForRestaurant(String email, int limit, int offset) {
-        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time, t.code \n" +
+        String query = "SELECT t.order_time,o.price,t.id,o.description, t.receive_time, t.code \n" +
                 "FROM offer o\n" +
-                "LEFT JOIN transaction t ON (t.offer_id=o.id)\n" +
+                "LEFT JOIN transaction_offer_link tol ON (tol.offer_id=o.id)" +
+                "left join transaction t on (t.id=tol.transaction_id)" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
                 "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
                 "                   WHERE email = \'" + email + "\'\n" +
@@ -72,19 +73,18 @@ public class TransactionDao {
             result.setId(rs.getInt(3));
             result.setOrderTime(rs.getTimestamp(1).toLocalDateTime().toString());
             result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
-            result.setPrice(rs.getDouble(2));
-            result.setName(rs.getString(4));
             result.setPaymentCode(rs.getString(6));
             return result;
         }));
     }
 
     public List<Order> findAllByRestaurant(String email, int limit, int offset) {
-        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time, t.state, t.code \n" +
+        String query = "SELECT t.order_time,o.price,t.id,o.description, t.receive_time, t.state, t.code \n" +
                 "FROM transaction t\n" +
-                "LEFT JOIN offer o ON (t.offer_id=o.id)\n" +
+                "LEFT JOIN transaction_offer_link tol ON (tol.transaction_id=t.id)\n" +
+                "LEFT JOIN offer o ON (tol.offer_id=o.id)\n" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
-                "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
+                "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)" +
                 "                   WHERE email = '" + email + "' " +
                 "LIMIT " + limit + " offset " + offset + ";";
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
@@ -92,8 +92,6 @@ public class TransactionDao {
             result.setId(rs.getInt(3));
             result.setOrderTime(rs.getTimestamp(1).toLocalDateTime().toString());
             result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
-            result.setPrice(rs.getDouble(2));
-            result.setName(rs.getString(4));
             result.setState(rs.getString(6));
             result.setPaymentCode(rs.getString(6));
             return result;
