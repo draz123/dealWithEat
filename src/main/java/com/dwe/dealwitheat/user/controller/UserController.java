@@ -25,7 +25,7 @@ public class UserController {
         return ResponseEntity.ok(userService.createNewUser(requestUserParameters));
     }
 
-    @DeleteMapping(value = "user")
+    @PostMapping(value = "user/delete")
     public ResponseEntity<StatusResponse> deleteUser(@RequestBody RequestUserParameters requestUserParameters) {
         return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getEmail(), requestUserParameters.getPassword()));
     }
