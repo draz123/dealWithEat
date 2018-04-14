@@ -9,6 +9,7 @@ public class HistoricOrder implements Order {
     private String receiveTime;
     private String state;
     private String paymentCode;
+    private double price;
     private List<OrderItem> orderItemList;
 
 
@@ -22,6 +23,14 @@ public class HistoricOrder implements Order {
     }
 
     public HistoricOrder() {
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 
     public List<OrderItem> getOrderItemList() {

@@ -9,6 +9,7 @@ public class CurrentOrder implements Order {
     private String orderTime;
     private String receiveTime;
     private String paymentCode;
+    private double price;
     private List<OrderItem> orderItemList;
 
 
@@ -22,6 +23,13 @@ public class CurrentOrder implements Order {
     public CurrentOrder() {
     }
 
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
 
     public List<OrderItem> getOrderItemList() {
         return orderItemList;

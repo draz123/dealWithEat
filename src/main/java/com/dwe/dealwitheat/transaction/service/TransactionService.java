@@ -60,6 +60,7 @@ public class TransactionService {
                     transactionOfferLinkRepository.save(t);
                 }
         );
+        response.setOrderId(transactionEntity.getId());
         response.setPaymentCode(code);
         response.setCode(200);
         response.setMessage("Code returned properly");
@@ -108,14 +109,17 @@ public class TransactionService {
         List<Order> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email, limit, offset);
         currentOrderList.forEach(o ->
         {
+            final double[] price = {0.0};
             List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((CurrentOrder) o).getId()));
             List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
                     .map(t -> {
                         OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        price[0] += offerEntity.getPrice();
                         return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
                                 offerEntity.getPrice(), t.getCount());
                     })
                     .collect(Collectors.toList());
+            ((CurrentOrder) o).setPrice(price[0]);
             ((CurrentOrder) o).setOrderItemList(orderItemList);
         });
         response.setCurrentOrderList(currentOrderList);
@@ -144,20 +148,23 @@ public class TransactionService {
     }
 
     public Response getAllOrdersByEmail(String email, Integer page, Integer size) {
-        int limit = page == 0 ? size : page * size;
+        int limit = page == 0 ? 1000 : page * size;
         int offset = page == 0 ? 0 : size;
         List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset);
         historicOrders.forEach(o ->
         {
+            final double[] price = {0.0};
             List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((HistoricOrder) o).getId()));
             List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
                     .map(t -> {
                         OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        price[0] += offerEntity.getPrice();
                         return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
                                 offerEntity.getPrice(), t.getCount());
                     })
                     .collect(Collectors.toList());
             ((HistoricOrder) o).setOrderItemList(orderItemList);
+            ((HistoricOrder) o).setPrice(price[0]);
         });
         OrdersResponse ordersResponse = new OrdersResponse();
         ordersResponse.setCurrentOrderList(historicOrders);

@@ -11,7 +11,7 @@ public class OfferEntity {
     private Integer id;
     private int restaurantId;
     private String description;
-    private int price;
+    private double price;
     private int discount;
     private int count;
     private String image;
@@ -52,11 +52,11 @@ public class OfferEntity {
         this.description = description;
     }
 
-    public int getPrice() {
+    public double getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(double price) {
         this.price = price;
     }
 
