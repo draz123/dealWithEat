@@ -41,7 +41,7 @@ CREATE TABLE restaurant_employee (
 CREATE TABLE transaction (
   id           INTEGER,
   code         CHARACTER VARYING(255) NOT NULL,
-  date         TIMESTAMP              NOT NULL,
+  order_time   TIMESTAMP              NOT NULL,
   state        CHARACTER VARYING(20)  NOT NULL,
   receive_time TIMESTAMP              NOT NULL,
   CONSTRAINT transaction_pkey PRIMARY KEY (id)
@@ -52,7 +52,7 @@ CREATE TABLE public.transaction_offer_link (
   id             INTEGER,
   transaction_id INTEGER REFERENCES transaction (id),
   offer_id       INTEGER REFERENCES offer (id),
-  count        INTEGER                NOT NULL,
+  count          INTEGER NOT NULL,
   CONSTRAINT transaction_offer_link_pkey PRIMARY KEY (id)
 );
 

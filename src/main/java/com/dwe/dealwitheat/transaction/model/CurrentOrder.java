@@ -5,12 +5,12 @@ import java.util.List;
 public class CurrentOrder implements Order {
 
 
-    private List<OrderItem> orderItemList;
-
     private int id;
     private String orderTime;
     private String receiveTime;
     private String paymentCode;
+    private List<OrderItem> orderItemList;
+
 
     public CurrentOrder(int id, String orderTime, String receiveTime, String paymentCode) {
         this.id = id;
@@ -21,6 +21,7 @@ public class CurrentOrder implements Order {
 
     public CurrentOrder() {
     }
+
 
     public List<OrderItem> getOrderItemList() {
         return orderItemList;

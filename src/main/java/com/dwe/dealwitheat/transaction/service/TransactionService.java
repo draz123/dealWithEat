@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 import static com.dwe.dealwitheat.transaction.model.TransactionState.CANCELED;
 import static com.dwe.dealwitheat.transaction.model.TransactionState.COMPLETED;
@@ -105,7 +106,21 @@ public class TransactionService {
         int limit = request.getPage() == 0 ? request.getSize() : request.getPage() * request.getSize();
         int offset = request.getPage() == 0 ? 0 : request.getSize();
         List<Order> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email, limit, offset);
+        currentOrderList.forEach(o ->
+        {
+            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((CurrentOrder) o).getId()));
+            List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                    .map(t -> {
+                        OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                offerEntity.getPrice(), t.getCount());
+                    })
+                    .collect(Collectors.toList());
+            ((CurrentOrder) o).setOrderItemList(orderItemList);
+        });
         response.setCurrentOrderList(currentOrderList);
+        response.setMessage("Success");
+        response.setCode(200);
         return response;
     }
 
@@ -132,6 +147,18 @@ public class TransactionService {
         int limit = page == 0 ? size : page * size;
         int offset = page == 0 ? 0 : size;
         List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset);
+        historicOrders.forEach(o ->
+        {
+            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((HistoricOrder) o).getId()));
+            List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                    .map(t -> {
+                        OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                offerEntity.getPrice(), t.getCount());
+                    })
+                    .collect(Collectors.toList());
+            ((HistoricOrder) o).setOrderItemList(orderItemList);
+        });
         OrdersResponse ordersResponse = new OrdersResponse();
         ordersResponse.setCurrentOrderList(historicOrders);
         ordersResponse.setPage(page);
