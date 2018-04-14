@@ -52,19 +52,19 @@ public class TransactionDao {
         StringBuilder zipCodes = new StringBuilder();
         zipCodes.append("(");
         for (int i = 0; i < zipCodeList.size() - 1; i++) {
-            zipCodes.append( zipCodeList.get(i)+ ",");
+            zipCodes.append(zipCodeList.get(i) + ",");
         }
-        zipCodes.append( zipCodeList.get(zipCodeList.size() - 1) + ")");
+        zipCodes.append(zipCodeList.get(zipCodeList.size() - 1) + ")");
         return zipCodes;
     }
 
     public double countTakings(String email, long type) {
         String transactionIdsQuery = "SELECT distinct toc.transaction_id FROM offer o\n" +
-                "\t\t\tLEFT JOIN transaction_offer_link toc ON (toc.offer_id=o.id)\n" +
-                "            LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
-                "            LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
+                "LEFT JOIN transaction_offer_link toc ON (toc.offer_id=o.id)\n" +
+                "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
+                "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
                 "WHERE email = '" + email + "';";
-        List <String>transactionsIds = jdbcTemplate.query(transactionIdsQuery, ((rs, rowNum) -> {
+        List<String> transactionsIds = jdbcTemplate.query(transactionIdsQuery, ((rs, rowNum) -> {
             return Integer.toString(rs.getInt(1));
         }));
         String query;
@@ -75,7 +75,7 @@ public class TransactionDao {
             query = "SELECT sum(o.price) FROM offer o " +
                     "left join transaction_offer_link toc on (toc.offer_id=o.id)  " +
                     "left join transaction t on (toc.transaction_id=t.id) " +
-                    "where t.id in " + in(transactionsIds).toString() +  " " +
+                    "where t.id in " + in(transactionsIds).toString() + " " +
                     "AND t.order_time > \'" + date.toString() + "\'";
         }
         Double result = jdbcTemplate.queryForObject(query, Double.class);
@@ -89,8 +89,8 @@ public class TransactionDao {
                 "left join transaction t on (t.id=tol.transaction_id)" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
                 "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
-                "                   WHERE email = \'" + email + "\'\n" +
-                "                   AND state='PENDING' " +
+                "WHERE email = \'" + email + "\'\n" +
+                "AND state='PENDING' " +
                 "LIMIT " + limit + " offset " + offset + ";";
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
             CurrentOrder result = new CurrentOrder();
@@ -109,7 +109,7 @@ public class TransactionDao {
                 "LEFT JOIN offer o ON (tol.offer_id=o.id)\n" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
                 "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)" +
-                "                   WHERE email = '" + email + "' " +
+                "WHERE email = '" + email + "' " +
                 "LIMIT " + limit + " offset " + offset + ";";
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
             HistoricOrder result = new HistoricOrder();

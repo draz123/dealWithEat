@@ -29,7 +29,7 @@ public class RestaurantsController {
         }
     }
 
-    @PutMapping(value = "restaurant")
+    @PostMapping(value = "restaurant")
     public String editRestaurant(@RequestHeader String email, @RequestBody RestaurantEditRequest request) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
