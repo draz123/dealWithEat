@@ -1,29 +1,14 @@
 package com.dwe.dealwitheat.transaction.model;
 
+import com.dwe.dealwitheat.commons.Response;
+
 import java.util.Date;
+import java.util.List;
 
-public class TransactionRequest {
+public class TransactionRequest extends Response {
 
-
-    private int offerId;
-    private int count;
+    private List<TransactionItem> transactions;
     private Date receiveTimestamp;
-
-    public int getOfferId() {
-        return offerId;
-    }
-
-    public void setOfferId(int offerId) {
-        this.offerId = offerId;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
 
     public Date getReceiveTimestamp() {
         return receiveTimestamp;
@@ -32,4 +17,13 @@ public class TransactionRequest {
     public void setReceiveTimestamp(Date receiveTimestamp) {
         this.receiveTimestamp = receiveTimestamp;
     }
+
+    public List<TransactionItem> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<TransactionItem> transactions) {
+        this.transactions = transactions;
+    }
+
 }
