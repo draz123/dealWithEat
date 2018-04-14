@@ -41,16 +41,6 @@ public class OfferController {
         }
     }
 
-    @PostMapping(value = "offer")
-    public String addOffer(@RequestBody OfferRequest request) {
-        Response response = offerService.addNewOffer(request);
-        try {
-            return mapper.writeValueAsString(response);
-        } catch (JsonProcessingException e) {
-            return "[]";
-        }
-
-    }
 
     @DeleteMapping(value = "offer")
     public String deleteOffer(@RequestParam int id) {
@@ -62,9 +52,14 @@ public class OfferController {
         }
     }
 
-    @PutMapping(value = "offer")
-    public String editOffer(@RequestParam int id, @RequestBody OfferRequest request) {
-        Response response = offerService.editOffer(id, request);
+    @PostMapping(value = "offer")
+    public String editOffer(@RequestParam(required = false) Integer id, @RequestBody OfferRequest request) {
+        Response response;
+        if (id == null) {
+            response = offerService.addNewOffer(request);
+        } else {
+            response = offerService.editOffer(id, request);
+        }
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {

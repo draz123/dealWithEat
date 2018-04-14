@@ -7,13 +7,15 @@ public class CurrentOrder implements Order {
     private double price;
     private String orderTime;
     private String receiveTime;
+    private String paymentCode;
 
-    public CurrentOrder(int id, String name, double price, String orderTime, String receiveTime) {
+    public CurrentOrder(int id, String name, double price, String orderTime, String receiveTime, String paymentCode) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.orderTime = orderTime;
         this.receiveTime = receiveTime;
+        this.paymentCode = paymentCode;
     }
 
     public CurrentOrder() {
@@ -57,5 +59,13 @@ public class CurrentOrder implements Order {
 
     public void setReceiveTime(String receiveTime) {
         this.receiveTime = receiveTime;
+    }
+
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
     }
 }

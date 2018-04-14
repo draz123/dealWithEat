@@ -59,7 +59,7 @@ public class TransactionDao {
     }
 
     public List<Order> getPendingOrdersForRestaurant(String email, int limit, int offset) {
-        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time \n" +
+        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time, t.code \n" +
                 "FROM offer o\n" +
                 "LEFT JOIN transaction t ON (t.offer_id=o.id)\n" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
@@ -74,12 +74,13 @@ public class TransactionDao {
             result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
             result.setPrice(rs.getDouble(2));
             result.setName(rs.getString(4));
+            result.setPaymentCode(rs.getString(6));
             return result;
         }));
     }
 
     public List<Order> findAllByRestaurant(String email, int limit, int offset) {
-        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time, t.state \n" +
+        String query = "SELECT t.date,o.price,t.id,o.description, t.receive_time, t.state, t.code \n" +
                 "FROM transaction t\n" +
                 "LEFT JOIN offer o ON (t.offer_id=o.id)\n" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
@@ -94,6 +95,7 @@ public class TransactionDao {
             result.setPrice(rs.getDouble(2));
             result.setName(rs.getString(4));
             result.setState(rs.getString(6));
+            result.setPaymentCode(rs.getString(6));
             return result;
         }));
     }

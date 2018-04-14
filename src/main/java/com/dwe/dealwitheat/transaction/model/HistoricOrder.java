@@ -8,14 +8,18 @@ public class HistoricOrder implements Order {
     private String orderTime;
     private String receiveTime;
     private String state;
+    private String paymentCode;
 
-    public HistoricOrder(int id, String name, double price, String orderTime, String receiveTime, String state) {
+
+    public HistoricOrder(int id, String name, double price, String orderTime, String receiveTime, String state, String paymentCode
+    ) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.orderTime = orderTime;
         this.receiveTime = receiveTime;
         this.state = state;
+        this.paymentCode = paymentCode;
     }
 
     public HistoricOrder() {
@@ -67,5 +71,13 @@ public class HistoricOrder implements Order {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getPaymentCode() {
+        return paymentCode;
+    }
+
+    public void setPaymentCode(String paymentCode) {
+        this.paymentCode = paymentCode;
     }
 }
