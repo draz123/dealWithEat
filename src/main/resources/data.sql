@@ -25,25 +25,6 @@ VALUES
   (4, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011,
    NULL);
 
--- Users --
-INSERT INTO "user"
-VALUES ('user1@user.com', '﻿$2a$10$.hrDfkuRmSjgLklytVcVd.c6vFRlm51D9UVpgdUIJjEWYh5xd/2bW', 'USER');
-
-INSERT INTO "user"
-VALUES ('user2@restaurant.com', '﻿$2a$10$9udkxEFkrI9tiuzbthIBaOUx6eK9YOMBW9d15nGCKYnUfMrW.HaGC', 'RESTAURANT');
-
-
-INSERT INTO "user"
-VALUES ('user3@user.com', '﻿$2a$10$fnzPdsK9d6UAZjEe3HgPXes/8PpKOTWn7FMB/Fo6MLGs6myIcYNZG.HaGC', 'USER');
-
--- Restaurant employees --
-
-INSERT INTO restaurant_employee (
-  email, restaurant_id)
-VALUES ('user2@restaurant.com', 3);
-
-SELECT setval('public.restaurant_employee_sequence', 4, true);
-
 -- Offers --
 
 INSERT INTO offer (

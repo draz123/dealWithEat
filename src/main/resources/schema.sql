@@ -1,3 +1,11 @@
+DROP TABLE IF EXISTS restaurant_employee;
+DROP TABLE IF EXISTS transaction_offer_link;
+DROP TABLE IF EXISTS "user";
+DROP TABLE IF EXISTS transaction;
+DROP TABLE IF EXISTS offer;
+DROP TABLE IF EXISTS restaurant;
+
+
 CREATE TABLE "user" (
   email      CHARACTER VARYING(255) NOT NULL,
   password   CHARACTER VARYING(255) NOT NULL,
@@ -21,12 +29,12 @@ CREATE TABLE restaurant (
 
 CREATE TABLE offer (
   id            INTEGER,
-  restaurant_id INTEGER                NOT NULL REFERENCES restaurant (id),
-  name          CHARACTER VARYING(100) NOT NULL,
+  restaurant_id INTEGER                 NOT NULL REFERENCES restaurant (id),
+  name          CHARACTER VARYING(100)  NOT NULL,
   description   CHARACTER VARYING(1000) NOT NULL,
-  price         DOUBLE PRECISION       NOT NULL,
-  discount      INTEGER                NOT NULL,
-  count         INTEGER                NOT NULL,
+  price         DOUBLE PRECISION        NOT NULL,
+  discount      INTEGER                 NOT NULL,
+  count         INTEGER                 NOT NULL,
   image         TEXT,
   CONSTRAINT offer_pkey PRIMARY KEY (id)
 );
@@ -58,7 +66,7 @@ CREATE TABLE public.transaction_offer_link (
 );
 
 
-CREATE SEQUENCE user_sequence
+CREATE SEQUENCE IF NOT EXISTS user_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -66,7 +74,7 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 
-CREATE SEQUENCE restaurant_sequence
+CREATE SEQUENCE IF NOT EXISTS restaurant_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -74,7 +82,7 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 
-CREATE SEQUENCE transaction_sequence
+CREATE SEQUENCE IF NOT EXISTS transaction_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
@@ -82,14 +90,14 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 
-CREATE SEQUENCE offer_sequence
+CREATE SEQUENCE IF NOT EXISTS offer_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
 MAXVALUE 9223372036854775807
 CACHE 1;
 
-CREATE SEQUENCE transaction_offer_link_sequence
+CREATE SEQUENCE IF NOT EXISTS transaction_offer_link_sequence
 INCREMENT 1
 START 1
 MINVALUE 1
