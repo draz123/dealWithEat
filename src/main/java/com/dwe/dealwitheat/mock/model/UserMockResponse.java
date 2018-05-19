@@ -5,9 +5,9 @@ import com.dwe.dealwitheat.commons.Response;
 import java.util.List;
 import java.util.Map;
 
-public class MockResponse extends Response {
+public class UserMockResponse extends Response {
 
-    public MockResponse(String message, int code, List<Map<String, String>> userResponses) {
+    public UserMockResponse(String message, int code, List<Map<String, String>> userResponses) {
         super(message, code);
         this.userResponses = userResponses;
     }

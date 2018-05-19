@@ -1,7 +1,8 @@
 package com.dwe.dealwitheat.mock.controller;
 
 
-import com.dwe.dealwitheat.mock.model.MockResponse;
+import com.dwe.dealwitheat.mock.model.TransactionMockResponse;
+import com.dwe.dealwitheat.mock.model.UserMockResponse;
 import com.dwe.dealwitheat.mock.service.MockService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -25,7 +26,17 @@ public class MockController {
 
     @GetMapping(value = "mock/users")
     public String reloadUsers() {
-        MockResponse response = mockService.mockUserData();
+        UserMockResponse response = mockService.mockUserData();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
+    @GetMapping(value = "mock/transactions")
+    public String mockTransactions() {
+        TransactionMockResponse response = mockService.mockTransactions();
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
