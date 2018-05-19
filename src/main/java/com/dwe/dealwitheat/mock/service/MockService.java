@@ -6,6 +6,8 @@ import com.dwe.dealwitheat.restaurant.model.RestaurantEmployeeEntity;
 import com.dwe.dealwitheat.user.model.RequestUserParameters;
 import com.dwe.dealwitheat.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class MockService {
     @Autowired
     private RestaurantEmployeeRepository restaurantEmployeeRepository;
 
+    @EventListener(ApplicationReadyEvent.class)
     public MockResponse mockUserData() {
         userService.createNewUser(new RequestUserParameters("user1@user.com", "user1"));
         userService.createNewUser(new RequestUserParameters("user2@restaurant.com", "user2"));
@@ -35,5 +38,6 @@ public class MockService {
         responseList.add(user2);
         return new MockResponse("Success", 200, responseList);
     }
+
 
 }
