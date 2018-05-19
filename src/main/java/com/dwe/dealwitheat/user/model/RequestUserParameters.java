@@ -5,6 +5,13 @@ public class RequestUserParameters {
     private String email;
     private String password;
 
+    public RequestUserParameters() {
+    }
+
+    public RequestUserParameters(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
 
     public String getPassword() {
         return password;

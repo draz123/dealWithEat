@@ -48,14 +48,14 @@ public class TransactionDao {
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 
-    public StringBuilder in(List<String> zipCodeList) {
-        StringBuilder zipCodes = new StringBuilder();
-        zipCodes.append("(");
-        for (int i = 0; i < zipCodeList.size() - 1; i++) {
-            zipCodes.append(zipCodeList.get(i) + ",");
+    public StringBuilder in(List<String> list) {
+        StringBuilder result = new StringBuilder();
+        result.append("(");
+        for (int i = 0; i < list.size() - 1; i++) {
+            result.append(list.get(i) + ",");
         }
-        zipCodes.append(zipCodeList.get(zipCodeList.size() - 1) + ")");
-        return zipCodes;
+        result.append(list.get(list.size() - 1) + ")");
+        return result;
     }
 
     public double countTakings(String email, long type) {
@@ -67,6 +67,9 @@ public class TransactionDao {
         List<String> transactionsIds = jdbcTemplate.query(transactionIdsQuery, ((rs, rowNum) -> {
             return Integer.toString(rs.getInt(1));
         }));
+        if(transactionsIds.isEmpty()) {
+            return 0;
+        }
         String query;
         if (type == 0) {
             query = "SELECT sum(o.price) FROM offer o where id in " + in(transactionsIds).toString() + " ";

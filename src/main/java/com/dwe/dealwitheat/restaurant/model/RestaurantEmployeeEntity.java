@@ -12,6 +12,14 @@ public class RestaurantEmployeeEntity {
     private String email;
     private int restaurantId;
 
+    public RestaurantEmployeeEntity(String email, int restaurantId) {
+        this.email = email;
+        this.restaurantId = restaurantId;
+    }
+
+    public RestaurantEmployeeEntity() {
+    }
+
     public String getEmail() {
         return email;
     }

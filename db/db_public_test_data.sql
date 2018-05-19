@@ -42,6 +42,8 @@ INSERT INTO restaurant_employee (
   email, restaurant_id)
 VALUES ('user2@restaurant.com', 3);
 
+SELECT setval('public.restaurant_employee_sequence', 4, true);
+
 -- Offers --
 
 INSERT INTO offer (
@@ -155,6 +157,10 @@ VALUES (21, 4, 'Schab po lwowsku','Składniki kg schabu bez kości 10 dag orzech
 INSERT INTO offer (
   id, restaurant_id, name, description, price, discount, count, image)
 VALUES (22, 4, 'Stek wieprzowy po kozacku','75 dag baraniny z udźca z kością (schabu wieprzowego, mięsa od szynki z kością, ew. 60 dag combra baraniego albo sznyclówki cielęcej - bez kości), sól, mielony pieprz (lub czosnek), 1 dag mąki, 3 - 5 dag smalcu.', 39, 33, 6, NULL);
+
+SELECT setval('public.offer_sequence', 23, true);
+
+
 --Transactions --
 
 INSERT INTO transaction (id, code, order_time, state, receive_time)
@@ -258,6 +264,9 @@ VALUES (49, 86595, '2018-03-31 10:52:49', 'PENDING', ' 2018-05-19 17:00:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
 VALUES (50, 45293, '2018-03-31 14:37:20', 'PENDING', ' 2018-05-19 18:30:00');
 
+SELECT setval('public.transaction_sequence', 51, true);
+
+
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (1, 43, 20, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (2, 7, 12, 1);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (3, 37, 9, 2);
@@ -328,3 +337,5 @@ INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES 
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (68, 12, 13, 1);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (69, 23, 13, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (70, 41, 16, 1);
+
+SELECT setval('public.transaction_offer_link_sequence', 71, true);
