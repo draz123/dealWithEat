@@ -93,7 +93,7 @@ public class TransactionDao {
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
                 "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
                 "WHERE email = \'" + email + "\'\n" +
-                "AND state='PENDING' " +
+                "AND t.state='PENDING' " +
                 "LIMIT " + limit + " offset " + offset + ";";
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
             CurrentOrder result = new CurrentOrder();
