@@ -23,6 +23,7 @@ CREATE TABLE restaurant (
   latitude    DOUBLE PRECISION NOT NULL,
   longtitude  DOUBLE PRECISION NOT NULL,
   image       TEXT,
+  open_hours  TEXT,
   CONSTRAINT restaurant_pkey PRIMARY KEY (id)
 );
 

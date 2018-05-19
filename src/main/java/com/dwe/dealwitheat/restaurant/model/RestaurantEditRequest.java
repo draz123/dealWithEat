@@ -5,14 +5,24 @@ public class RestaurantEditRequest {
     private String website;
     private String description;
     private String image;
+    private RestaurantOpenHours restaurantOpenHours;
 
     public RestaurantEditRequest() {
     }
 
-    public RestaurantEditRequest(String website, String description, String image) {
+    public RestaurantEditRequest(String website, String description, String image, RestaurantOpenHours restaurantOpenHours) {
         this.website = website;
         this.description = description;
         this.image = image;
+        this.restaurantOpenHours = restaurantOpenHours;
+    }
+
+    public RestaurantOpenHours getRestaurantOpenHours() {
+        return restaurantOpenHours;
+    }
+
+    public void setRestaurantOpenHours(RestaurantOpenHours restaurantOpenHours) {
+        this.restaurantOpenHours = restaurantOpenHours;
     }
 
     public String getWebsite() {

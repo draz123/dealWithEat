@@ -8,7 +8,7 @@ public class RestaurantEntity {
 
 
     @Id
-    @SequenceGenerator(name = "restaurant_sequence", sequenceName = "batch.restaurant_sequence", allocationSize = 1, initialValue = 1)
+    @SequenceGenerator(name = "restaurant_sequence", sequenceName = "batch.restaurant_sequence", allocationSize = 1, initialValue = 5)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "restaurant_sequence")
     private long id;
     private String name;
@@ -18,11 +18,12 @@ public class RestaurantEntity {
     private String description;
     private String website;
     private String image;
+    private String openHours;
 
     public RestaurantEntity() {
     }
 
-    public RestaurantEntity(String name, String address, double latitude, double longtitude, String description, String website, String image) {
+    public RestaurantEntity(String name, String address, double latitude, double longtitude, String description, String website, String image, String openHours) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
@@ -30,6 +31,15 @@ public class RestaurantEntity {
         this.description = description;
         this.website = website;
         this.image = image;
+        this.openHours = openHours;
+    }
+
+    public String getOpenHours() {
+        return openHours;
+    }
+
+    public void setOpenHours(String openHours) {
+        this.openHours = openHours;
     }
 
     public long getId() {

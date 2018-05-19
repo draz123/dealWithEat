@@ -4,26 +4,78 @@
 -- Restaurants --
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude, image)
+  id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
   (1, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 11.223, 22.111,
-   NULL);
+   NULL, '{
+	"week": {
+		"openTime": "10:00",
+		"closeTime": "20:00"
+	},
+	"saturday": {
+		"openTime": "11:00",
+		"closeTime": "18:00"
+	},
+	"sunday": {
+		"openTime": "17:00",
+		"closeTime": "20:00"
+	}
+}');
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude, image)
+  id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
-  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908, NULL);
+  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 12.623, 23.908, NULL, '{
+	"week": {
+		"openTime": "10:00",
+		"closeTime": "20:00"
+	},
+	"saturday": {
+		"openTime": "11:00",
+		"closeTime": "18:00"
+	},
+	"sunday": {
+		"openTime": "17:00",
+		"closeTime": "20:00"
+	}
+}');
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude, image)
+  id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
-  (3, 'Ching Ye', 'Krakow, Sw. Getrudy 3', 'www.ching-ye.pl', 'Excellent chinesse kitchen', 13.623, 22.908, NULL);
+  (3, 'Ching Ye', 'Krakow, Sw. Getrudy 3', 'www.ching-ye.pl', 'Excellent chinesse kitchen', 13.623, 22.908, NULL, '{
+	"week": {
+		"openTime": "19:00",
+		"closeTime": "21:00"
+	},
+	"saturday": {
+		"openTime": "13:00",
+		"closeTime": "20:00"
+	},
+	"sunday": {
+		"openTime": "17:00",
+		"closeTime": "20:00"
+	}
+}');
 
 INSERT INTO restaurant (
-  id, name, address, website, description, latitude, longtitude, image)
+  id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
   (4, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 11.624, 24.011,
-   NULL);
+   NULL, '{
+	"week": {
+		"openTime": "15:00",
+		"closeTime": "24:00"
+	},
+	"saturday": {
+		"openTime": "11:00",
+		"closeTime": "18:00"
+	},
+	"sunday": {
+		"openTime": "17:00",
+		"closeTime": "20:00"
+	}
+}');
 
 -- Offers --
 
@@ -114,8 +166,9 @@ VALUES (16, 3, 'Ostry gulasz dla dwóch osób', '500g pysznego gulaszu że aż c
 ');
 
 INSERT INTO offer (
-  id, restaurant_id,name, description, price, discount, count, image)
-VALUES (17, 3, 'Tie-pan Gorący półmisek mięs','Super gorący półmisek mięs dla każdego smakosza kuchni chińskiej. 500g rozkoszy w ustach', 30.8, 44, 4,
+  id, restaurant_id, name, description, price, discount, count, image)
+VALUES (17, 3, 'Tie-pan Gorący półmisek mięs',
+        'Super gorący półmisek mięs dla każdego smakosza kuchni chińskiej. 500g rozkoszy w ustach', 30.8, 44, 4,
         'data:image/jpeg;base64,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');
 
 INSERT INTO offer (
@@ -125,22 +178,29 @@ VALUES (18, 3, 'Cielęcina w ostrym sosie', '300g cielęciny, ostry sos hai mai,
 
 INSERT INTO offer (
   id, restaurant_id, name, description, price, discount, count, image)
-VALUES (19, 4, 'Czeburek', ' pieróg z przaśnego ciasta (z mąki, wody i soli) z mięsnym nadzieniem. Tradycyjna potrawa wielu tureckich i mongolskich ludów. Danie jest także popularne wśród ludów kaukaskich. Spożywa się je bez użycia sztućców.',89.8, 77, 2, NULL);
+VALUES (19, 4, 'Czeburek',
+        ' pieróg z przaśnego ciasta (z mąki, wody i soli) z mięsnym nadzieniem. Tradycyjna potrawa wielu tureckich i mongolskich ludów. Danie jest także popularne wśród ludów kaukaskich. Spożywa się je bez użycia sztućców.',
+        89.8, 77, 2, NULL);
 
 INSERT INTO offer (
   id, restaurant_id, name, description, price, discount, count, image)
-VALUES (20, 4, 'Cielęcina pieczona z rozmarynem w sosie cumberland', 'Cielęcina pieczona to doskonały pomysł na danie na świąteczny, np. wielkanocny obiad. Cielęcina upieczona z dodatkiem przyprawy ziołowej i świeżego rozmarynu świetnie smakuje z ostrym sosem cumberland',39.8, 37, 2, NULL);
+VALUES (20, 4, 'Cielęcina pieczona z rozmarynem w sosie cumberland',
+        'Cielęcina pieczona to doskonały pomysł na danie na świąteczny, np. wielkanocny obiad. Cielęcina upieczona z dodatkiem przyprawy ziołowej i świeżego rozmarynu świetnie smakuje z ostrym sosem cumberland',
+        39.8, 37, 2, NULL);
 
 INSERT INTO offer (
   id, restaurant_id, name, description, price, discount, count, image)
-VALUES (21, 4, 'Schab po lwowsku','Składniki kg schabu bez kości 10 dag orzechów włoskich łuskanych 15 dag suszonych śliwek żółtko sok z cytryny smalec sól, pieprz, majeranek', 55, 61, 22, NULL);
+VALUES (21, 4, 'Schab po lwowsku',
+        'Składniki kg schabu bez kości 10 dag orzechów włoskich łuskanych 15 dag suszonych śliwek żółtko sok z cytryny smalec sól, pieprz, majeranek',
+        55, 61, 22, NULL);
 
 INSERT INTO offer (
   id, restaurant_id, name, description, price, discount, count, image)
-VALUES (22, 4, 'Stek wieprzowy po kozacku','75 dag baraniny z udźca z kością (schabu wieprzowego, mięsa od szynki z kością, ew. 60 dag combra baraniego albo sznyclówki cielęcej - bez kości), sól, mielony pieprz (lub czosnek), 1 dag mąki, 3 - 5 dag smalcu.', 39, 33, 6, NULL);
+VALUES (22, 4, 'Stek wieprzowy po kozacku',
+        '75 dag baraniny z udźca z kością (schabu wieprzowego, mięsa od szynki z kością, ew. 60 dag combra baraniego albo sznyclówki cielęcej - bez kości), sól, mielony pieprz (lub czosnek), 1 dag mąki, 3 - 5 dag smalcu.',
+        39, 33, 6, NULL);
 
-SELECT setval('public.offer_sequence', 23, true);
-
+SELECT setval('public.offer_sequence', 23, TRUE);
 
 --Transactions --
 
@@ -245,7 +305,7 @@ VALUES (49, 86595, '2018-03-31 10:52:49', 'PENDING', ' 2018-05-19 17:00:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
 VALUES (50, 45293, '2018-03-31 14:37:20', 'PENDING', ' 2018-05-19 18:30:00');
 
-SELECT setval('public.transaction_sequence', 51, true);
+SELECT setval('public.transaction_sequence', 51, TRUE);
 
 
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (1, 43, 20, 2);
@@ -319,4 +379,4 @@ INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES 
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (69, 23, 13, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (70, 41, 16, 1);
 
-SELECT setval('public.transaction_offer_link_sequence', 71, true);
+SELECT setval('public.transaction_offer_link_sequence', 71, TRUE);
