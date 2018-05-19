@@ -6,12 +6,32 @@ public class OrderItem {
     private String name;
     private double price;
     private int count;
+    private int discount;
+    private String image;
 
-    public OrderItem(int id, String name, double price, int count) {
+    public OrderItem(int id, String name, double price, int count, int discount, String image) {
         this.id = id;
         this.name = name;
         this.price = price;
         this.count = count;
+        this.discount = discount;
+        this.image = image;
+    }
+
+    public int getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(int discount) {
+        this.discount = discount;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public int getId() {

@@ -116,7 +116,7 @@ public class TransactionService {
                         OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
                         price[0] += offerEntity.getPrice();
                         return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
-                                offerEntity.getPrice(), t.getCount());
+                                offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
                     })
                     .collect(Collectors.toList());
             ((CurrentOrder) o).setPrice(price[0]);
@@ -160,7 +160,7 @@ public class TransactionService {
                         OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
                         price[0] += offerEntity.getPrice();
                         return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
-                                offerEntity.getPrice(), t.getCount());
+                                offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
                     })
                     .collect(Collectors.toList());
             ((HistoricOrder) o).setOrderItemList(orderItemList);

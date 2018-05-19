@@ -5,6 +5,8 @@ import com.dwe.dealwitheat.restaurant.db.RestaurantEmployeeRepository;
 import com.dwe.dealwitheat.restaurant.model.RestaurantEmployeeEntity;
 import com.dwe.dealwitheat.user.model.RequestUserParameters;
 import com.dwe.dealwitheat.user.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -17,6 +19,8 @@ import java.util.Map;
 
 @Service
 public class MockService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MockService.class);
 
     @Autowired
     private UserService userService;
@@ -36,6 +40,7 @@ public class MockService {
         List<Map<String, String>> responseList = new ArrayList();
         responseList.add(user1);
         responseList.add(user2);
+        LOGGER.info("Logins refreshed");
         return new MockResponse("Success", 200, responseList);
     }
 
