@@ -22,7 +22,8 @@ CREATE TABLE restaurant (
 CREATE TABLE offer (
   id            INTEGER,
   restaurant_id INTEGER                NOT NULL REFERENCES restaurant (id),
-  description   CHARACTER VARYING(255) NOT NULL,
+  name          CHARACTER VARYING(100) NOT NULL,
+  description   CHARACTER VARYING(1000) NOT NULL,
   price         DOUBLE PRECISION       NOT NULL,
   discount      INTEGER                NOT NULL,
   count         INTEGER                NOT NULL,

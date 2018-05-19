@@ -43,7 +43,7 @@ public class OfferService {
     }
 
     public Response addNewOffer(OfferRequest request) {
-        offerRepository.save(new OfferEntity(request.getRestaurantId(), request.getDescription(), request.getPrice(), request.getDiscount(), request.getCount(), request.getImage()));
+        offerRepository.save(new OfferEntity(request.getRestaurantId(),request.getName(), request.getDescription(), request.getPrice(), request.getDiscount(), request.getCount(), request.getImage()));
         return new Response("New offer added", 200);
     }
 

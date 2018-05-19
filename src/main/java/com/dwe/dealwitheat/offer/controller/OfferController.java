@@ -42,7 +42,7 @@ public class OfferController {
     }
 
 
-    @PostMapping(value = "offer/delete")
+    @GetMapping(value = "offer/delete")
     public String deleteOffer(@RequestParam int id) {
         Response response = offerService.deleteOffer(id);
         try {

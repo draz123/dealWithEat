@@ -3,11 +3,20 @@ package com.dwe.dealwitheat.offer.model;
 public class OfferRequest {
 
     private int restaurantId;
+    private String name;
     private String description;
     private int price;
     private int discount;
     private int count;
     private String image;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public int getRestaurantId() {
         return restaurantId;

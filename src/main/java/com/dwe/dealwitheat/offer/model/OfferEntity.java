@@ -10,6 +10,7 @@ public class OfferEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "offer_sequence")
     private Integer id;
     private int restaurantId;
+    private String name;
     private String description;
     private double price;
     private int discount;
@@ -19,13 +20,21 @@ public class OfferEntity {
     public OfferEntity() {
     }
 
-    public OfferEntity(int restaurantId, String description, int price, int discount, int count, String image) {
+    public OfferEntity(int restaurantId, String name,  String description, int price, int discount, int count, String image) {
         this.restaurantId = restaurantId;
         this.description = description;
         this.price = price;
         this.discount = discount;
         this.count = count;
         this.image = image;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public void setId(Integer id) {
