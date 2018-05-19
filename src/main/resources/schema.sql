@@ -29,14 +29,17 @@ CREATE TABLE restaurant (
 
 
 CREATE TABLE offer (
-  id            INTEGER,
-  restaurant_id INTEGER                 NOT NULL REFERENCES restaurant (id),
-  name          CHARACTER VARYING(100)  NOT NULL,
-  description   CHARACTER VARYING(1000) NOT NULL,
-  price         DOUBLE PRECISION        NOT NULL,
-  discount      INTEGER                 NOT NULL,
-  count         INTEGER                 NOT NULL,
-  image         TEXT,
+  id                 INTEGER,
+  restaurant_id      INTEGER                 NOT NULL REFERENCES restaurant (id),
+  name               CHARACTER VARYING(100)  NOT NULL,
+  description        CHARACTER VARYING(1000) NOT NULL,
+  price              DOUBLE PRECISION        NOT NULL,
+  discount           INTEGER                 NOT NULL,
+  count              INTEGER                 NOT NULL,
+  image              TEXT,
+  receive_time_start TIMESTAMP               NOT NULL,
+  receive_time_end   TIMESTAMP               NOT NULL,
+  state              CHARACTER VARYING(20)   NOT NULL,
   CONSTRAINT offer_pkey PRIMARY KEY (id)
 );
 

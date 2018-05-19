@@ -5,6 +5,7 @@ import com.dwe.dealwitheat.offer.db.OfferRepository;
 import com.dwe.dealwitheat.offer.model.OfferEntity;
 import com.dwe.dealwitheat.offer.model.OfferRequest;
 import com.dwe.dealwitheat.offer.model.OfferResponse;
+import com.dwe.dealwitheat.offer.model.OfferState;
 import com.dwe.dealwitheat.restaurant.db.RestaurantEmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -43,7 +44,9 @@ public class OfferService {
     }
 
     public Response addNewOffer(OfferRequest request) {
-        offerRepository.save(new OfferEntity(request.getRestaurantId(),request.getName(), request.getDescription(), request.getPrice(), request.getDiscount(), request.getCount(), request.getImage()));
+        offerRepository.save(new OfferEntity(request.getRestaurantId(), request.getName(), request.getDescription(),
+                request.getPrice(), request.getDiscount(), request.getCount(), request.getImage(), request.getReceiveTimeStart(),
+                request.getReceiveTimeEnd(), OfferState.ACTUAL.toString()));
         return new Response("New offer added", 200);
     }
 
@@ -59,6 +62,8 @@ public class OfferService {
         currentEntity.setCount(request.getCount());
         currentEntity.setPrice(request.getPrice());
         currentEntity.setDiscount(request.getDiscount());
+        currentEntity.setReceiveTimeStart(request.getReceiveTimeStart());
+        currentEntity.setReceiveTimeEnd(request.getReceiveTimeEnd());
         request.setImage(request.getImage());
         offerRepository.save(currentEntity);
         return new Response("Offer updated", 200);

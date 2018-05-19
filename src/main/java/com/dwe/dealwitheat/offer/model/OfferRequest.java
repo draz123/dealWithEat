@@ -1,5 +1,7 @@
 package com.dwe.dealwitheat.offer.model;
 
+import java.sql.Timestamp;
+
 public class OfferRequest {
 
     private int restaurantId;
@@ -9,6 +11,24 @@ public class OfferRequest {
     private int discount;
     private int count;
     private String image;
+    private Timestamp receiveTimeStart;
+    private Timestamp receiveTimeEnd;
+
+    public Timestamp getReceiveTimeStart() {
+        return receiveTimeStart;
+    }
+
+    public void setReceiveTimeStart(Timestamp receiveTimeStart) {
+        this.receiveTimeStart = receiveTimeStart;
+    }
+
+    public Timestamp getReceiveTimeEnd() {
+        return receiveTimeEnd;
+    }
+
+    public void setReceiveTimeEnd(Timestamp receiveTimeEnd) {
+        this.receiveTimeEnd = receiveTimeEnd;
+    }
 
     public String getName() {
         return name;

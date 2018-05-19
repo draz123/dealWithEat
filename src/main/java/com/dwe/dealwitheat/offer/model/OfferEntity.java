@@ -1,6 +1,7 @@
 package com.dwe.dealwitheat.offer.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 
 @Entity(name = "offer")
 public class OfferEntity {
@@ -16,17 +17,49 @@ public class OfferEntity {
     private int discount;
     private int count;
     private String image;
+    private Timestamp receiveTimeStart;
+    private Timestamp receiveTimeEnd;
+    private String state;
 
     public OfferEntity() {
     }
 
-    public OfferEntity(int restaurantId, String name,  String description, int price, int discount, int count, String image) {
+    public OfferEntity(int restaurantId, String name, String description, int price, int discount, int count, String image,
+                       Timestamp receiveTimeStart, Timestamp receiveTimeEnd, String state) {
+        this.name = name;
         this.restaurantId = restaurantId;
         this.description = description;
         this.price = price;
         this.discount = discount;
         this.count = count;
         this.image = image;
+        this.receiveTimeStart = receiveTimeStart;
+        this.receiveTimeEnd = receiveTimeEnd;
+        this.state = state;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public Timestamp getReceiveTimeStart() {
+        return receiveTimeStart;
+    }
+
+    public void setReceiveTimeStart(Timestamp receiveTimeStart) {
+        this.receiveTimeStart = receiveTimeStart;
+    }
+
+    public Timestamp getReceiveTimeEnd() {
+        return receiveTimeEnd;
+    }
+
+    public void setReceiveTimeEnd(Timestamp receiveTimeEnd) {
+        this.receiveTimeEnd = receiveTimeEnd;
     }
 
     public String getName() {
