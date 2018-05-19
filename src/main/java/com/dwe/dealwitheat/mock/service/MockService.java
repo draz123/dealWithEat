@@ -54,7 +54,7 @@ public class MockService {
         TransactionRequest transactionRequest2 = new TransactionRequest();
         transactionRequest2.setReceiveTimestamp(new Date(System.currentTimeMillis()));
         TransactionRequest transactionRequest3 = new TransactionRequest();
-        transactionRequest3.setReceiveTimestamp(new Date(System.currentTimeMillis()));
+        transactionRequest3.setReceiveTimestamp(new Date(System.currentTimeMillis() + 3600 * 1000 * 4));
         TransactionItem transactionItem1 = new TransactionItem(13, 1);
         TransactionItem transactionItem2 = new TransactionItem(14, 1);
         TransactionItem transactionItem3 = new TransactionItem(15, 1);
