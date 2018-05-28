@@ -307,7 +307,7 @@ VALUES (45, 96987, '2018-01-19 14:22:43', 'MISSED', ' 2018-01-28 23:47:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
 VALUES (46, 61336, '2018-01-09 03:25:48', 'CANCELED', ' 2018-05-28 22:48:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (47, 17504, '2018-02-03 15:31:48', 'COMPLETED', ' 2018-05-28 22:09:00');
+VALUES (47, 17504, '2018-02-03 15:31:48', 'PENDING', ' 2018-05-28 22:09:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
 VALUES (48, 58271, '2018-03-31 12:28:17', 'PENDING', ' 2018-05-28 23:30:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
@@ -379,14 +379,14 @@ INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES 
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (59, 44, 19, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (60, 2, 3, 1);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (61, 9, 17, 1);
-INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (62, 45, 8, 1);
+INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (62, 47, 15, 1);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (63, 17, 18, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (64, 29, 13, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (65, 6, 4, 1);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (66, 32, 12, 1);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (67, 2, 15, 1);
-INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (68, 12, 13, 1);
-INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (69, 23, 13, 2);
+INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (68, 48, 15, 1);
+INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (69, 49, 14, 2);
 INSERT INTO transaction_offer_link (id, transaction_id, offer_id, count) VALUES (70, 41, 16, 1);
 
 SELECT setval('public.transaction_offer_link_sequence', 71, TRUE);
