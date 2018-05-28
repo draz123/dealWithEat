@@ -303,17 +303,17 @@ VALUES (43, 73299, '2018-03-06 22:15:25', 'CANCELED', ' 2018-03-06 20:15:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
 VALUES (44, 24164, '2018-01-29 01:11:58', 'CANCELED', ' 2018-01-29 20:10:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (45, 96987, '2018-01-19 14:22:43', 'MISSED', ' 2018-01-19 23:47:00');
+VALUES (45, 96987, '2018-01-19 14:22:43', 'MISSED', ' 2018-01-28 23:47:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (46, 61336, '2018-01-09 03:25:48', 'CANCELED', ' 2018-05-19 14:48:00');
+VALUES (46, 61336, '2018-01-09 03:25:48', 'CANCELED', ' 2018-05-28 22:48:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (47, 17504, '2018-02-03 15:31:48', 'COMPLETED', ' 2018-05-19 22:09:00');
+VALUES (47, 17504, '2018-02-03 15:31:48', 'COMPLETED', ' 2018-05-28 22:09:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (48, 58271, '2018-03-31 12:28:17', 'PENDING', ' 2018-05-19 16:30:00');
+VALUES (48, 58271, '2018-03-31 12:28:17', 'PENDING', ' 2018-05-28 23:30:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (49, 86595, '2018-03-31 10:52:49', 'PENDING', ' 2018-05-19 17:00:00');
+VALUES (49, 86595, '2018-03-31 10:52:49', 'PENDING', ' 2018-05-28 21:00:00');
 INSERT INTO transaction (id, code, order_time, state, receive_time)
-VALUES (50, 45293, '2018-03-31 14:37:20', 'PENDING', ' 2018-05-19 18:30:00');
+VALUES (50, 45293, '2018-03-31 14:37:20', 'PENDING', ' 2018-05-28 22:30:00');
 
 SELECT setval('public.transaction_sequence', 51, TRUE);
 
