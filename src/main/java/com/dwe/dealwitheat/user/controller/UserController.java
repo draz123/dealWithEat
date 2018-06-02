@@ -20,7 +20,7 @@ public class UserController {
     }
 
 
-    @PostMapping(value = "user")
+    @PostMapping(value = "user/create")
     public ResponseEntity<StatusResponse> createNewUser(@RequestBody RequestUserParameters requestUserParameters) {
         return ResponseEntity.ok(userService.createNewUser(requestUserParameters));
     }
