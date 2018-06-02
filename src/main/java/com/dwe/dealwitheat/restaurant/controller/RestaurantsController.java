@@ -1,6 +1,7 @@
 package com.dwe.dealwitheat.restaurant.controller;
 
 import com.dwe.dealwitheat.commons.Response;
+import com.dwe.dealwitheat.restaurant.model.NearestRestaurantsRequest;
 import com.dwe.dealwitheat.restaurant.model.RestaurantEditRequest;
 import com.dwe.dealwitheat.restaurant.model.RestaurantResponse;
 import com.dwe.dealwitheat.restaurant.service.RestaurantService;
@@ -22,6 +23,20 @@ public class RestaurantsController {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         RestaurantResponse response = restaurantService.getRestaurants();
+        try {
+            return mapper.writeValueAsString(response);
+        } catch (JsonProcessingException e) {
+            return "[]";
+        }
+    }
+
+
+    @PostMapping(value = "restaurants/nearest")
+    public String getNearestRestaurants(@RequestHeader(required = false) String email,
+                                        @RequestBody NearestRestaurantsRequest nearestRestaurantsRequest) {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        Response response = restaurantService.getNearestRestaurants(nearestRestaurantsRequest);
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {

@@ -10,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class RestaurantService {
@@ -35,6 +38,33 @@ public class RestaurantService {
         response.setMessage("Restaurants returned properly");
         return response;
     }
+
+    public Response getNearestRestaurants(NearestRestaurantsRequest nearestRestaurantsRequest) {
+        GeoCalculator geoCalculator = new GeoCalculator();
+        List<RestaurantEntity> restaurantEntityList = restaurantRepository.findAll();
+        List<NearestRestaurant> sortedRestaurantList = restaurantEntityList.stream()
+                .map(r ->  new NearestRestaurant(r.getId(),
+                        r.getName(),
+                        r.getAddress(),
+                        r.getLatitude(),
+                        r.getLongtitude(),
+                        r.getDescription(),
+                        r.getWebsite(),
+                        r.getImage(),
+                        r.getOpenHours(),
+                        geoCalculator.distanceFromMe(nearestRestaurantsRequest.getCoordinates(), new Coordinates(r.getLatitude(), r.getLongtitude())))
+                )
+                .sorted((d1, d2) -> {
+                    return Double.compare(d1.getDistance(), d2.getDistance());})
+                .skip(nearestRestaurantsRequest.getPage() * nearestRestaurantsRequest.getSize())
+                .limit(nearestRestaurantsRequest.getSize())
+                .collect(Collectors.toList());
+
+        NearestRestaurantResponse response = new NearestRestaurantResponse();
+        response.setRestaurants(sortedRestaurantList);
+        return response;
+    }
+
 
     public AdminInfoResponse getRestaurant(String email) {
         AdminInfoResponse response = new AdminInfoResponse();
@@ -72,4 +102,5 @@ public class RestaurantService {
         restaurantRepository.save(restaurant);
         return new Response("Success", 200);
     }
+
 }
