@@ -1,5 +1,7 @@
 package com.dwe.dealwitheat.restaurant.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,7 +15,9 @@ public class RestaurantEntity {
     private long id;
     private String name;
     private String address;
+    @JsonProperty("lat")
     private double latitude;
+    @JsonProperty("lng")
     private double longtitude;
     private String description;
     private String website;
