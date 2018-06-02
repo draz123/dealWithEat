@@ -7,12 +7,12 @@ import com.dwe.dealwitheat.restaurant.model.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,9 +30,10 @@ public class RestaurantService {
         this.mapper = new ObjectMapper();
     }
 
-    public RestaurantResponse getRestaurants() {
+    public RestaurantResponse getRestaurants(int page, int size) {
         RestaurantResponse response = new RestaurantResponse();
-        List<RestaurantEntity> restaurantsList = restaurantRepository.findAll();
+        Pageable pageable = new PageRequest(page, size);
+        List<RestaurantEntity> restaurantsList = restaurantRepository.findAll(pageable);
         response.setRestaurants(restaurantsList);
         response.setCode(200);
         response.setMessage("Restaurants returned properly");
@@ -43,7 +44,7 @@ public class RestaurantService {
         GeoCalculator geoCalculator = new GeoCalculator();
         List<RestaurantEntity> restaurantEntityList = restaurantRepository.findAll();
         List<NearestRestaurant> sortedRestaurantList = restaurantEntityList.stream()
-                .map(r ->  new NearestRestaurant(r.getId(),
+                .map(r -> new NearestRestaurant(r.getId(),
                         r.getName(),
                         r.getAddress(),
                         r.getLatitude(),
@@ -54,13 +55,13 @@ public class RestaurantService {
                         r.getOpenHours(),
                         geoCalculator.distanceFromMe(nearestRestaurantsRequest.getCoordinates(), new Coordinates(r.getLatitude(), r.getLongtitude())))
                 )
-                .sorted((d1, d2) -> {
-                    return Double.compare(d1.getDistance(), d2.getDistance());})
+                .sorted((d1, d2) -> Double.compare(d1.getDistance(), d2.getDistance()))
                 .skip(nearestRestaurantsRequest.getPage() * nearestRestaurantsRequest.getSize())
                 .limit(nearestRestaurantsRequest.getSize())
                 .collect(Collectors.toList());
 
         NearestRestaurantResponse response = new NearestRestaurantResponse();
+        response.setTotal(sortedRestaurantList.size());
         response.setRestaurants(sortedRestaurantList);
         return response;
     }

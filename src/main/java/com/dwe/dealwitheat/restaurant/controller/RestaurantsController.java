@@ -11,6 +11,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 
 @RestController
 public class RestaurantsController {
@@ -19,10 +21,11 @@ public class RestaurantsController {
     private RestaurantService restaurantService;
 
     @GetMapping(value = "restaurants")
-    public String getRestaurants() {
+    public String getRestaurants(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        RestaurantResponse response = restaurantService.getRestaurants();
+        RestaurantResponse response = restaurantService.getRestaurants(
+                Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         try {
             return mapper.writeValueAsString(response);
         } catch (JsonProcessingException e) {
