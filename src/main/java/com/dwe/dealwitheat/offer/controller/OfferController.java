@@ -26,12 +26,16 @@ public class OfferController {
     private OfferService offerService;
 
     @GetMapping(value = "offers")
-    public String getOffers(@RequestHeader(required = false) String email, @RequestParam(required = false) Integer page,
-                            @RequestParam(required = false) Integer size) {
-        OfferResponse response;
-        if (email == null) {
+    public String getOffers(@RequestHeader(required = false) String email, @RequestHeader(required = false) Integer id,
+                            @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
+        OfferResponse response = null;
+        if (email == null || id == null) {
             response = offerService.getOffers(Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
-        } else {
+        }
+        if (id != null) {
+            response = offerService.getOffersByRestaurantId(id, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
+        }
+        if (email != null && email.contains("@restaurant")) {
             response = offerService.getOffersByEmail(email, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         }
         try {

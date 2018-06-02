@@ -43,6 +43,15 @@ public class OfferService {
         return response;
     }
 
+    public OfferResponse getOffersByRestaurantId(Integer id, int page, int size) {
+        OfferResponse response = new OfferResponse();
+        response.setMessage("Offer list for restaurant returned properly");
+        Pageable pageable = new PageRequest(page, size);
+        Page<OfferEntity> offers = offerRepository.findAllByRestaurantId(id, pageable);
+        response.setOffers(offers.getContent());
+        return response;
+    }
+
     public Response addNewOffer(OfferRequest request) {
         offerRepository.save(new OfferEntity(request.getRestaurantId(), request.getName(), request.getDescription(),
                 request.getPrice(), request.getDiscount(), request.getCount(), request.getImage(), request.getReceiveTimeStart(),
