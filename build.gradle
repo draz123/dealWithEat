@@ -72,4 +72,4 @@ jar {
 }
 
 
-mainClassName = 'com.dwe.dealwitheat,DealWithEatApplication.java'
+mainClassName = 'com.dwe.dealwitheat.DealWithEatApplication.java'
