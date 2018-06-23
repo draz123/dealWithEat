@@ -70,4 +70,7 @@ jar {
         )
     }
 }
+
+sourceSets.main.java.srcDirs = ['src']
+
 mainClassName = "com.dwe.dealwitheat.DealWithEatApplication.java"
