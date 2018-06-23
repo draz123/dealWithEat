@@ -70,3 +70,4 @@ jar {
         )
     }
 }
+mainClassName = "com.dwe.dealwitheat.DealWithEatApplication.java"
