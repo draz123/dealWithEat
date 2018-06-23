@@ -38,7 +38,7 @@ public class TransactionService {
         TransactionResponse response = new TransactionResponse();
         List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = new ArrayList<>();
         for (TransactionItem transaction : request.getTransactions()) {
-            OfferEntity currentOffer = offerRepository.findOne(transaction.getOfferId());
+            OfferEntity currentOffer = offerRepository.findById(transaction.getOfferId()).get();
             int currentOfferCount = currentOffer.getCount() - transaction.getCount();
             if (currentOfferCount < 0) {
                 response.setCode(200);
@@ -113,7 +113,7 @@ public class TransactionService {
             List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((CurrentOrder) o).getId()));
             List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
                     .map(t -> {
-                        OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
                         price[0] += offerEntity.getPrice();
                         return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
                                 offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
@@ -157,7 +157,7 @@ public class TransactionService {
             List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((HistoricOrder) o).getId()));
             List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
                     .map(t -> {
-                        OfferEntity offerEntity = offerRepository.findOne(t.getOfferId());
+                        OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
                         price[0] += offerEntity.getPrice();
                         return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
                                 offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());

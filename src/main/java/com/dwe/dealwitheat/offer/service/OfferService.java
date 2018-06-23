@@ -60,13 +60,13 @@ public class OfferService {
     }
 
     public Response deleteOffer(int id) {
-        offerRepository.delete(id);
+        offerRepository.deleteById(id);
         return new Response("Offer removed", 200);
 
     }
 
     public Response editOffer(int id, OfferRequest request) {
-        OfferEntity currentEntity = offerRepository.findOne(id);
+        OfferEntity currentEntity = offerRepository.findById(id).get();
         currentEntity.setDescription(request.getDescription());
         currentEntity.setCount(request.getCount());
         currentEntity.setPrice(request.getPrice());

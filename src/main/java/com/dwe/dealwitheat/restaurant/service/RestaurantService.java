@@ -69,7 +69,7 @@ public class RestaurantService {
 
     public AdminInfoResponse getRestaurant(String email) {
         AdminInfoResponse response = new AdminInfoResponse();
-        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findOne(email);
+        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findFirstByEmail(email);
         RestaurantEntity restaurant = restaurantRepository.findFirstById(employee.getRestaurantId());
         if (restaurant != null) {
             response.setAddress(restaurant.getAddress());
@@ -90,7 +90,7 @@ public class RestaurantService {
     }
 
     public Response editRestaurant(String email, RestaurantEditRequest request) {
-        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findOne(email);
+        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findFirstByEmail(email);
         RestaurantEntity restaurant = restaurantRepository.findFirstById(employee.getRestaurantId());
         restaurant.setDescription(request.getDescription());
         restaurant.setImage(request.getImage());
