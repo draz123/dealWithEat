@@ -1,16 +1,29 @@
+import org.ajoberstar.grgit.Grgit
+
+ext {
+    git = Grgit.open()
+    revision = git.head().id
+    artifactName = "yummy-backend-service"
+}
+
 buildscript {
     ext {
         springBootVersion = '2.0.3.RELEASE'
     }
     repositories {
-        mavenCentral()
+        maven { url "http://jcenter.bintray.com" }
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('org.ajoberstar:grgit:1.7.2')
+
     }
 }
 
-apply plugin: 'application'
+
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -18,16 +31,24 @@ apply plugin: 'maven-publish'
 apply plugin: 'io.spring.dependency-management'
 
 
-group = 'com.dwe'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = 1.8
 
 repositories {
-    mavenCentral()
+    maven { url "http://jcenter.bintray.com" }
+    maven {
+        url "https://plugins.gradle.org/m2/"
+    }
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': 'com.yummy.YummyApplication')
+    }
+    baseName "$artifactName"
 }
 
 
-dependencies {
+dependencies {build
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-batch')
@@ -50,9 +71,9 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            groupId 'com.deal-with-eat'
-            artifactId 'com.deal-with-eat'
-            version "0.0.1"
+            groupId 'com.yummy'
+            artifactId 'com.yummy'
+            version "latest"
         }
     }
 }
@@ -62,14 +83,3 @@ publishing {
         mavenCentral()
     }
 }
-
-jar {
-    manifest {
-        attributes(
-                'Main-Class': 'com.dwe.dealwitheat.DealWithEatApplication.java'
-        )
-    }
-}
-
-
-mainClassName = 'com.dwe.dealwitheat.DealWithEatApplication.java'
