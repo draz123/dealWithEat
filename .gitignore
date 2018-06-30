@@ -1,24 +1,19 @@
 ### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
 out
 compare
 
 
 ### IntelliJ IDEA ###
 .idea
-*.iws
+
+
+
+
+build
+.gradle
+.idea
+out
 *.iml
 *.ipr
-
-### NetBeans ###
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
+*.iws
+.DS_Store
