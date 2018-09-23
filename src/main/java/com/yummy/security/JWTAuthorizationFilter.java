@@ -10,13 +10,8 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.io.IOException;
 import java.util.ArrayList;
-
-import static com.yummy.security.SecurityConstants.HEADER_STRING;
-import static com.yummy.security.SecurityConstants.SECRET;
-import static com.yummy.security.SecurityConstants.TOKEN_PREFIX;
 
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 

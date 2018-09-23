@@ -34,5 +34,10 @@ public class UserController {
         return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getEmail(), requestUserParameters.getPassword()));
     }
 
+    @GetMapping(value = "user/bearer")
+    public ResponseEntity<StatusResponse> checkBearer(){
+        return ResponseEntity.ok(new StatusResponse(true));
+    }
+
 
 }
