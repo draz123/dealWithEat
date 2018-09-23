@@ -4,8 +4,6 @@ import com.yummy.user.model.RequestUserParameters;
 import com.yummy.user.model.StatusResponse;
 import com.yummy.user.model.UserResponse;
 import com.yummy.user.service.UserService;
-import com.yummy.user.service.UserService;
-import com.yummy.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,8 +11,12 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class UserController {
 
+    private final UserService userService;
+
     @Autowired
-    UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping(value = "userInfo")
     public ResponseEntity<UserResponse> getUserInfo(@RequestHeader String email, @RequestHeader String password) {
