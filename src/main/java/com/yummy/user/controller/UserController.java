@@ -19,8 +19,8 @@ public class UserController {
     }
 
     @GetMapping(value = "userInfo")
-    public ResponseEntity<UserResponse> getUserInfo(@RequestHeader String email, @RequestHeader String password) {
-        return ResponseEntity.ok(userService.getUserInfo(email, password));
+    public ResponseEntity<UserResponse> getUserInfo(@RequestHeader String email) {
+        return ResponseEntity.ok(userService.getUserInfo(email));
     }
 
 
@@ -29,13 +29,18 @@ public class UserController {
         return ResponseEntity.ok(userService.createNewUser(requestUserParameters));
     }
 
+    @PostMapping(value = "user/update")
+    public ResponseEntity<StatusResponse> updateUser(@RequestHeader String email, @RequestBody RequestUserParameters requestUserParameters) {
+        return ResponseEntity.ok(userService.updateUser(email, requestUserParameters));
+    }
+
     @PostMapping(value = "user/delete")
     public ResponseEntity<StatusResponse> deleteUser(@RequestBody RequestUserParameters requestUserParameters) {
         return ResponseEntity.ok(userService.deleteUser(requestUserParameters.getEmail(), requestUserParameters.getPassword()));
     }
 
     @GetMapping(value = "user/bearer")
-    public ResponseEntity<StatusResponse> checkBearer(){
+    public ResponseEntity<StatusResponse> checkBearer() {
         return ResponseEntity.ok(new StatusResponse(true));
     }
 

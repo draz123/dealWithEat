@@ -14,20 +14,21 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
+    private final UserRepository userRepository;
 
-    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder) {
+    @Autowired
+    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.userRepository = userRepository;
     }
 
     public static final String USER = "USER";
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public UserResponse getUserInfo(String email, String password) {
+    public UserResponse getUserInfo(String email) {
         UserResponse response = new UserResponse();
         UserEntity userEntity = userRepository.findByEmail(email);
-        if (bCryptPasswordEncoder.matches(password, userEntity.getPassword())) {
+        if (userEntity != null) {
             response.setCode(200);
             response.setMessage("Success");
             response.setResponse(userEntity);
@@ -78,4 +79,13 @@ public class UserService {
         return userRepository.exists(checker);
     }
 
+    public StatusResponse updateUser(String email, RequestUserParameters requestUserParameters) {
+        UserEntity userEntity = userRepository.findByEmail(email);
+        userEntity.setPassword(bCryptPasswordEncoder.encode(requestUserParameters.getPassword()));
+        userRepository.save(userEntity);
+        StatusResponse response = new StatusResponse();
+        response.setStatus(true);
+        response.setMessage("Success");
+        return response;
+    }
 }
