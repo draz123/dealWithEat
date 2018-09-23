@@ -16,6 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import static com.yummy.security.SecurityConstants.MOCK_DATA;
 import static com.yummy.security.SecurityConstants.SIGN_UP_URL;
+import static com.yummy.security.SecurityConstants.WEB_SOCKET;
 
 @EnableWebSecurity
 public class WebSecurity extends WebSecurityConfigurerAdapter {
@@ -33,6 +34,7 @@ public class WebSecurity extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable().authorizeRequests()
                 .antMatchers(HttpMethod.POST, SIGN_UP_URL).permitAll()
                 .antMatchers(HttpMethod.GET, MOCK_DATA).permitAll()
+                .antMatchers(HttpMethod.GET, WEB_SOCKET).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilter(new JWTAuthenticationFilter(authenticationManager()))

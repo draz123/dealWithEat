@@ -19,7 +19,6 @@ buildscript {
     }
 }
 
-
 apply plugin: 'java'
 apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
@@ -30,6 +29,7 @@ apply plugin: 'io.spring.dependency-management'
 sourceCompatibility = 1.8
 
 repositories {
+    mavenCentral()
     maven { url "http://jcenter.bintray.com" }
     maven {
         url "https://plugins.gradle.org/m2/"
@@ -49,6 +49,7 @@ dependencies {build
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-batch')
     compile('org.springframework.boot:spring-boot-starter-web')
+    compile("org.springframework.boot:spring-boot-starter-websocket")
     compile("io.jsonwebtoken:jjwt:0.7.0")
     compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
     compile("org.springframework.boot:spring-boot-starter-data-rest")
@@ -59,23 +60,5 @@ dependencies {build
     testCompile group: 'com.github.springtestdbunit', name: 'spring-test-dbunit', version: '1.3.0'
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
-    compile group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '1.5.3.RELEASE'
-
-}
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            groupId 'com.yummy'
-            artifactId 'com.yummy'
-            version "latest"
-        }
-    }
-}
-
-publishing {
-    repositories {
-        mavenCentral()
-    }
+    compileOnly 'org.projectlombok:lombok:1.18.2'
 }

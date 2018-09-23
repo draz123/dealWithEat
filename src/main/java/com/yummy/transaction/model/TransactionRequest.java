@@ -1,8 +1,6 @@
 package com.yummy.transaction.model;
 
 import com.yummy.commons.Response;
-import com.yummy.commons.Response;
-import com.yummy.commons.Response;
 
 import java.util.Date;
 import java.util.List;

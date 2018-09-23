@@ -9,4 +9,7 @@ public interface RestaurantEmployeeRepository extends CrudRepository<RestaurantE
 
     RestaurantEmployeeEntity findFirstByEmail(String email);
 
+    RestaurantEmployeeEntity findFirstByRestaurantId(int email);
+
+
 }

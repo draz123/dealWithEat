@@ -1,16 +1,10 @@
 package com.yummy.transaction.controller;
 
-import com.yummy.commons.Response;
-import com.yummy.transaction.model.*;
-import com.yummy.transaction.service.TransactionService;
-import com.yummy.commons.Response;
-import com.yummy.transaction.model.TransactionRequest;
-import com.yummy.transaction.service.TransactionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yummy.commons.Response;
-import com.yummy.transaction.model.TransactionRequest;
+import com.yummy.transaction.model.*;
 import com.yummy.transaction.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,15 +14,14 @@ import java.util.Optional;
 @RestController
 public class TransactionController {
 
-    @Autowired
-    private TransactionService transactionService;
-
+    private final TransactionService transactionService;
     private ObjectMapper mapper;
 
-    public TransactionController() {
+    @Autowired
+    public TransactionController(TransactionService transactionService) {
         mapper = new ObjectMapper();
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        this.transactionService = transactionService;
     }
 
     @PostMapping(value = "transaction")

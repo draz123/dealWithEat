@@ -1,9 +1,16 @@
 package com.yummy.offer.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity(name = "offer")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OfferEntity {
 
     @Id
@@ -21,13 +28,10 @@ public class OfferEntity {
     private Timestamp receiveTimeEnd;
     private String state;
 
-    public OfferEntity() {
-    }
-
-    public OfferEntity(int restaurantId, String name, String description, int price, int discount, int count, String image,
+    public OfferEntity(int restaurantId, String name, String description, double price, int discount, int count, String image,
                        Timestamp receiveTimeStart, Timestamp receiveTimeEnd, String state) {
-        this.name = name;
         this.restaurantId = restaurantId;
+        this.name = name;
         this.description = description;
         this.price = price;
         this.discount = discount;
@@ -36,93 +40,5 @@ public class OfferEntity {
         this.receiveTimeStart = receiveTimeStart;
         this.receiveTimeEnd = receiveTimeEnd;
         this.state = state;
-    }
-
-    public String getState() {
-        return state;
-    }
-
-    public void setState(String state) {
-        this.state = state;
-    }
-
-    public Timestamp getReceiveTimeStart() {
-        return receiveTimeStart;
-    }
-
-    public void setReceiveTimeStart(Timestamp receiveTimeStart) {
-        this.receiveTimeStart = receiveTimeStart;
-    }
-
-    public Timestamp getReceiveTimeEnd() {
-        return receiveTimeEnd;
-    }
-
-    public void setReceiveTimeEnd(Timestamp receiveTimeEnd) {
-        this.receiveTimeEnd = receiveTimeEnd;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public int getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public int getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(int discount) {
-        this.discount = discount;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 }
