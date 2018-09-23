@@ -169,10 +169,10 @@ public class TransactionService {
         int limit = page == 0 ? 1000 : page * size;
         int offset = page == 0 ? 0 : size;
         List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset);
-        historicOrders.forEach(o ->
+        historicOrders.forEach(order ->
         {
             final double[] price = {0.0};
-            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(Long.valueOf(((HistoricOrder) o).getId()));
+            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId((long) ((HistoricOrder) order).getId());
             List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
                     .map(t -> {
                         OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
@@ -181,8 +181,8 @@ public class TransactionService {
                                 offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
                     })
                     .collect(Collectors.toList());
-            ((HistoricOrder) o).setOrderItemList(orderItemList);
-            ((HistoricOrder) o).setPrice(price[0]);
+            ((HistoricOrder) order).setOrderItemList(orderItemList);
+            ((HistoricOrder) order).setPrice(price[0]);
         });
         OrdersResponse ordersResponse = new OrdersResponse();
         ordersResponse.setCurrentOrderList(historicOrders);

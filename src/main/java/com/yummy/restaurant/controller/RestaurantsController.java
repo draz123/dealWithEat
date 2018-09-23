@@ -1,15 +1,13 @@
 package com.yummy.restaurant.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yummy.commons.Response;
 import com.yummy.restaurant.model.NearestRestaurantsRequest;
 import com.yummy.restaurant.model.RestaurantEditRequest;
 import com.yummy.restaurant.model.RestaurantResponse;
 import com.yummy.restaurant.service.RestaurantService;
-import com.yummy.commons.Response;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.yummy.commons.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,8 +17,12 @@ import java.util.Optional;
 @RestController
 public class RestaurantsController {
 
+    private final RestaurantService restaurantService;
+
     @Autowired
-    private RestaurantService restaurantService;
+    public RestaurantsController(RestaurantService restaurantService) {
+        this.restaurantService = restaurantService;
+    }
 
     @GetMapping(value = "restaurants")
     public String getRestaurants(@RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {

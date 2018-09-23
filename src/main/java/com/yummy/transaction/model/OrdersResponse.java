@@ -1,11 +1,17 @@
 package com.yummy.transaction.model;
 
 import com.yummy.commons.Response;
-import com.yummy.commons.Response;
-import com.yummy.commons.Response;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class OrdersResponse extends Response {
 
     private List<Order> currentOrderList;
@@ -13,46 +19,4 @@ public class OrdersResponse extends Response {
     private boolean isLastPage;
     private int page;
 
-    public OrdersResponse(String message, int code, List<Order> currentOrderList, int pageSize, boolean isLastPage, int page) {
-        super(message, code);
-        this.currentOrderList = currentOrderList;
-        this.pageSize = pageSize;
-        this.isLastPage = isLastPage;
-        this.page = page;
-    }
-
-    public OrdersResponse() {
-    }
-
-    public List<Order> getCurrentOrderList() {
-        return currentOrderList;
-    }
-
-    public void setCurrentOrderList(List<Order> currentOrderList) {
-        this.currentOrderList = currentOrderList;
-    }
-
-    public int getPageSize() {
-        return pageSize;
-    }
-
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
-    }
-
-    public boolean isLastPage() {
-        return isLastPage;
-    }
-
-    public void setLastPage(boolean lastPage) {
-        isLastPage = lastPage;
-    }
-
-    public int getPage() {
-        return page;
-    }
-
-    public void setPage(int page) {
-        this.page = page;
-    }
 }

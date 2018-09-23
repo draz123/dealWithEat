@@ -3,12 +3,6 @@ package com.yummy.transaction.db;
 import com.yummy.transaction.model.CurrentOrder;
 import com.yummy.transaction.model.HistoricOrder;
 import com.yummy.transaction.model.Order;
-import com.yummy.transaction.model.CurrentOrder;
-import com.yummy.transaction.model.HistoricOrder;
-import com.yummy.transaction.model.Order;
-import com.yummy.transaction.model.CurrentOrder;
-import com.yummy.transaction.model.HistoricOrder;
-import com.yummy.transaction.model.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -73,7 +67,7 @@ public class TransactionDao {
         List<String> transactionsIds = jdbcTemplate.query(transactionIdsQuery, ((rs, rowNum) -> {
             return Integer.toString(rs.getInt(1));
         }));
-        if(transactionsIds.isEmpty()) {
+        if (transactionsIds.isEmpty()) {
             return 0;
         }
         String query;
@@ -126,7 +120,7 @@ public class TransactionDao {
             result.setOrderTime(rs.getTimestamp(1).toLocalDateTime().toString());
             result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
             result.setState(rs.getString(6));
-            result.setPaymentCode(rs.getString(6));
+            result.setPaymentCode(rs.getString(7));
             return result;
         }));
     }

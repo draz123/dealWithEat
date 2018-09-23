@@ -1,34 +1,15 @@
 package com.yummy.commons;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Response {
 
     private String message;
     private int code;
-
-    public Response() {
-    }
-
-    public Response(String message, int code) {
-
-        this.message = message;
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
 
 }
