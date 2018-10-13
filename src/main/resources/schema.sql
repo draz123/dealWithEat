@@ -36,7 +36,7 @@ CREATE TABLE offer (
   price              DOUBLE PRECISION        NOT NULL,
   discount           INTEGER                 NOT NULL,
   count              INTEGER                 NOT NULL,
-  image              TEXT,
+  image              CHARACTER VARYING(400),
   receive_time_start TIMESTAMP               NOT NULL,
   receive_time_end   TIMESTAMP               NOT NULL,
   state              CHARACTER VARYING(20)   NOT NULL,
