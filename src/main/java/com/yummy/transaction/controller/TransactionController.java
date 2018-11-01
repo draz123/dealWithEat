@@ -19,7 +19,7 @@ public class TransactionController {
     }
 
     @PostMapping(value = "transaction")
-    public TransactionResponse doTransaction(@RequestBody TransactionRequest request) {
+    public Response doTransaction(@RequestBody TransactionRequest request) {
         return transactionService.getCode(request);
     }
 

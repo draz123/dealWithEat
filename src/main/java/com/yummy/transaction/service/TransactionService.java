@@ -42,22 +42,27 @@ public class TransactionService {
         this.restaurantEmployeeRepository = restaurantEmployeeRepository;
     }
 
-    public TransactionResponse getCode(TransactionRequest request) {
-        TransactionResponse response = new TransactionResponse();
+    public Response getCode(TransactionRequest request) {
+        Response response = new TransactionResponse();
         List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = new ArrayList<>();
         Set<String> restaurantIds = new HashSet<>();
         for (TransactionItem transaction : request.getTransactions()) {
             OfferEntity currentOffer = offerRepository.findById(transaction.getOfferId()).get();
             int currentOfferCount = currentOffer.getCount() - transaction.getCount();
             if (currentOfferCount < 0) {
-                response.setCode(200);
+                response = LackOfferStatus.builder()
+                        .offer(currentOffer)
+                        .difference(Math.abs(currentOfferCount))
+                        .build();
                 response.setMessage("Could not execute request. Request count greater than current offer count for offer" +
                         " with id: " + currentOffer.getId());
+                response.setCode(200);
                 return response;
             }
-            TransactionOfferLinkEntity transactionOfferLinkEntity = new TransactionOfferLinkEntity();
-            transactionOfferLinkEntity.setOfferId(transaction.getOfferId());
-            transactionOfferLinkEntity.setCount(transaction.getCount());
+            TransactionOfferLinkEntity transactionOfferLinkEntity = TransactionOfferLinkEntity.builder()
+                    .offerId(transaction.getOfferId())
+                    .count(transaction.getCount())
+                    .build();
             transactionOfferLinkEntityList.add(transactionOfferLinkEntity);
             offerRepository.findById(transaction.getOfferId()).ifPresent(o -> restaurantIds.add(restaurantEmployeeRepository.findFirstByRestaurantId(o.getRestaurantId()).getEmail()));
         }
@@ -71,8 +76,8 @@ public class TransactionService {
                     transactionOfferLinkRepository.save(t);
                 }
         );
-        response.setOrderId(transactionEntity.getId());
-        response.setPaymentCode(code);
+        ((TransactionResponse) response).setOrderId(transactionEntity.getId());
+        ((TransactionResponse) response).setPaymentCode(code);
         response.setCode(200);
         response.setMessage("Code returned properly");
         return response;

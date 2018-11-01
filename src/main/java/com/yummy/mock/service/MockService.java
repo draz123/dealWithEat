@@ -6,13 +6,8 @@ import com.yummy.restaurant.db.RestaurantEmployeeRepository;
 import com.yummy.restaurant.model.RestaurantEmployeeEntity;
 import com.yummy.transaction.model.TransactionItem;
 import com.yummy.transaction.model.TransactionRequest;
+import com.yummy.transaction.model.TransactionResponse;
 import com.yummy.transaction.service.TransactionService;
-import com.yummy.user.model.RequestUserParameters;
-import com.yummy.user.service.UserService;
-import com.yummy.mock.model.TransactionMockResponse;
-import com.yummy.user.model.RequestUserParameters;
-import com.yummy.user.service.UserService;
-import com.yummy.mock.model.TransactionMockResponse;
 import com.yummy.user.model.RequestUserParameters;
 import com.yummy.user.service.UserService;
 import org.slf4j.Logger;
@@ -71,9 +66,9 @@ public class MockService {
         transactionRequest2.setTransactions(Arrays.asList(transactionItem3, transactionItem4));
         transactionRequest3.setTransactions(Arrays.asList(transactionItem5, transactionItem6));
         List<Long> ids = new ArrayList<>();
-        ids.add(transactionService.getCode(transactionRequest1).getOrderId());
-        ids.add(transactionService.getCode(transactionRequest2).getOrderId());
-        ids.add(transactionService.getCode(transactionRequest3).getOrderId());
+        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest1)).getOrderId());
+        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest2)).getOrderId());
+        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest3)).getOrderId());
         return new TransactionMockResponse("Success", 200, ids);
     }
 
