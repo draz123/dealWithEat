@@ -8,6 +8,7 @@ import com.yummy.user.model.UserResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,8 +23,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public static final String USER = "USER";
+    private static final String USER = "USER";
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public static ResponseEntity<StatusResponse> changePassword(RequestUserParameters request) {
+
+        return null;
+    }
+
+    public static ResponseEntity<StatusResponse> resetPassword(RequestUserParameters request) {
+
+        return null;
+    }
 
     public UserResponse getUserInfo(String email) {
         UserResponse response = new UserResponse();

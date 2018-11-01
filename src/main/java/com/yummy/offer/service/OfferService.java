@@ -35,7 +35,7 @@ public class OfferService {
     private RestaurantEmployeeRepository restaurantEmployeeRepository;
 
     public OfferResponse getOffers(int page, int size) {
-        Pageable pageable = new PageRequest(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         Page<OfferEntity> offers = offerRepository.findAll(pageable);
         OfferResponse response = new OfferResponse();
         response.setCode(200);
@@ -48,7 +48,7 @@ public class OfferService {
         OfferResponse response = new OfferResponse();
         response.setCode(200);
         response.setMessage("Offer list for restaurant returned properly");
-        Pageable pageable = new PageRequest(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         int restaurantId = restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId();
         Page<OfferEntity> offers = offerRepository.findAllByRestaurantId(restaurantId, pageable);
         response.setOffers(offers.getContent());
@@ -58,7 +58,7 @@ public class OfferService {
     public OfferResponse getOffersByRestaurantId(Integer id, int page, int size) {
         OfferResponse response = new OfferResponse();
         response.setMessage("Offer list for restaurant returned properly");
-        Pageable pageable = new PageRequest(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         Page<OfferEntity> offers = offerRepository.findAllByRestaurantId(id, pageable);
         response.setOffers(offers.getContent());
         return response;

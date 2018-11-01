@@ -18,7 +18,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "userInfo")
+    @GetMapping(value = "user/info")
     public ResponseEntity<UserResponse> getUserInfo(@RequestHeader String email) {
         return ResponseEntity.ok(userService.getUserInfo(email));
     }
@@ -43,6 +43,17 @@ public class UserController {
     public ResponseEntity<StatusResponse> checkBearer() {
         return ResponseEntity.ok(new StatusResponse(true));
     }
+
+    @PostMapping(value = "user/password/reset")
+    public ResponseEntity<StatusResponse> resetPassword(@RequestBody RequestUserParameters request){
+        return UserService.resetPassword(request);
+    }
+
+    @PostMapping(value = "user/password/change")
+    public ResponseEntity<StatusResponse> changePassword(@RequestBody RequestUserParameters request){
+        return UserService.changePassword(request);
+    }
+
 
 
 }

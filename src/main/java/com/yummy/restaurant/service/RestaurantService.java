@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,9 +31,9 @@ public class RestaurantService {
         this.mapper = new ObjectMapper();
     }
 
-    public RestaurantResponse getRestaurants(int page, int size) {
+    public Response getRestaurants(int page, int size) {
         RestaurantResponse response = new RestaurantResponse();
-        Pageable pageable = new PageRequest(page, size);
+        Pageable pageable = PageRequest.of(page, size);
         List<RestaurantEntity> restaurantsList = restaurantRepository.findAll(pageable);
         response.setRestaurants(restaurantsList);
         response.setCode(200);
@@ -55,7 +56,7 @@ public class RestaurantService {
                         r.getOpenHours(),
                         geoCalculator.distanceFromMe(nearestRestaurantsRequest.getCoordinates(), new Coordinates(r.getLatitude(), r.getLongtitude())))
                 )
-                .sorted((d1, d2) -> Double.compare(d1.getDistance(), d2.getDistance()))
+                .sorted(Comparator.comparingDouble(NearestRestaurant::getDistance))
                 .skip(nearestRestaurantsRequest.getPage() * nearestRestaurantsRequest.getSize())
                 .limit(nearestRestaurantsRequest.getSize())
                 .collect(Collectors.toList());
