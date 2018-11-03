@@ -7,18 +7,6 @@ import com.yummy.offer.model.OfferRequest;
 import com.yummy.offer.model.OfferResponse;
 import com.yummy.offer.model.OfferState;
 import com.yummy.restaurant.db.RestaurantEmployeeRepository;
-import com.yummy.commons.Response;
-import com.yummy.offer.db.OfferRepository;
-import com.yummy.offer.model.OfferEntity;
-import com.yummy.offer.model.OfferRequest;
-import com.yummy.offer.model.OfferResponse;
-import com.yummy.offer.model.OfferState;
-import com.yummy.commons.Response;
-import com.yummy.offer.db.OfferRepository;
-import com.yummy.offer.model.OfferEntity;
-import com.yummy.offer.model.OfferRequest;
-import com.yummy.offer.model.OfferResponse;
-import com.yummy.offer.model.OfferState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,8 +52,8 @@ public class OfferService {
         return response;
     }
 
-    public Response addNewOffer(OfferRequest request) {
-        offerRepository.save(new OfferEntity(request.getRestaurantId(), request.getName(), request.getDescription(),
+    public Response addNewOffer(OfferRequest request, String email) {
+        offerRepository.save(new OfferEntity(restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId(), request.getName(), request.getDescription(),
                 request.getPrice(), request.getDiscount(), request.getCount(), request.getImage(), request.getReceiveTimeStart(),
                 request.getReceiveTimeEnd(), OfferState.ACTUAL.toString()));
         return new Response("New offer added", 200);

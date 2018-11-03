@@ -42,10 +42,10 @@ public class OfferController {
     }
 
     @PostMapping(value = "offer")
-    public Response editOffer(@RequestParam(required = false) Integer id, @RequestBody OfferRequest request) {
+    public Response editOffer(@RequestHeader(required = false) String email, @RequestParam(required = false) Integer id, @RequestBody OfferRequest request) {
         Response response;
         if (id == null) {
-            response = offerService.addNewOffer(request);
+            response = offerService.addNewOffer(request,email);
         } else {
             response = offerService.editOffer(id, request);
         }
