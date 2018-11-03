@@ -7,11 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class NearestRestaurantsRequest {
+public class CoordinatesWrapper {
 
-
-    private CoordinatesWrapper coordinates;
-    private int page;
-    private int size;
+    private Coordinates user;
+    private Coordinates focus;
 
 }

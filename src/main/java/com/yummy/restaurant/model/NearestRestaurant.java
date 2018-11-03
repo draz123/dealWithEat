@@ -1,9 +1,11 @@
 package com.yummy.restaurant.model;
 
+import lombok.Data;
+
+@Data
 public class NearestRestaurant extends RestaurantEntity {
 
     private double distance;
-
 
     public NearestRestaurant(long id, String name, String address, double latitude, double longtitude, String description, String website, String image, String openHours, double distance) {
         super(name, address, latitude, longtitude, description, website, image, openHours);
@@ -11,11 +13,4 @@ public class NearestRestaurant extends RestaurantEntity {
         this.setId(id);
     }
 
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
 }

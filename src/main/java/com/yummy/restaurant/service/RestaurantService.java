@@ -54,7 +54,7 @@ public class RestaurantService {
                         r.getWebsite(),
                         r.getImage(),
                         r.getOpenHours(),
-                        geoCalculator.distanceFromMe(nearestRestaurantsRequest.getCoordinates(), new Coordinates(r.getLatitude(), r.getLongtitude())))
+                        geoCalculator.distanceFromMe(resolveCoordinates(nearestRestaurantsRequest), new Coordinates(r.getLatitude(), r.getLongtitude())))
                 )
                 .sorted(Comparator.comparingDouble(NearestRestaurant::getDistance))
                 .skip(nearestRestaurantsRequest.getPage() * nearestRestaurantsRequest.getSize())
@@ -65,6 +65,10 @@ public class RestaurantService {
         response.setTotal(sortedRestaurantList.size());
         response.setRestaurants(sortedRestaurantList);
         return response;
+    }
+
+    private Coordinates resolveCoordinates(NearestRestaurantsRequest nearestRestaurantsRequest) {
+        return nearestRestaurantsRequest.getCoordinates().getFocus() != null ? nearestRestaurantsRequest.getCoordinates().getFocus() : nearestRestaurantsRequest.getCoordinates().getUser();
     }
 
 
