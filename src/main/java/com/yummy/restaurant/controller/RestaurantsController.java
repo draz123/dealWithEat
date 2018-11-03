@@ -3,6 +3,7 @@ package com.yummy.restaurant.controller;
 import com.yummy.commons.Response;
 import com.yummy.restaurant.model.NearestRestaurantsRequest;
 import com.yummy.restaurant.model.RestaurantEditRequest;
+import com.yummy.restaurant.model.RestaurantEntity;
 import com.yummy.restaurant.service.RestaurantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,11 @@ public class RestaurantsController {
     @PostMapping(value = "restaurant")
     public Response editRestaurant(@RequestHeader String email, @RequestBody RestaurantEditRequest request) {
         return restaurantService.editRestaurant(email, request);
+    }
+
+    @GetMapping(value = "restaurant")
+    public RestaurantEntity getRestaurant(@RequestParam(name="id") long id) {
+        return restaurantService.getRestaurant(id);
     }
 
     @GetMapping(value = "admin/info")

@@ -90,6 +90,10 @@ public class RestaurantService {
         return response;
     }
 
+    public RestaurantEntity getRestaurant(long id) {
+        return restaurantRepository.findFirstById(id);
+    }
+
     public Response editRestaurant(String email, RestaurantEditRequest request) {
         RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findFirstByEmail(email);
         RestaurantEntity restaurant = restaurantRepository.findFirstById(employee.getRestaurantId());
