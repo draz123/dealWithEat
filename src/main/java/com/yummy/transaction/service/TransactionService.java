@@ -3,6 +3,7 @@ package com.yummy.transaction.service;
 import com.yummy.commons.Response;
 import com.yummy.offer.db.OfferRepository;
 import com.yummy.offer.model.OfferEntity;
+import com.yummy.offer.service.OfferService;
 import com.yummy.restaurant.db.RestaurantEmployeeRepository;
 import com.yummy.transaction.db.TransactionDao;
 import com.yummy.transaction.db.TransactionOfferLinkRepository;
@@ -28,24 +29,27 @@ public class TransactionService {
     private final TransactionOfferLinkRepository transactionOfferLinkRepository;
     private final SimpMessagingTemplate template;
     private final RestaurantEmployeeRepository restaurantEmployeeRepository;
+    private final OfferService offerService;
 
     private static final String RESTAURANT_TOPIC = "/topic/restaurant/";
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, TransactionDao transactionDao, OfferRepository offerRepository,
-                              TransactionOfferLinkRepository transactionOfferLinkRepository, SimpMessagingTemplate template, RestaurantEmployeeRepository restaurantEmployeeRepository) {
+                              TransactionOfferLinkRepository transactionOfferLinkRepository, SimpMessagingTemplate template, RestaurantEmployeeRepository restaurantEmployeeRepository,
+                              OfferService offerService) {
         this.transactionRepository = transactionRepository;
         this.transactionDao = transactionDao;
         this.offerRepository = offerRepository;
         this.transactionOfferLinkRepository = transactionOfferLinkRepository;
         this.template = template;
         this.restaurantEmployeeRepository = restaurantEmployeeRepository;
+        this.offerService = offerService;
     }
 
     public Response getCode(TransactionRequest request) {
         Response response = new TransactionResponse();
         List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = new ArrayList<>();
-        Set<String> restaurantIds = new HashSet<>();
+        Set<String> restaurantEmails = new HashSet<>();
         for (TransactionItem transaction : request.getTransactions()) {
             OfferEntity currentOffer = offerRepository.findById(transaction.getOfferId()).get();
             int currentOfferCount = currentOffer.getCount() - transaction.getCount();
@@ -64,9 +68,10 @@ public class TransactionService {
                     .count(transaction.getCount())
                     .build();
             transactionOfferLinkEntityList.add(transactionOfferLinkEntity);
-            offerRepository.findById(transaction.getOfferId()).ifPresent(o -> restaurantIds.add(restaurantEmployeeRepository.findFirstByRestaurantId(o.getRestaurantId()).getEmail()));
+            offerRepository.findById(transaction.getOfferId()).ifPresent(o -> restaurantEmails.add(restaurantEmployeeRepository.findFirstByRestaurantId(o.getRestaurantId()).getEmail()));
         }
-        updateCurrentOrders(restaurantIds);
+        updateCurrentOrders(restaurantEmails);
+        updateCurrentOffers(restaurantEmails);
         String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
         TransactionEntity transactionEntity = new TransactionEntity(code, new Date(System.currentTimeMillis()), TransactionState.PENDING.toString(), request.getReceiveTimestamp());
         TransactionEntity savedEntity = transactionRepository.save(transactionEntity);
@@ -81,6 +86,13 @@ public class TransactionService {
         response.setCode(200);
         response.setMessage("Code returned properly");
         return response;
+    }
+
+    private void updateCurrentOffers(Set<String> emails) {
+        emails.forEach(r ->
+                template.convertAndSend(RESTAURANT_TOPIC + r, offerService.getOffersByEmail(r, 0, 1000))
+        );
+
     }
 
     private void updateCurrentOrders(Set<String> emails) {
