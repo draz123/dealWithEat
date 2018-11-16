@@ -1,5 +1,7 @@
 package com.yummy.user.service;
 
+import com.yummy.restaurant.db.RestaurantEmployeeRepository;
+import com.yummy.restaurant.model.RestaurantEmployeeEntity;
 import com.yummy.user.db.UserRepository;
 import com.yummy.user.model.RequestUserParameters;
 import com.yummy.user.model.StatusResponse;
@@ -16,11 +18,13 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final RestaurantEmployeeRepository restaurantEmployeeRepository;
 
     @Autowired
-    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository) {
+    public UserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserRepository userRepository, RestaurantEmployeeRepository restaurantEmployeeRepository) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userRepository = userRepository;
+        this.restaurantEmployeeRepository = restaurantEmployeeRepository;
     }
 
     private static final String USER = "USER";
@@ -58,6 +62,10 @@ public class UserService {
         response.setCode(200);
         if (!checkIfRecordExists(requestUserParameters.getEmail())) {
             userRepository.save(userEntity);
+            if (requestUserParameters.getRestaurantId() != null) {
+                RestaurantEmployeeEntity restaurantEmployeeEntity = new RestaurantEmployeeEntity(requestUserParameters.getEmail(), requestUserParameters.getRestaurantId().intValue());
+                restaurantEmployeeRepository.save(restaurantEmployeeEntity);
+            }
             response.setStatus(false);
             response.setMessage("Account was created");
             return response;

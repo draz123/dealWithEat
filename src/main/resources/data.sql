@@ -7,13 +7,13 @@ INSERT INTO public."user"
 VALUES('user1@user.com', '$2a$10$9AnKmdcuiamm3ZOCHqV9f.LmyHRjsckCky84iJMiiK6PN/J1ZL9JS', 'USER');
 INSERT INTO public."user"
 (email, password, group_name)
-VALUES('user2@restaurant.com', '$2a$10$Rk23pDDWy6kTqc2wwaRaceHIBqJ/9Rwt/h7mUlmECdHgbxQA.Ym1m', 'RESTAURANT');
+VALUES('user3@restaurant.com', '$2a$10$Rk23pDDWy6kTqc2wwaRaceHIBqJ/9Rwt/h7mUlmECdHgbxQA.Ym1m', 'RESTAURANT');
 
 -- User - restaurant --
 
 INSERT INTO public.restaurant_employee
 (email, restaurant_id)
-VALUES('user2@restaurant.com', 3);
+VALUES('user3@restaurant.com', 3);
 
 
 -- Restaurants --
