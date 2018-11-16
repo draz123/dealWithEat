@@ -5,6 +5,7 @@ import com.yummy.offer.db.OfferRepository;
 import com.yummy.offer.model.OfferEntity;
 import com.yummy.offer.service.OfferService;
 import com.yummy.restaurant.db.RestaurantEmployeeRepository;
+import com.yummy.restaurant.db.RestaurantRepository;
 import com.yummy.transaction.db.TransactionDao;
 import com.yummy.transaction.db.TransactionOfferLinkRepository;
 import com.yummy.transaction.db.TransactionRepository;
@@ -30,13 +31,14 @@ public class TransactionService {
     private final SimpMessagingTemplate template;
     private final RestaurantEmployeeRepository restaurantEmployeeRepository;
     private final OfferService offerService;
+    private final RestaurantRepository restaurantRepository;
 
     private static final String RESTAURANT_TOPIC = "/topic/restaurant/";
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, TransactionDao transactionDao, OfferRepository offerRepository,
                               TransactionOfferLinkRepository transactionOfferLinkRepository, SimpMessagingTemplate template, RestaurantEmployeeRepository restaurantEmployeeRepository,
-                              OfferService offerService) {
+                              OfferService offerService, RestaurantRepository restaurantRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionDao = transactionDao;
         this.offerRepository = offerRepository;
@@ -44,6 +46,7 @@ public class TransactionService {
         this.template = template;
         this.restaurantEmployeeRepository = restaurantEmployeeRepository;
         this.offerService = offerService;
+        this.restaurantRepository = restaurantRepository;
     }
 
     public Response getCode(TransactionRequest request) {
@@ -202,6 +205,9 @@ public class TransactionService {
             ((HistoricOrder) order).setPrice(price[0]);
         });
         OrdersResponse ordersResponse = new OrdersResponse();
+        final int restaurantId = restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId();
+
+        ordersResponse.setRestaurantEntity(restaurantRepository.findFirstById(restaurantId));
         ordersResponse.setCurrentOrderList(historicOrders);
         ordersResponse.setPage(page);
         ordersResponse.setPageSize(size);
