@@ -10,7 +10,7 @@ public class GeoCalculator {
         double a = (userCoordinates.getLat()-restaurantCoordinates.getLat())*distPerLat(userCoordinates.getLat());
         double b = (userCoordinates.getLng()-restaurantCoordinates.getLng())*distPerLng(userCoordinates.getLat());
         double result =  Math.sqrt(a*a+b*b);
-        DecimalFormat df = new DecimalFormat("#.##");
+        DecimalFormat df = new DecimalFormat("#");
         String dx=df.format(result);
         return Double.valueOf(dx);
     }
