@@ -2,12 +2,17 @@ package com.yummy.restaurant.service;
 
 import com.yummy.restaurant.model.Coordinates;
 
+import java.text.DecimalFormat;
+
 public class GeoCalculator {
 
     public double calculateDistanceBetweenTwoPoints(Coordinates userCoordinates, Coordinates restaurantCoordinates){
         double a = (userCoordinates.getLat()-restaurantCoordinates.getLat())*distPerLat(userCoordinates.getLat());
         double b = (userCoordinates.getLng()-restaurantCoordinates.getLng())*distPerLng(userCoordinates.getLat());
-        return Math.sqrt(a*a+b*b);
+        double result =  Math.sqrt(a*a+b*b);
+        DecimalFormat df = new DecimalFormat("#.##");
+        String dx=df.format(result);
+        return Double.valueOf(dx);
     }
 
     private  double distPerLng(double lat){
