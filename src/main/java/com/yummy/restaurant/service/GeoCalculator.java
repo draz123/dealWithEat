@@ -4,22 +4,24 @@ import com.yummy.restaurant.model.Coordinates;
 
 public class GeoCalculator {
 
-    public Double distanceFromMe(Coordinates userCoordinates, Coordinates restCoordinates) {
-        double theta = userCoordinates.getLng() - restCoordinates.getLng();
-        double dist = Math.sin(deg2rad(userCoordinates.getLat())) * Math.sin(deg2rad(restCoordinates.getLat())) + Math.cos(deg2rad(userCoordinates.getLat())) * Math.cos(deg2rad(restCoordinates.getLat())) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        dist = dist * 1.609344 * 1000;
-        return dist;
+    public double calculateDistanceBetweenTwoPoints(Coordinates userCoordinates, Coordinates restaurantCoordinates){
+        double a = (userCoordinates.getLat()-restaurantCoordinates.getLat())*distPerLat(userCoordinates.getLat());
+        double b = (userCoordinates.getLng()-restaurantCoordinates.getLng())*distPerLng(userCoordinates.getLat());
+        return Math.sqrt(a*a+b*b);
     }
 
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
+    private  double distPerLng(double lat){
+        return 0.0003121092*Math.pow(lat, 4)
+                +0.0101182384*Math.pow(lat, 3)
+                -17.2385140059*lat*lat
+                +5.5485277537*lat+111301.967182595;
     }
 
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
+    private  double distPerLat(double lat){
+        return -0.000000487305676*Math.pow(lat, 4)
+                -0.0033668574*Math.pow(lat, 3)
+                +0.4601181791*lat*lat
+                -1.4558127346*lat+110579.25662316;
     }
 
 }

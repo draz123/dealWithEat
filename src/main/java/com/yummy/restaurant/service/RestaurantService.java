@@ -54,7 +54,7 @@ public class RestaurantService {
                         r.getWebsite(),
                         r.getImage(),
                         r.getOpenHours(),
-                        geoCalculator.distanceFromMe(resolveCoordinates(nearestRestaurantsRequest), new Coordinates(r.getLatitude(), r.getLongtitude())))
+                        geoCalculator.calculateDistanceBetweenTwoPoints(resolveCoordinates(nearestRestaurantsRequest), new Coordinates(r.getLongtitude(), r.getLatitude())))
                 )
                 .sorted(Comparator.comparingDouble(NearestRestaurant::getDistance))
                 .skip(nearestRestaurantsRequest.getPage() * nearestRestaurantsRequest.getSize())
