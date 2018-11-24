@@ -188,22 +188,26 @@ public class TransactionService {
     public Response getAllOrdersByEmail(String email, Integer page, Integer size) {
         int limit = page == 0 ? 1000 : page * size;
         int offset = page == 0 ? 0 : size;
-        List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset);
-        historicOrders.forEach(order ->
-        {
-            final double[] price = {0.0};
-            List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId((long) ((HistoricOrder) order).getId());
-            List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
-                    .map(t -> {
-                        OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
-                        price[0] += offerEntity.getPrice();
-                        return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
-                                offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
-                    })
-                    .collect(Collectors.toList());
-            ((HistoricOrder) order).setOrderItemList(orderItemList);
-            ((HistoricOrder) order).setPrice(price[0]);
-        });
+        List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset)
+                .stream()
+                .map(order ->
+                {
+                    final double[] price = {0.0};
+                    List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId((long) ((HistoricOrder) order).getId());
+                    List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                            .map(t -> {
+                                OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
+                                price[0] += offerEntity.getPrice();
+                                return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                        offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
+                            })
+                            .collect(Collectors.toList());
+                    ((HistoricOrder) order).setOrderItemList(orderItemList);
+                    ((HistoricOrder) order).setPrice(price[0]);
+                    return order;
+                })
+                .sorted()
+                .collect(Collectors.toList());
         OrdersResponse ordersResponse = new OrdersResponse();
         final int restaurantId = restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId();
 
