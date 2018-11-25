@@ -2,8 +2,6 @@ package com.yummy.mock.service;
 
 import com.yummy.mock.model.TransactionMockResponse;
 import com.yummy.mock.model.UserMockResponse;
-import com.yummy.restaurant.db.RestaurantEmployeeRepository;
-import com.yummy.restaurant.model.RestaurantEmployeeEntity;
 import com.yummy.transaction.model.TransactionItem;
 import com.yummy.transaction.model.TransactionRequest;
 import com.yummy.transaction.model.TransactionResponse;
@@ -30,37 +28,38 @@ public class MockService {
     @Autowired
     private TransactionService transactionService;
 
-    @Autowired
-    private RestaurantEmployeeRepository restaurantEmployeeRepository;
-
     @EventListener(ApplicationReadyEvent.class)
     public UserMockResponse mockUserData() {
-        userService.createNewUser(new RequestUserParameters("user1@user.com", "user1",null));
-        userService.createNewUser(new RequestUserParameters("user2@user.com", "user2",null));
-        userService.createNewUser(new RequestUserParameters("user3@user.com", "user3",null));
-        userService.createNewUser(new RequestUserParameters("user11@restaurant.com", "user11",1l));
-        userService.createNewUser(new RequestUserParameters("user12@restaurant.com", "user12",2l));
-        userService.createNewUser(new RequestUserParameters("user13@restaurant.com", "user13",3l));
-        userService.createNewUser(new RequestUserParameters("user14@restaurant.com", "user14",4l));
+        userService.createNewUser(new RequestUserParameters("user1@user.com", "user1", null));
+        userService.createNewUser(new RequestUserParameters("user2@user.com", "user2", null));
+        userService.createNewUser(new RequestUserParameters("user3@user.com", "user3", null));
+        userService.createNewUser(new RequestUserParameters("user11@restaurant.com", "user11", 1l));
+        userService.createNewUser(new RequestUserParameters("user12@restaurant.com", "user12", 2l));
+        userService.createNewUser(new RequestUserParameters("user13@restaurant.com", "user13", 3l));
+        userService.createNewUser(new RequestUserParameters("user14@restaurant.com", "user14", 4l));
         Map<String, String> user1 = new HashMap<>();
         user1.put("user1@user.com", "user1");
         Map<String, String> user2 = new HashMap<>();
         user2.put("user2@user.com", "user2");
         Map<String, String> user3 = new HashMap<>();
         user3.put("user3@user.com", "user3");
-        Map<String, String> user4 = new HashMap<>();
-        user4.put("user12@user.com", "user12");
-        Map<String, String> user5 = new HashMap<>();
-        user5.put("user13@user.com", "user13");
-        Map<String, String> user6 = new HashMap<>();
-        user6.put("user14@user.com", "user14");
+        Map<String, String> user11 = new HashMap<>();
+        user11.put("user12@user.com", "user12");
+        Map<String, String> user12 = new HashMap<>();
+        user12.put("user12@user.com", "user12");
+        Map<String, String> user13 = new HashMap<>();
+        user13.put("user13@user.com", "user13");
+        Map<String, String> user14 = new HashMap<>();
+        user14.put("user14@user.com", "user14");
+
         List<Map<String, String>> responseList = new ArrayList();
         responseList.add(user1);
         responseList.add(user2);
         responseList.add(user3);
-        responseList.add(user4);
-        responseList.add(user5);
-        responseList.add(user6);
+        responseList.add(user11);
+        responseList.add(user12);
+        responseList.add(user13);
+        responseList.add(user14);
         LOGGER.info("Logins refreshed");
         return new UserMockResponse("Success", 200, responseList);
     }

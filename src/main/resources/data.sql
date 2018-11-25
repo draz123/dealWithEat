@@ -1,20 +1,56 @@
 -- Test data --
 
 -- Users --
+-- At this moment, users are added on the application start through mock package
 
-INSERT INTO public."user"
-(email, password, group_name)
-VALUES('user1@user.com', '$2a$10$9AnKmdcuiamm3ZOCHqV9f.LmyHRjsckCky84iJMiiK6PN/J1ZL9JS', 'USER');
-INSERT INTO public."user"
-(email, password, group_name)
-VALUES('user3@restaurant.com', '$2a$10$Rk23pDDWy6kTqc2wwaRaceHIBqJ/9Rwt/h7mUlmECdHgbxQA.Ym1m', 'RESTAURANT');
-
--- User - restaurant --
-
-INSERT INTO public.restaurant_employee
-(email, restaurant_id)
-VALUES('user3@restaurant.com', 3);
-
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user1@user.com', '$2a$10$9AnKmdcuiamm3ZOCHqV9f.LmyHRjsckCky84iJMiiK6PN/J1ZL9JS', 'USER');
+--
+-- -- Backward compatibility --
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user3@restaurant.com', '$2a$10$Rk23pDDWy6kTqc2wwaRaceHIBqJ/9Rwt/h7mUlmECdHgbxQA.Ym1m', 'RESTAURANT');
+--
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user2@user.com', '$2a$10$3fVSHfe0w8SC769JjKSbaOONyoBu9X6/V6BlGM1p4K5rGgfm3lLfK', 'USER');
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user3@user.com', '$2a$10$THsBRnOa64/6qAw2DsCvcutheKFc2PtAeegvfS15AIn4IwMbydDya', 'USER');
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user11@restaurant.com', '$2a$10$6yAGvN8HbMjVCqIjpl9ksey7USpI9TARL9aCNHx.pAYBi0DyE5ZO2', 'RESTAURANT');
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user12@restaurant.com', '$2a$10$FSbLYUZv/wD.HPpHeg3iMuNlVKfyZLtxAgUBB1hishvzwxdi8OVZu', 'RESTAURANT');
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user13@restaurant.com', '$2a$10$y/6C0ZRu2HAEe2jS5mO7eO8zGnH5DEN2gJXFjUD9N8H6jcLZaXLOq', 'RESTAURANT');
+-- INSERT INTO public."user"
+-- (email, password, group_name)
+-- VALUES('user14@restaurant.com', '$2a$10$fBkAKf0NzdHwyjxczjeDkuxVc.1g/fFt2JmjsNUltORpOOT9GRvaq', 'RESTAURANT');
+--
+-- -- User - restaurant --
+--
+-- --Backward compatibility --
+-- INSERT INTO public.restaurant_employee
+-- (email, restaurant_id)
+-- VALUES('user3@restaurant.com', 3);
+--
+-- INSERT INTO public.restaurant_employee
+-- (email, restaurant_id)
+-- VALUES('user11@restaurant.com', 1);
+-- INSERT INTO public.restaurant_employee
+-- (email, restaurant_id)
+-- VALUES('user12@restaurant.com', 2);
+-- INSERT INTO public.restaurant_employee
+-- (email, restaurant_id)
+-- VALUES('user13@restaurant.com', 3);
+-- INSERT INTO public.restaurant_employee
+-- (email, restaurant_id)
+-- VALUES('user14@restaurant.com', 4);
+--
 
 -- Restaurants --
 
