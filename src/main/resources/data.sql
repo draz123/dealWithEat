@@ -40,7 +40,8 @@ VALUES
 INSERT INTO restaurant (
   id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
-  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 50.460203, 20.118040, 'https://res.cloudinary.com/alb-pod-yummy/image/upload/v1543105453/yummy/restaurants/burger_bar.jpg' , '{
+  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 50.460203, 20.118040,
+  'https://res.cloudinary.com/alb-pod-yummy/image/upload/v1543105453/yummy/restaurants/burger_bar.jpg' , '{
 	"week": {
 		"openTime": "10:00",
 		"closeTime": "20:00"
