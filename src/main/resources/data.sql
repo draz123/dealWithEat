@@ -22,7 +22,7 @@ INSERT INTO restaurant (
   id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
   (1, 'Georgia Taste', 'Krakow Sucha 3/11', 'www.georgia-taste.pl', 'Very good georgian restaurant', 50.060203, 19.968040,
-   NULL, '{
+   'https://res.cloudinary.com/alb-pod-yummy/image/upload/v1543105454/yummy/restaurants/georgia_taste.jpg' ,'{
 	"week": {
 		"openTime": "10:00",
 		"closeTime": "20:00"
@@ -40,7 +40,7 @@ VALUES
 INSERT INTO restaurant (
   id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
-  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 50.460203, 20.118040, NULL, '{
+  (2, 'Baba Burger', 'Krakow Mazowiecka 3', 'www.boba-burger.pl', 'Very good burger restaurant', 50.460203, 20.118040, 'https://res.cloudinary.com/alb-pod-yummy/image/upload/v1543105453/yummy/restaurants/burger_bar.jpg' , '{
 	"week": {
 		"openTime": "10:00",
 		"closeTime": "20:00"
@@ -58,7 +58,7 @@ VALUES
 INSERT INTO restaurant (
   id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
-  (3, 'Ching Ye', 'Krakow, Sw. Getrudy 3', 'www.ching-ye.pl', 'Excellent chinesse kitchen', 50.075073, 19.931357, NULL, '{
+  (3, 'Ching Ye', 'Krakow, Sw. Getrudy 3', 'www.ching-ye.pl', 'Excellent chinesse kitchen', 50.075073, 19.931357, 'https://res.cloudinary.com/alb-pod-yummy/image/upload/v1543105449/yummy/restaurants/ching_ye.jpg', '{
 	"week": {
 		"openTime": "19:00",
 		"closeTime": "21:00"
@@ -77,7 +77,7 @@ INSERT INTO restaurant (
   id, name, address, website, description, latitude, longtitude, image, open_hours)
 VALUES
   (4, 'Ukraine Tastee', 'Krakow Lodowa 93/1', 'www.ukr-taste.pl', 'Very good ukrainian restaurant', 50.033306, 19.938030,
-   NULL, '{
+   'https://res.cloudinary.com/alb-pod-yummy/image/upload/v1543105451/yummy/restaurants/ukrainian_taste.jpg', '{
 	"week": {
 		"openTime": "15:00",
 		"closeTime": "24:00"
