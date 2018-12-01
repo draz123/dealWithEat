@@ -16,7 +16,7 @@ public class HistoricOrder implements Order, Comparable {
     private int id;
     private String orderTime;
     private String receiveTime;
-    private String state;
+    private String transactionState;
     private String paymentCode;
     private double price;
     private List<OrderItem> orderItemList;

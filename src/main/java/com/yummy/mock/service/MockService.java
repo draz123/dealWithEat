@@ -15,6 +15,7 @@ import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -22,11 +23,15 @@ public class MockService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MockService.class);
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
+
+    private final TransactionService transactionService;
 
     @Autowired
-    private TransactionService transactionService;
+    public MockService(UserService userService, TransactionService transactionService) {
+        this.userService = userService;
+        this.transactionService = transactionService;
+    }
 
     @EventListener(ApplicationReadyEvent.class)
     public UserMockResponse mockUserData() {
@@ -66,11 +71,11 @@ public class MockService {
 
     public TransactionMockResponse mockTransactions() {
         TransactionRequest transactionRequest1 = new TransactionRequest();
-        transactionRequest1.setReceiveTimestamp(new Date(System.currentTimeMillis()));
+        transactionRequest1.setReceiveTimestamp(LocalDateTime.now());
         TransactionRequest transactionRequest2 = new TransactionRequest();
-        transactionRequest2.setReceiveTimestamp(new Date(System.currentTimeMillis()));
+        transactionRequest2.setReceiveTimestamp(LocalDateTime.now());
         TransactionRequest transactionRequest3 = new TransactionRequest();
-        transactionRequest3.setReceiveTimestamp(new Date(System.currentTimeMillis() + 3600 * 1000 * 4));
+        transactionRequest3.setReceiveTimestamp(LocalDateTime.now());
         TransactionItem transactionItem1 = new TransactionItem(13, 1);
         TransactionItem transactionItem2 = new TransactionItem(14, 1);
         TransactionItem transactionItem3 = new TransactionItem(15, 1);

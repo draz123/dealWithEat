@@ -1,38 +1,22 @@
 package com.yummy.restaurant.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "restaurant_employee")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@IdClass(RestaurantEmployeeCompositeKey.class)
 public class RestaurantEmployeeEntity {
 
     @Id
-    private String email;
-    private int restaurantId;
+    private long restaurantId;
+    @Id
+    private long userId;
 
-    public RestaurantEmployeeEntity(String email, int restaurantId) {
-        this.email = email;
-        this.restaurantId = restaurantId;
-    }
-
-    public RestaurantEmployeeEntity() {
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getRestaurantId() {
-        return restaurantId;
-    }
-
-    public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
-    }
 }

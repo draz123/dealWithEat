@@ -7,9 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface RestaurantEmployeeRepository extends CrudRepository<RestaurantEmployeeEntity, String> {
 
-    RestaurantEmployeeEntity findFirstByEmail(String email);
+    RestaurantEmployeeEntity findFirstByRestaurantId(long id);
 
-    RestaurantEmployeeEntity findFirstByRestaurantId(int email);
+    RestaurantEmployeeEntity findByUserId(long id);
 
 
 }

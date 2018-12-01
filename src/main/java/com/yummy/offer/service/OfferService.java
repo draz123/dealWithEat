@@ -7,6 +7,7 @@ import com.yummy.offer.model.OfferRequest;
 import com.yummy.offer.model.OfferResponse;
 import com.yummy.offer.model.OfferState;
 import com.yummy.restaurant.db.RestaurantEmployeeRepository;
+import com.yummy.user.db.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,11 +17,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class OfferService {
 
-    @Autowired
-    private OfferRepository offerRepository;
+    private final OfferRepository offerRepository;
+    private final RestaurantEmployeeRepository restaurantEmployeeRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    private RestaurantEmployeeRepository restaurantEmployeeRepository;
+    public OfferService(OfferRepository offerRepository, RestaurantEmployeeRepository restaurantEmployeeRepository, UserRepository userRepository) {
+        this.offerRepository = offerRepository;
+        this.restaurantEmployeeRepository = restaurantEmployeeRepository;
+        this.userRepository = userRepository;
+    }
 
     public OfferResponse getOffers(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
@@ -32,18 +38,18 @@ public class OfferService {
         return response;
     }
 
-    public OfferResponse getOffersByEmail(String email, int page, int size) {
+    public OfferResponse getOffersByEmployeeEmail(String email, int page, int size) {
         OfferResponse response = new OfferResponse();
         response.setCode(200);
         response.setMessage("Offer list for restaurant returned properly");
         Pageable pageable = PageRequest.of(page, size);
-        int restaurantId = restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId();
+        long restaurantId = restaurantEmployeeRepository.findFirstByRestaurantId(userRepository.findByEmail(email).getId()).getRestaurantId();
         Page<OfferEntity> offers = offerRepository.findAllByRestaurantId(restaurantId, pageable);
         response.setOffers(offers.getContent());
         return response;
     }
 
-    public OfferResponse getOffersByRestaurantId(Integer id, int page, int size) {
+    public OfferResponse getOffersByRestaurantId(Long id, int page, int size) {
         OfferResponse response = new OfferResponse();
         response.setMessage("Offer list for restaurant returned properly");
         Pageable pageable = PageRequest.of(page, size);
@@ -53,7 +59,7 @@ public class OfferService {
     }
 
     public Response addNewOffer(OfferRequest request, String email) {
-        offerRepository.save(new OfferEntity(restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId(), request.getName(), request.getDescription(),
+        offerRepository.save(new OfferEntity(restaurantEmployeeRepository.findFirstByRestaurantId(userRepository.findByEmail(email).getId()).getRestaurantId(), request.getName(), request.getDescription(),
                 request.getPrice(), request.getDiscount(), request.getCount(), request.getImage(), request.getReceiveTimeStart(),
                 request.getReceiveTimeEnd(), OfferState.ACTUAL.toString()));
         return new Response("New offer added", 200);

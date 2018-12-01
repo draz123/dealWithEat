@@ -1,40 +1,41 @@
 package com.yummy.transaction.service;
 
-import com.yummy.offer.db.OfferRepository;
 import com.yummy.transaction.db.TransactionRepository;
 import com.yummy.transaction.model.TransactionEntity;
 import com.yummy.transaction.model.TransactionState;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.Instant;
+import java.time.ZoneId;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TransactionSchedulingProcessor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TransactionSchedulingProcessor.class);
+
+    private final TransactionRepository transactionRepository;
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    public TransactionSchedulingProcessor(TransactionRepository transactionRepository) {
+        this.transactionRepository = transactionRepository;
+    }
 
 
     @Scheduled(fixedRate = 30 * 1000)
     public void updateTransactionStates() {
-        LOGGER.info("DB transaction state refresh");
-        List<TransactionEntity> transactionsToUpdate = transactionRepository.findAllByState(TransactionState.PENDING.toString());
+        log.info("DB transaction transactionState refresh");
+        List<TransactionEntity> transactionsToUpdate = transactionRepository.findAllByTransactionState(TransactionState.PENDING);
         transactionsToUpdate.stream()
-                .filter(transactionEntity -> transactionEntity.getReceiveTime().toInstant().toEpochMilli() < (new Date(System.currentTimeMillis())).toInstant().toEpochMilli())
+                .filter(transactionEntity -> transactionEntity.getReceiveTime().atZone(ZoneId.systemDefault()).toInstant().toEpochMilli() < Instant.now().toEpochMilli())
                 .forEach(transactionEntity -> {
-                    transactionEntity.setState(TransactionState.MISSED.toString());
+                    transactionEntity.setTransactionState(TransactionState.CANCELLED);
                     transactionRepository.save(transactionEntity);
                 });
     }
-
-
 
 
 }

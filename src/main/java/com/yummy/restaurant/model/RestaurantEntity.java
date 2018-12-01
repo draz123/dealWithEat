@@ -1,11 +1,17 @@
 package com.yummy.restaurant.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "restaurant")
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class RestaurantEntity {
 
 
@@ -24,8 +30,6 @@ public class RestaurantEntity {
     private String image;
     private String openHours;
 
-    public RestaurantEntity() {
-    }
 
     public RestaurantEntity(String name, String address, double latitude, double longtitude, String description, String website, String image, String openHours) {
         this.name = name;
@@ -38,75 +42,5 @@ public class RestaurantEntity {
         this.openHours = openHours;
     }
 
-    public String getOpenHours() {
-        return openHours;
-    }
 
-    public void setOpenHours(String openHours) {
-        this.openHours = openHours;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongtitude() {
-        return longtitude;
-    }
-
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getWebsite() {
-        return website;
-    }
-
-    public void setWebsite(String website) {
-        this.website = website;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
 }

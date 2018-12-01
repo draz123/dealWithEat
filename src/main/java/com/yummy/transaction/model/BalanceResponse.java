@@ -1,29 +1,14 @@
 package com.yummy.transaction.model;
 
 import com.yummy.commons.Response;
-import com.yummy.commons.Response;
-import com.yummy.commons.Response;
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class BalanceResponse extends Response {
 
-    private OrderSummary orderSummary;
+    private OrdersSummary ordersSummary;
     private List<Takings> takings;
 
-    public OrderSummary getOrderSummary() {
-        return orderSummary;
-    }
-
-    public void setOrderSummary(OrderSummary orderSummary) {
-        this.orderSummary = orderSummary;
-    }
-
-    public List<Takings> getTakings() {
-        return takings;
-    }
-
-    public void setTakings(List<Takings> takings) {
-        this.takings = takings;
-    }
 }

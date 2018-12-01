@@ -6,6 +6,8 @@ import com.yummy.commons.Response;
 import com.yummy.restaurant.db.RestaurantEmployeeRepository;
 import com.yummy.restaurant.db.RestaurantRepository;
 import com.yummy.restaurant.model.*;
+import com.yummy.user.db.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,18 +19,22 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class RestaurantService {
 
-    @Autowired
-    private RestaurantRepository restaurantRepository;
-
-    @Autowired
-    private RestaurantEmployeeRepository restaurantEmployeeRepository;
+    private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
+    private final RestaurantEmployeeRepository restaurantEmployeeRepository;
 
     private ObjectMapper mapper;
 
-    public RestaurantService() {
+    @Autowired
+    public RestaurantService(RestaurantRepository restaurantRepository, UserRepository userRepository, RestaurantEmployeeRepository restaurantEmployeeRepository) {
+        this.userRepository = userRepository;
         this.mapper = new ObjectMapper();
+        this.restaurantRepository = restaurantRepository;
+        this.restaurantEmployeeRepository = restaurantEmployeeRepository;
+
     }
 
     public Response getRestaurants(int page, int size) {
@@ -74,7 +80,7 @@ public class RestaurantService {
 
     public AdminInfoResponse getRestaurant(String email) {
         AdminInfoResponse response = new AdminInfoResponse();
-        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findFirstByEmail(email);
+        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findByUserId(userRepository.findByEmail(email).getId());
         RestaurantEntity restaurant = restaurantRepository.findFirstById(employee.getRestaurantId());
         if (restaurant != null) {
             response.setAddress(restaurant.getAddress());
@@ -84,7 +90,7 @@ public class RestaurantService {
             try {
                 response.setOpenHours(mapper.readValue(restaurant.getOpenHours(), RestaurantOpenHours.class));
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
             response.setMessage("Success");
         } else {
@@ -99,7 +105,7 @@ public class RestaurantService {
     }
 
     public Response editRestaurant(String email, RestaurantEditRequest request) {
-        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findFirstByEmail(email);
+        RestaurantEmployeeEntity employee = restaurantEmployeeRepository.findByUserId(userRepository.findByEmail(email).getId());
         RestaurantEntity restaurant = restaurantRepository.findFirstById(employee.getRestaurantId());
         restaurant.setDescription(request.getDescription());
         restaurant.setImage(request.getImage());
@@ -107,7 +113,7 @@ public class RestaurantService {
         try {
             restaurant.setOpenHours(mapper.writeValueAsString(request.getRestaurantOpenHours()));
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         restaurantRepository.save(restaurant);
         return new Response("Success", 200);

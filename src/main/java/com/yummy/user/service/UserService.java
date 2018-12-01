@@ -27,7 +27,6 @@ public class UserService {
         this.restaurantEmployeeRepository = restaurantEmployeeRepository;
     }
 
-    private static final String USER = "USER";
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public static ResponseEntity<StatusResponse> changePassword(RequestUserParameters request) {
@@ -57,13 +56,13 @@ public class UserService {
     }
 
     public StatusResponse createNewUser(RequestUserParameters requestUserParameters) {
-        UserEntity userEntity = new UserEntity(bCryptPasswordEncoder.encode(requestUserParameters.getPassword()), USER, requestUserParameters.getEmail());
+        UserEntity userEntity = new UserEntity(requestUserParameters.getEmail(), bCryptPasswordEncoder.encode(requestUserParameters.getPassword()));
         StatusResponse response = new StatusResponse();
         response.setCode(200);
         if (!checkIfRecordExists(requestUserParameters.getEmail())) {
-            userRepository.save(userEntity);
+            UserEntity savedEntity = userRepository.save(userEntity);
             if (requestUserParameters.getRestaurantId() != null) {
-                RestaurantEmployeeEntity restaurantEmployeeEntity = new RestaurantEmployeeEntity(requestUserParameters.getEmail(), requestUserParameters.getRestaurantId().intValue());
+                RestaurantEmployeeEntity restaurantEmployeeEntity = new RestaurantEmployeeEntity( requestUserParameters.getRestaurantId(),savedEntity.getId());
                 restaurantEmployeeRepository.save(restaurantEmployeeEntity);
             }
             response.setStatus(false);
@@ -90,8 +89,8 @@ public class UserService {
         return response;
     }
 
-    private boolean checkIfRecordExists(String email) {
-        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("password", "group_name");
+    public boolean checkIfRecordExists(String email) {
+        ExampleMatcher exampleMatcher = ExampleMatcher.matching().withIgnorePaths("id", "password");
         UserEntity requestedUser = new UserEntity();
         requestedUser.setEmail(email);
         Example<UserEntity> checker = Example.of(requestedUser, exampleMatcher);

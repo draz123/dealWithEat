@@ -1,9 +1,15 @@
 package com.yummy.transaction.controller;
 
 import com.yummy.commons.Response;
+import com.yummy.restaurant.db.RestaurantEmployeeRepository;
+import com.yummy.restaurant.model.RestaurantEmployeeEntity;
 import com.yummy.transaction.model.*;
 import com.yummy.transaction.service.TransactionService;
+import com.yummy.user.db.UserRepository;
+import com.yummy.user.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -12,15 +18,19 @@ import java.util.Optional;
 public class TransactionController {
 
     private final TransactionService transactionService;
+    private final RestaurantEmployeeRepository restaurantEmployeeRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public TransactionController(TransactionService transactionService) {
+    public TransactionController(TransactionService transactionService, RestaurantEmployeeRepository restaurantEmployeeRepository, UserRepository userRepository) {
         this.transactionService = transactionService;
+        this.restaurantEmployeeRepository = restaurantEmployeeRepository;
+        this.userRepository = userRepository;
     }
 
     @PostMapping(value = "transaction")
-    public Response doTransaction(@RequestBody TransactionRequest request) {
-        return transactionService.getCode(request);
+    public ResponseEntity<Response> doTransaction(@RequestBody TransactionRequest request) {
+        return ResponseEntity.ok().body(transactionService.getCode(request));
     }
 
     @GetMapping(value = "balance")
@@ -29,8 +39,14 @@ public class TransactionController {
     }
 
     @PostMapping(value = "orders/current")
-    public OrdersResponse getCurrentOrders(@RequestHeader String email, @RequestBody PaginationRequest request) {
-        return transactionService.getCurrentOrders(email, request);
+    public ResponseEntity<Response> getCurrentOrders(@RequestHeader String email, @RequestBody PaginationRequest request) {
+        long userId = userRepository.findByEmail(email).getId();
+        RestaurantEmployeeEntity restaurantEmployeeEntity = restaurantEmployeeRepository.findByUserId(userId);
+        if (restaurantEmployeeEntity == null) {
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new Response("No data found for requested user", 204));
+        }
+        long restaurantId = restaurantEmployeeRepository.findByUserId(userId).getRestaurantId();
+        return ResponseEntity.ok().body(transactionService.getCurrentOrders(restaurantId, request));
     }
 
     @PostMapping(value = "orders/state")

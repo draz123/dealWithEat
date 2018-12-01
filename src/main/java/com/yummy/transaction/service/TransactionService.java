@@ -10,15 +10,20 @@ import com.yummy.transaction.db.TransactionDao;
 import com.yummy.transaction.db.TransactionOfferLinkRepository;
 import com.yummy.transaction.db.TransactionRepository;
 import com.yummy.transaction.model.*;
+import com.yummy.user.db.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
-import static com.yummy.transaction.model.TransactionState.CANCELED;
+import static com.yummy.transaction.model.TransactionState.CANCELLED;
 import static com.yummy.transaction.model.TransactionState.COMPLETED;
 
 @Service
@@ -32,13 +37,14 @@ public class TransactionService {
     private final RestaurantEmployeeRepository restaurantEmployeeRepository;
     private final OfferService offerService;
     private final RestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
 
     private static final String RESTAURANT_TOPIC = "/topic/restaurant/";
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, TransactionDao transactionDao, OfferRepository offerRepository,
                               TransactionOfferLinkRepository transactionOfferLinkRepository, SimpMessagingTemplate template, RestaurantEmployeeRepository restaurantEmployeeRepository,
-                              OfferService offerService, RestaurantRepository restaurantRepository) {
+                              OfferService offerService, RestaurantRepository restaurantRepository, UserRepository userRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionDao = transactionDao;
         this.offerRepository = offerRepository;
@@ -47,36 +53,30 @@ public class TransactionService {
         this.restaurantEmployeeRepository = restaurantEmployeeRepository;
         this.offerService = offerService;
         this.restaurantRepository = restaurantRepository;
+        this.userRepository = userRepository;
     }
 
     public Response getCode(TransactionRequest request) {
         Response response = new TransactionResponse();
         List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = new ArrayList<>();
-        Set<String> restaurantEmails = new HashSet<>();
+        Set<Long> restaurantsToUpdate = new HashSet<>();
         for (TransactionItem transaction : request.getTransactions()) {
             OfferEntity currentOffer = offerRepository.findById(transaction.getOfferId()).get();
-            int currentOfferCount = currentOffer.getCount() - transaction.getCount();
-            if (currentOfferCount < 0) {
-                response = LackOfferStatus.builder()
-                        .offer(currentOffer)
-                        .difference(Math.abs(currentOfferCount))
-                        .build();
-                response.setMessage("Could not execute request. Request count greater than current offer count for offer" +
-                        " with id: " + currentOffer.getId());
-                response.setCode(200);
-                return response;
+            restaurantsToUpdate.add(restaurantRepository.findFirstById(currentOffer.getRestaurantId()).getId());
+            int newOfferCount = currentOffer.getCount() - transaction.getCount();
+            if (newOfferCount < 0) {
+                return buildLackOfOffersResponse(currentOffer, newOfferCount);
             }
             TransactionOfferLinkEntity transactionOfferLinkEntity = TransactionOfferLinkEntity.builder()
                     .offerId(transaction.getOfferId())
                     .count(transaction.getCount())
                     .build();
             transactionOfferLinkEntityList.add(transactionOfferLinkEntity);
-            offerRepository.findById(transaction.getOfferId()).ifPresent(o -> restaurantEmails.add(restaurantEmployeeRepository.findFirstByRestaurantId(o.getRestaurantId()).getEmail()));
         }
-        updateCurrentOrders(restaurantEmails);
-        updateCurrentOffers(restaurantEmails);
+        updateCurrentOrders(restaurantsToUpdate);
+        updateCurrentOffers(restaurantsToUpdate);
         String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
-        TransactionEntity transactionEntity = new TransactionEntity(code, new Date(System.currentTimeMillis()), TransactionState.PENDING.toString(), request.getReceiveTimestamp());
+        TransactionEntity transactionEntity = new TransactionEntity(code, TransactionState.PENDING, null, LocalDateTime.now(), request.getReceiveTimestamp());
         TransactionEntity savedEntity = transactionRepository.save(transactionEntity);
         transactionOfferLinkEntityList.forEach(
                 t -> {
@@ -91,38 +91,52 @@ public class TransactionService {
         return response;
     }
 
-    private void updateCurrentOffers(Set<String> emails) {
-        emails.forEach(r ->
-                template.convertAndSend(RESTAURANT_TOPIC + r, offerService.getOffersByEmail(r, 0, 1000))
+    private Response buildLackOfOffersResponse(OfferEntity currentOffer, int newOfferCount) {
+        Response response;
+        response = LackOfferStatus.builder()
+                .offer(currentOffer)
+                .difference(Math.abs(newOfferCount))
+                .build();
+        response.setMessage("Could not execute request. Request count greater than current offer count for offer" +
+                " with id: " + currentOffer.getId());
+        response.setCode(204);
+        return response;
+    }
+
+    private void updateCurrentOffers(Set<Long> idList) {
+        idList.forEach(r ->
+                template.convertAndSend(RESTAURANT_TOPIC + r, offerService.getOffersByRestaurantId(r, 0, 1000))
         );
 
     }
 
-    private void updateCurrentOrders(Set<String> emails) {
-        emails.forEach(r ->
+    private void updateCurrentOrders(Set<Long> idList) {
+        idList.forEach(r ->
                 template.convertAndSend(RESTAURANT_TOPIC + r, getCurrentOrders(r, new PaginationRequest(0, 1000)))
         );
 
     }
 
 
-    public BalanceResponse getBalance(String account) {
+    public BalanceResponse getBalance(String email) {
         BalanceResponse response = new BalanceResponse();
-        response.setOrderSummary(getOrderSummary(account));
-        response.setTakings(getTakingsSummary(account));
+        long restaurantId = restaurantEmployeeRepository.findByUserId(userRepository.findByEmail(email).getId()).getRestaurantId();
+
+        response.setOrdersSummary(getOrderSummary(restaurantId));
+        response.setTakings(getTakingsSummary(restaurantId));
         response.setCode(200);
         response.setMessage("Success");
         return response;
     }
 
-    private List<Takings> getTakingsSummary(String account) {
+    private List<Takings> getTakingsSummary(long restaurantId) {
         List<Takings> takingsList = new ArrayList<>();
         Takings entire = new Takings(TakingsState.ENTIRE.name(),
-                transactionDao.countTakings(account, TakingsState.ENTIRE.getTime()));
+                transactionDao.countTakings(restaurantId, TakingsState.ENTIRE.getTime()));
         Takings monthly = new Takings(TakingsState.MONTHLY.name(),
-                transactionDao.countTakings(account, TakingsState.MONTHLY.getTime()));
+                transactionDao.countTakings(restaurantId, TakingsState.MONTHLY.getTime()));
         Takings weekly = new Takings(TakingsState.WEEKLY.name(),
-                transactionDao.countTakings(account, TakingsState.WEEKLY.getTime()));
+                transactionDao.countTakings(restaurantId, TakingsState.WEEKLY.getTime()));
         takingsList.add(entire);
         takingsList.add(monthly);
         takingsList.add(weekly);
@@ -130,21 +144,20 @@ public class TransactionService {
     }
 
 
-    private OrderSummary getOrderSummary(String email) {
-        return new OrderSummary(
-                transactionDao.countAll(email),
-                transactionDao.countByState(email, CANCELED.toString()),
-                transactionDao.countByState(email, COMPLETED.toString()),
-                transactionDao.countByState(email, TransactionState.MISSED.toString())
+    private OrdersSummary getOrderSummary(long restaurantId) {
+        return new OrdersSummary(
+                transactionDao.countAll(restaurantId),
+                transactionDao.countByState(restaurantId, CANCELLED.toString()),
+                transactionDao.countByState(restaurantId, COMPLETED.toString())
         );
 
     }
 
-    public OrdersResponse getCurrentOrders(String email, PaginationRequest request) {
+    public OrdersResponse getCurrentOrders(long restaurantId, PaginationRequest request) {
         OrdersResponse response = new OrdersResponse();
         int limit = request.getPage() == 0 ? request.getSize() : request.getPage() * request.getSize();
         int offset = request.getPage() == 0 ? 0 : request.getSize();
-        List<Order> currentOrderList = transactionDao.getPendingOrdersForRestaurant(email, limit, offset);
+        List<Order> currentOrderList = transactionDao.getPendingOrdersForRestaurant(restaurantId, limit, offset);
         currentOrderList.forEach(o ->
         {
             final double[] price = {0.0};
@@ -167,22 +180,12 @@ public class TransactionService {
     }
 
     public Response changeOrdersState(ChangeOrderStateRequest request) {
-        if (isValidState(request.getState())) {
-            List<TransactionEntity> transactionsToUpdate = transactionRepository.findAllByIdIn(request.getIdList());
-            transactionsToUpdate.forEach(transactionEntity -> {
-                        transactionEntity.setState(request.getState().toUpperCase());
-                        transactionRepository.save(transactionEntity);
-                    }
-            );
-            return new Response("Success", 200);
-        } else {
-            return new Response("Wrong state requested", 200);
-        }
-    }
-
-    private boolean isValidState(String state) {
-        return state.equalsIgnoreCase(CANCELED.toString()) ||
-                state.equalsIgnoreCase(COMPLETED.toString());
+        List<TransactionEntity> transactionsToUpdate = transactionRepository.findAllByIdIn(request.getIdList());
+        transactionsToUpdate.forEach(transactionEntity -> {
+            transactionEntity.setTransactionState(request.getState());
+            transactionRepository.save(transactionEntity);
+        });
+        return new Response("Success", 200);
     }
 
     public Response getAllOrdersByEmail(String email, Integer page, Integer size) {
@@ -209,7 +212,7 @@ public class TransactionService {
                 .sorted()
                 .collect(Collectors.toList());
         OrdersResponse ordersResponse = new OrdersResponse();
-        final int restaurantId = restaurantEmployeeRepository.findFirstByEmail(email).getRestaurantId();
+        final long restaurantId = restaurantEmployeeRepository.findByUserId(userRepository.findByEmail(email).getId()).getRestaurantId();
 
         ordersResponse.setRestaurantEntity(restaurantRepository.findFirstById(restaurantId));
         ordersResponse.setCurrentOrderList(historicOrders);

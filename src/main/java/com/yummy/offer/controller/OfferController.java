@@ -20,7 +20,7 @@ public class OfferController {
     }
 
     @GetMapping(value = "offers")
-    public OfferResponse getOffers(@RequestHeader(required = false) String email, @RequestHeader(required = false) Integer id,
+    public OfferResponse getOffers(@RequestHeader(required = false) String email, @RequestParam(required = false) Long id,
                                    @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
         OfferResponse response = null;
         if (email == null || id == null) {
@@ -28,9 +28,6 @@ public class OfferController {
         }
         if (id != null) {
             response = offerService.getOffersByRestaurantId(id, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
-        }
-        if (email != null && email.contains("@restaurant")) {
-            response = offerService.getOffersByEmail(email, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(1000));
         }
         return response;
     }

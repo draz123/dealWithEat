@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface OfferRepository extends PagingAndSortingRepository<OfferEntity, Integer> {
 
-    Page<OfferEntity> findAllByRestaurantId(int restaurantId, Pageable pageRequest);
+    Page<OfferEntity> findAllByRestaurantId(long restaurantId, Pageable pageRequest);
 
 
 }

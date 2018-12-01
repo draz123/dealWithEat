@@ -1,47 +1,27 @@
 package com.yummy.user.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "\"user\"")
 public class UserEntity {
 
     @Id
+    @SequenceGenerator(name = "user_sequence", sequenceName = "public.user_sequence", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_sequence")
+    private long id;
     private String email;
     private String password;
-    private String groupName;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
+    public UserEntity(String email, String password) {
         this.email = email;
-    }
-
-    public UserEntity() {
-    }
-
-    public UserEntity(String password, String groupName, String email) {
-        this.password = password;
-        this.groupName = groupName;
-        this.email = email;
-    }
-
-    public String getGroupName() {
-        return groupName;
-    }
-
-    public void setGroupName(String groupName) {
-        this.groupName = groupName;
-    }
-
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
         this.password = password;
     }
 }

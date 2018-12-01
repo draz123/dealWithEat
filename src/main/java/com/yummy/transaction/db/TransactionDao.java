@@ -15,8 +15,27 @@ import java.util.List;
 public class TransactionDao {
 
 
+    private final JdbcTemplate jdbcTemplate;
+
     @Autowired
-    private JdbcTemplate jdbcTemplate;
+    public TransactionDao(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
+    public int countAll(long restaurantId) {
+        String query = "SELECT count(*) FROM\n" +
+                "(\n" +
+                "SELECT \n" +
+                "t.id\n" +
+                "FROM transaction t   \n" +
+                "LEFT JOIN transaction_offer_link tol ON (tol.transaction_id=t.id)\n" +
+                "LEFT JOIN offer o ON (o.id=tol.offer_id)             \n" +
+                "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)             \n" +
+                "WHERE r.id=\'" + restaurantId + "\' " +
+                "GROUP BY t.id\n" +
+                ") AS temp";
+        return jdbcTemplate.queryForObject(query, Integer.class);
+    }
 
     public int countAll(String email) {
         String query = "SELECT count(*) FROM\n" +
@@ -34,15 +53,14 @@ public class TransactionDao {
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 
-    public int countByState(String email, String state) {
+    public int countByState(long restaurantId, String state) {
         String query = "SELECT count(*) FROM\n" +
                 "(\n" +
                 "SELECT t.id FROM transaction t \n" +
                 "LEFT JOIN transaction_offer_link tol ON (tol.transaction_id=t.id)\n" +
                 "LEFT JOIN offer o ON (o.id=tol.offer_id) \n" +
                 "LEFT JOIN restaurant r  ON (r.id=o.restaurant_id) \n" +
-                "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id) \n" +
-                "WHERE e.email=\'" + email + "\' AND t.state=\'" + state + "\' " +
+                "WHERE r.id=\'" + restaurantId + "\' AND t.transaction_state=\'" + state + "\' " +
                 "GROUP BY t.id\n" +
                 ") AS temp;";
         return jdbcTemplate.queryForObject(query, Integer.class);
@@ -58,12 +76,11 @@ public class TransactionDao {
         return result;
     }
 
-    public double countTakings(String email, long type) {
+    public double countTakings(long restaurantId, long type) {
         String transactionIdsQuery = "SELECT distinct toc.transaction_id FROM offer o\n" +
                 "LEFT JOIN transaction_offer_link toc ON (toc.offer_id=o.id)\n" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
-                "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
-                "WHERE email = '" + email + "';";
+                "WHERE r.id = '" + restaurantId + "';";
         List<String> transactionsIds = jdbcTemplate.query(transactionIdsQuery, ((rs, rowNum) -> {
             return Integer.toString(rs.getInt(1));
         }));
@@ -85,15 +102,15 @@ public class TransactionDao {
         return result == null ? 0 : result;
     }
 
-    public List<Order> getPendingOrdersForRestaurant(String email, int limit, int offset) {
+    public List<Order> getPendingOrdersForRestaurant(long restaurantId, int limit, int offset) {
         String query = "SELECT t.order_time,o.price,t.id,o.description, t.receive_time, t.code \n" +
                 "FROM offer o\n" +
                 "LEFT JOIN transaction_offer_link tol ON (tol.offer_id=o.id)" +
                 "left join transaction t on (t.id=tol.transaction_id)" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
                 "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)\n" +
-                "WHERE email = \'" + email + "\'\n" +
-                "AND t.state='PENDING' " +
+                "WHERE r.id = \'" + restaurantId + "\'\n" +
+                "AND t.transaction_state='PENDING' " +
                 "LIMIT " + limit + " offset " + offset + ";";
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
             CurrentOrder result = new CurrentOrder();
@@ -106,7 +123,7 @@ public class TransactionDao {
     }
 
     public List<Order> findAllByRestaurant(String email, int limit, int offset) {
-        String query = "SELECT t.order_time,o.price,t.id,o.description, t.receive_time, t.state, t.code \n" +
+        String query = "SELECT t.order_time,o.price,t.id,o.description, t.receive_time, t.transaction_state, t.code \n" +
                 "FROM transaction t\n" +
                 "LEFT JOIN transaction_offer_link tol ON (tol.transaction_id=t.id)\n" +
                 "LEFT JOIN offer o ON (tol.offer_id=o.id)\n" +
@@ -119,7 +136,7 @@ public class TransactionDao {
             result.setId(rs.getInt(3));
             result.setOrderTime(rs.getTimestamp(1).toLocalDateTime().toString());
             result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
-            result.setState(rs.getString(6));
+            result.setTransactionState(rs.getString(6));
             result.setPaymentCode(rs.getString(7));
             return result;
         }));

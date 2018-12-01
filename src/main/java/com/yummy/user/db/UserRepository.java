@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface UserRepository extends PagingAndSortingRepository<UserEntity, Long> {
 
-    UserEntity findByEmail(String nickname);
+    UserEntity findByEmail(String email);
 
     @Transactional
     void deleteByEmail(String email);
