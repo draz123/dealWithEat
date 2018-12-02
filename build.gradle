@@ -15,6 +15,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath "gradle.plugin.com.boxfuse.client:gradle-plugin-publishing:5.2.3"
 
     }
 }
@@ -24,6 +25,7 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'maven-publish'
 apply plugin: 'io.spring.dependency-management'
+apply plugin: "org.flywaydb.flyway"
 
 
 sourceCompatibility = 1.8
@@ -43,6 +45,25 @@ jar {
     baseName "$artifactName"
 }
 
+flyway {
+    def props = new Properties()
+    def confFile = "src/main/resources/flyway.conf"
+
+    if (project.hasProperty('profile')) {
+        confFile = "src/main/resources/flyway-${profile}.conf"
+    }
+    file(confFile).withInputStream {
+        stream -> props.load(stream)
+    }
+
+    url = props['flyway.url']
+    user = props['flyway.user']
+    password = props['flyway.password']
+    locations = props['flyway.locations']
+    schemas = [props['flyway.schemas']]
+    locations = props['flyway.locations']
+    baselineOnMigrate = props['flyway.baselineOnMigrate']
+}
 
 dependencies {build
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
@@ -61,4 +82,5 @@ dependencies {build
     compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.7.0'
     compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.7.0'
     compileOnly 'org.projectlombok:lombok:1.18.2'
+
 }

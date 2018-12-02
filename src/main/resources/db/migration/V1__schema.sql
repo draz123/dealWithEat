@@ -46,7 +46,7 @@ CREATE TABLE offer (
 
 
 CREATE TABLE restaurant_employee (
-  user_id         CHARACTER VARYING(255) REFERENCES "user" (id),
+  user_id         INTEGER REFERENCES "user" (id),
   restaurant_id INTEGER NOT NULL REFERENCES restaurant (id),
   CONSTRAINT restaurant_employee_pkey PRIMARY KEY (user_id, restaurant_id)
 );
@@ -117,14 +117,6 @@ MAXVALUE 9223372036854775807
 CACHE 1;
 
 CREATE SEQUENCE IF NOT EXISTS transaction_user_link_sequence
-INCREMENT 1
-START 1
-MINVALUE 1
-MAXVALUE 9223372036854775807
-CACHE 1;
-
-
-CREATE SEQUENCE IF NOT EXISTS user_sequence
 INCREMENT 1
 START 1
 MINVALUE 1

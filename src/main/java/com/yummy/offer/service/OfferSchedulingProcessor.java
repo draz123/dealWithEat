@@ -32,7 +32,7 @@ public class OfferSchedulingProcessor {
         offersToUpdate.stream()
                 .filter(offerEntity -> offerEntity.getReceiveTimeEnd().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() < (new Date(System.currentTimeMillis())).toInstant().toEpochMilli())
                 .forEach(offerEntity -> {
-                    offerEntity.setAvailabilityState(OfferState.MISSED.toString());
+                    offerEntity.setAvailabilityState(OfferState.EXPIRED.toString());
                     offerRepository.save(offerEntity);
                 });
         log.info("DB offers transactionState refreshed");
