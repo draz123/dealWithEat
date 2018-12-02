@@ -19,5 +19,10 @@ public class TransactionUserLinkEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_user_link_sequence")
     private long id;
     private long userId;
-    private int offerId;
+    private long transactionId;
+
+    public TransactionUserLinkEntity(long userId, long transactionId) {
+        this.userId = userId;
+        this.transactionId = transactionId;
+    }
 }

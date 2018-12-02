@@ -9,6 +9,7 @@ import com.yummy.restaurant.db.RestaurantRepository;
 import com.yummy.transaction.db.TransactionDao;
 import com.yummy.transaction.db.TransactionOfferLinkRepository;
 import com.yummy.transaction.db.TransactionRepository;
+import com.yummy.transaction.db.TransactionUserLinkRepository;
 import com.yummy.transaction.model.*;
 import com.yummy.user.db.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,13 +39,14 @@ public class TransactionService {
     private final OfferService offerService;
     private final RestaurantRepository restaurantRepository;
     private final UserRepository userRepository;
+    private final TransactionUserLinkRepository transactionUserLinkRepository;
 
     private static final String RESTAURANT_TOPIC = "/topic/restaurant/";
 
     @Autowired
     public TransactionService(TransactionRepository transactionRepository, TransactionDao transactionDao, OfferRepository offerRepository,
                               TransactionOfferLinkRepository transactionOfferLinkRepository, SimpMessagingTemplate template, RestaurantEmployeeRepository restaurantEmployeeRepository,
-                              OfferService offerService, RestaurantRepository restaurantRepository, UserRepository userRepository) {
+                              OfferService offerService, RestaurantRepository restaurantRepository, UserRepository userRepository, TransactionUserLinkRepository transactionUserLinkRepository) {
         this.transactionRepository = transactionRepository;
         this.transactionDao = transactionDao;
         this.offerRepository = offerRepository;
@@ -54,10 +56,10 @@ public class TransactionService {
         this.offerService = offerService;
         this.restaurantRepository = restaurantRepository;
         this.userRepository = userRepository;
+        this.transactionUserLinkRepository = transactionUserLinkRepository;
     }
 
-    public Response getCode(TransactionRequest request) {
-        Response response = new TransactionResponse();
+    public Response getCode(TransactionRequest request, String email) {
         List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = new ArrayList<>();
         Set<Long> restaurantsToUpdate = new HashSet<>();
         for (TransactionItem transaction : request.getTransactions()) {
@@ -73,22 +75,39 @@ public class TransactionService {
                     .build();
             transactionOfferLinkEntityList.add(transactionOfferLinkEntity);
         }
+        updateOffersState(restaurantsToUpdate);
+        String code = generatePaymentCode();
+        TransactionEntity savedEntity = saveTransaction(request, code);
+        saveUserTransactionLink(email, savedEntity);
+        saveOfferTransactionLink(transactionOfferLinkEntityList, savedEntity);
+        return buildTransactionResponse(code, savedEntity);
+    }
+
+    private void updateOffersState(Set<Long> restaurantsToUpdate) {
         updateCurrentOrders(restaurantsToUpdate);
         updateCurrentOffers(restaurantsToUpdate);
-        String code = Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
-        TransactionEntity transactionEntity = new TransactionEntity(code, TransactionState.PENDING, null, LocalDateTime.now(), request.getReceiveTimestamp());
-        TransactionEntity savedEntity = transactionRepository.save(transactionEntity);
+    }
+
+    private String generatePaymentCode() {
+        return Integer.toString(ThreadLocalRandom.current().nextInt(10000, 99999));
+    }
+
+    private TransactionEntity saveTransaction(TransactionRequest request, String code) {
+        return transactionRepository.save(new TransactionEntity(code, TransactionState.PENDING, null, LocalDateTime.now(), request.getReceiveTimestamp()));
+    }
+
+
+    private void saveOfferTransactionLink(List<TransactionOfferLinkEntity> transactionOfferLinkEntityList, TransactionEntity savedEntity) {
         transactionOfferLinkEntityList.forEach(
                 t -> {
                     t.setTransactionId(savedEntity.getId());
                     transactionOfferLinkRepository.save(t);
                 }
         );
-        ((TransactionResponse) response).setOrderId(transactionEntity.getId());
-        ((TransactionResponse) response).setPaymentCode(code);
-        response.setCode(200);
-        response.setMessage("Code returned properly");
-        return response;
+    }
+
+    private void saveUserTransactionLink(String email, TransactionEntity savedEntity) {
+        transactionUserLinkRepository.save(new TransactionUserLinkEntity(userRepository.findByEmail(email).getId(), savedEntity.getId()));
     }
 
     private Response buildLackOfOffersResponse(OfferEntity currentOffer, int newOfferCount) {
@@ -221,5 +240,14 @@ public class TransactionService {
         ordersResponse.setCode(200);
         ordersResponse.setMessage("Success");
         return ordersResponse;
+    }
+
+    private Response buildTransactionResponse(String code, TransactionEntity transactionEntity) {
+        Response response = new TransactionResponse();
+        ((TransactionResponse) response).setOrderId(transactionEntity.getId());
+        ((TransactionResponse) response).setPaymentCode(code);
+        response.setCode(200);
+        response.setMessage("Code returned properly");
+        return response;
     }
 }

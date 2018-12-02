@@ -18,7 +18,9 @@ public class TransactionEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_sequence")
     private long id;
     private String code;
+    @Enumerated(EnumType.STRING)
     private TransactionState transactionState;
+    @Enumerated(EnumType.STRING)
     private CauseState causeState;
     private LocalDateTime orderTime;
     private LocalDateTime receiveTime;

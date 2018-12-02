@@ -63,3 +63,8 @@ curl -X GET \
   "password": "user6"
 }'
 ```
+
+### DB Migrations:
+To migrate database on heroku from local environment, ensure that the actual credentials are valid(heroku rotation), then execute:
+
+```gradle flywayMigrate -Pprofile=heroku```

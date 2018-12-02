@@ -20,7 +20,7 @@ public class TransactionOfferLinkEntity {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "transaction_offer_link_sequence")
     private long id;
     private long transactionId;
-    private int offerId;
+    private long offerId;
     private int count;
 
 }

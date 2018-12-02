@@ -61,17 +61,17 @@ public class OfferService {
     public Response addNewOffer(OfferRequest request, String email) {
         offerRepository.save(new OfferEntity(restaurantEmployeeRepository.findFirstByRestaurantId(userRepository.findByEmail(email).getId()).getRestaurantId(), request.getName(), request.getDescription(),
                 request.getPrice(), request.getDiscount(), request.getCount(), request.getImage(), request.getReceiveTimeStart(),
-                request.getReceiveTimeEnd(), OfferState.ACTUAL.toString()));
+                request.getReceiveTimeEnd(), OfferState.ACTUAL));
         return new Response("New offer added", 200);
     }
 
-    public Response deleteOffer(int id) {
+    public Response deleteOffer(long id) {
         offerRepository.deleteById(id);
         return new Response("Offer removed", 200);
 
     }
 
-    public Response editOffer(int id, OfferRequest request) {
+    public Response editOffer(long id, OfferRequest request) {
         OfferEntity currentEntity = offerRepository.findById(id).get();
         currentEntity.setDescription(request.getDescription());
         currentEntity.setCount(request.getCount());

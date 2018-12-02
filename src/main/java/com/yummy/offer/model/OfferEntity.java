@@ -26,11 +26,12 @@ public class OfferEntity {
     private String image;
     private LocalDateTime receiveTimeStart;
     private LocalDateTime receiveTimeEnd;
-    private String availabilityState;
+    @Enumerated(value = EnumType.STRING)
+    private OfferState availabilityState;
 
 
     public OfferEntity(long restaurantId, String name, String description, int price, int discount, int count, String image,
-                       LocalDateTime receiveTimeStart, LocalDateTime receiveTimeEnd, String availabilityState) {
+                       LocalDateTime receiveTimeStart, LocalDateTime receiveTimeEnd, OfferState availabilityState) {
         this.restaurantId = restaurantId;
         this.name = name;
         this.description = description;

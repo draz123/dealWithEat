@@ -29,8 +29,8 @@ public class TransactionController {
     }
 
     @PostMapping(value = "transaction")
-    public ResponseEntity<Response> doTransaction(@RequestBody TransactionRequest request) {
-        return ResponseEntity.ok().body(transactionService.getCode(request));
+    public ResponseEntity<Response> doTransaction(@RequestHeader String email, @RequestBody TransactionRequest request) {
+        return ResponseEntity.ok().body(transactionService.getCode(request, email));
     }
 
     @GetMapping(value = "balance")

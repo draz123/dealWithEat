@@ -71,11 +71,11 @@ public class MockService {
 
     public TransactionMockResponse mockTransactions() {
         TransactionRequest transactionRequest1 = new TransactionRequest();
-        transactionRequest1.setReceiveTimestamp(LocalDateTime.now());
+        transactionRequest1.setReceiveTimestamp(LocalDateTime.now().plusHours(3));
         TransactionRequest transactionRequest2 = new TransactionRequest();
-        transactionRequest2.setReceiveTimestamp(LocalDateTime.now());
+        transactionRequest2.setReceiveTimestamp(LocalDateTime.now().plusHours(3).plusMinutes(30));
         TransactionRequest transactionRequest3 = new TransactionRequest();
-        transactionRequest3.setReceiveTimestamp(LocalDateTime.now());
+        transactionRequest3.setReceiveTimestamp(LocalDateTime.now().plusHours(4).plusMinutes(30));
         TransactionItem transactionItem1 = new TransactionItem(13, 1);
         TransactionItem transactionItem2 = new TransactionItem(14, 1);
         TransactionItem transactionItem3 = new TransactionItem(15, 1);
@@ -86,9 +86,9 @@ public class MockService {
         transactionRequest2.setTransactions(Arrays.asList(transactionItem3, transactionItem4));
         transactionRequest3.setTransactions(Arrays.asList(transactionItem5, transactionItem6));
         List<Long> ids = new ArrayList<>();
-        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest1)).getOrderId());
-        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest2)).getOrderId());
-        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest3)).getOrderId());
+        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest1,"user1@user.com")).getOrderId());
+        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest2,"user2@user.com")).getOrderId());
+        ids.add(((TransactionResponse) transactionService.getCode(transactionRequest3,"user3@user.com")).getOrderId());
         return new TransactionMockResponse("Success", 200, ids);
     }
 

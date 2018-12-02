@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TransactionItem {
 
-    private int offerId;
+    private long offerId;
     private int count;
 
 }
