@@ -56,7 +56,7 @@ public class TransactionController {
 
     @GetMapping(value = "orders")
     public Response getOrders(@RequestHeader String email, @RequestParam(required = false) Integer page, @RequestParam(required = false) Integer size) {
-        return transactionService.getAllOrdersByEmail(email, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(0));
+        return transactionService.getAllOrdersByEmail(email, Optional.ofNullable(page).orElse(0), Optional.ofNullable(size).orElse(10));
     }
 
 }

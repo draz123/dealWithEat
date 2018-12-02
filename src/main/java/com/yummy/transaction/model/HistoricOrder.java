@@ -4,8 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Data
@@ -13,18 +14,17 @@ import java.util.List;
 @NoArgsConstructor
 public class HistoricOrder implements Order, Comparable {
 
-    private int id;
-    private String orderTime;
-    private String receiveTime;
-    private String transactionState;
+    private long id;
+    private LocalDateTime orderTime;
+    private LocalDateTime receiveTime;
+    @Enumerated(EnumType.STRING)
+    private TransactionState transactionState;
     private String paymentCode;
     private double price;
     private List<OrderItem> orderItemList;
 
     @Override
     public int compareTo(Object o) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        return -LocalDateTime.parse(this.getOrderTime().substring(0, 19), formatter)
-                .compareTo(LocalDateTime.parse(((HistoricOrder) o).getOrderTime().substring(0, 19), formatter));
+        return -this.getOrderTime().compareTo(((HistoricOrder) o).getOrderTime());
     }
 }

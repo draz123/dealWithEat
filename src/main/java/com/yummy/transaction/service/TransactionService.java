@@ -12,6 +12,7 @@ import com.yummy.transaction.db.TransactionRepository;
 import com.yummy.transaction.db.TransactionUserLinkRepository;
 import com.yummy.transaction.model.*;
 import com.yummy.user.db.UserRepository;
+import com.yummy.user.model.UserEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -210,30 +211,55 @@ public class TransactionService {
     public Response getAllOrdersByEmail(String email, Integer page, Integer size) {
         int limit = page == 0 ? 1000 : page * size;
         int offset = page == 0 ? 0 : size;
-        List<Order> historicOrders = transactionDao.findAllByRestaurant(email, limit, offset)
-                .stream()
-                .map(order ->
-                {
-                    final double[] price = {0.0};
-                    List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId((long) ((HistoricOrder) order).getId());
-                    List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
-                            .map(t -> {
-                                OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
-                                price[0] += offerEntity.getPrice();
-                                return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
-                                        offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
-                            })
-                            .collect(Collectors.toList());
-                    ((HistoricOrder) order).setOrderItemList(orderItemList);
-                    ((HistoricOrder) order).setPrice(price[0]);
-                    return order;
-                })
-                .sorted()
-                .collect(Collectors.toList());
+        UserEntity userEntity = userRepository.findByEmail(email);
+        List<Order> historicOrders;
         OrdersResponse ordersResponse = new OrdersResponse();
-        final long restaurantId = restaurantEmployeeRepository.findByUserId(userRepository.findByEmail(email).getId()).getRestaurantId();
+        if (transactionUserLinkRepository.existsByUserId(userEntity.getId())) {
+            List<Long> transactionUserLinkEntityList = transactionUserLinkRepository.findAllByUserId(userEntity.getId()).stream().map(TransactionUserLinkEntity::getTransactionId).collect(Collectors.toList());
+            historicOrders = transactionRepository.findAllByIdIn(transactionUserLinkEntityList).stream()
+                    .map(transaction -> new HistoricOrder(transaction.getId(), transaction.getOrderTime(), transaction.getReceiveTime(), transaction.getTransactionState(), transaction.getCode(), 0.0, null))
+                    .map(transaction -> {
+                        final double[] price = {0.0};
+                        List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId(transaction.getId());
+                        List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                                .map(t -> {
+                                    OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
+                                    price[0] += offerEntity.getPrice();
+                                    return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                            offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
+                                })
+                                .collect(Collectors.toList());
+                        transaction.setOrderItemList(orderItemList);
+                        transaction.setPrice(price[0]);
+                        return transaction;
+                    })
+                    .sorted()
+                    .collect(Collectors.toList());
+        } else {
+            historicOrders = transactionDao.findAllByRestaurant(userEntity.getId(), limit, offset)
+                    .stream()
+                    .map(order ->
+                    {
+                        final double[] price = {0.0};
+                        List<TransactionOfferLinkEntity> transactionOfferLinkEntityList = transactionOfferLinkRepository.findAllByTransactionId((long) ((HistoricOrder) order).getId());
+                        List<OrderItem> orderItemList = transactionOfferLinkEntityList.stream()
+                                .map(t -> {
+                                    OfferEntity offerEntity = offerRepository.findById(t.getOfferId()).get();
+                                    price[0] += offerEntity.getPrice();
+                                    return new OrderItem(offerEntity.getId(), offerEntity.getDescription(),
+                                            offerEntity.getPrice(), t.getCount(), offerEntity.getDiscount(), offerEntity.getImage());
+                                })
+                                .collect(Collectors.toList());
+                        ((HistoricOrder) order).setOrderItemList(orderItemList);
+                        ((HistoricOrder) order).setPrice(price[0]);
+                        return order;
+                    })
+                    .sorted()
+                    .collect(Collectors.toList());
+            final long restaurantId = restaurantEmployeeRepository.findByUserId(userRepository.findByEmail(email).getId()).getRestaurantId();
 
-        ordersResponse.setRestaurantEntity(restaurantRepository.findFirstById(restaurantId));
+            ordersResponse.setRestaurantEntity(restaurantRepository.findFirstById(restaurantId));
+        }
         ordersResponse.setCurrentOrderList(historicOrders);
         ordersResponse.setPage(page);
         ordersResponse.setPageSize(size);

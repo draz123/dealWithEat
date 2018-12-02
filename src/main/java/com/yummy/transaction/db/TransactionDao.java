@@ -3,6 +3,7 @@ package com.yummy.transaction.db;
 import com.yummy.transaction.model.CurrentOrder;
 import com.yummy.transaction.model.HistoricOrder;
 import com.yummy.transaction.model.Order;
+import com.yummy.transaction.model.TransactionState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -122,21 +123,21 @@ public class TransactionDao {
         }));
     }
 
-    public List<Order> findAllByRestaurant(String email, int limit, int offset) {
+    public List<Order> findAllByRestaurant(long userId, int limit, int offset) {
         String query = "SELECT t.order_time,o.price,t.id,o.description, t.receive_time, t.transaction_state, t.code \n" +
                 "FROM transaction t\n" +
                 "LEFT JOIN transaction_offer_link tol ON (tol.transaction_id=t.id)\n" +
                 "LEFT JOIN offer o ON (tol.offer_id=o.id)\n" +
                 "LEFT JOIN restaurant r ON (r.id=o.restaurant_id)\n" +
                 "LEFT JOIN restaurant_employee e ON (r.id=e.restaurant_id)" +
-                "WHERE email = '" + email + "' " +
+                "WHERE user_id = '" + userId + "' " +
                 "LIMIT " + limit + " offset " + offset + ";";
         return jdbcTemplate.query(query, ((rs, rowNum) -> {
             HistoricOrder result = new HistoricOrder();
             result.setId(rs.getInt(3));
-            result.setOrderTime(rs.getTimestamp(1).toLocalDateTime().toString());
-            result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime().toString());
-            result.setTransactionState(rs.getString(6));
+            result.setOrderTime(rs.getTimestamp(1).toLocalDateTime());
+            result.setReceiveTime(rs.getTimestamp(5).toLocalDateTime());
+            result.setTransactionState(TransactionState.valueOf(rs.getString(6)));
             result.setPaymentCode(rs.getString(7));
             return result;
         }));
