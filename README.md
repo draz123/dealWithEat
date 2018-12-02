@@ -21,7 +21,7 @@ To run the application:
 java -jar /build/libs/yummy-backend-service.jar
 ```
 
-#Mock data
+# Mock data
 
 ### Users:
 | User | Password | restaurant |
